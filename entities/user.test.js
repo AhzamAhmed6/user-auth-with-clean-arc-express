@@ -32,7 +32,7 @@ describe("user", () => {
 		expect(user.getFirstName()).toBe("Ahzam");
 		expect(user.getLastName()).toBe("Ahmed");
 		expect(user.getEmail()).toBe("ahzamahmed6@gmail.com");
-		// expect(user.getPassword()).toBe("Marvel-$2001");
+		expect(user.getHashedPassword().slice(0, 7)).toBe("$2b$10$");
 	});
 });
 

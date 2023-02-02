@@ -20,9 +20,7 @@ export default function buildMakeUser({ hashPassword }) {
 			getFirstName: () => firstName,
 			getLastName: () => lastName,
 			getEmail: () => email,
-			getHashedPassword: () => {
-				return hashPassword(password);
-			},
+			getHashedPassword: () => hashPassword(password),
 		});
 
 		/**
