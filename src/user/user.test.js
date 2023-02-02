@@ -1,6 +1,6 @@
 import makeUser from "./";
 // import buildMakeUser from "./user";
-import makeFakeUser from "../__test__/fixtures/user.js";
+import makeFakeUser from "../../__test__/fixtures/user.js";
 
 describe("user", () => {
 	test("unsatisfied firstName", () => {
