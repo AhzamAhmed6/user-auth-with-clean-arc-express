@@ -15,6 +15,15 @@ describe("users db", () => {
 		result.amazing = true;
 		expect(result).not.toEqual(user);
 	});
+	it("find a user by its email", async () => {
+		const fakeUserOne = makeFakeUser();
+		const fakeUserTwo = makeFakeUser();
+		const insertedOne = await usersDB.insert(fakeUserOne);
+		const u1 = await usersDB.findByEmail(fakeUserOne);
+		const insertedTwo = await usersDB.insert(fakeUserTwo);
+
+		expect(await usersDB.findByEmail(fakeUserOne)).toEqual(insertedOne);
+	});
 });
 
 /**
