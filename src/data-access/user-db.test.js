@@ -3,14 +3,14 @@ import makeUsersDb from "./user-db";
 import makeDb from "../../__test__/fixtures/db";
 
 describe("users db", () => {
-	let usersDB;
+	let usersDb;
 
 	beforeEach(async () => {
-		usersDB = makeUsersDb({ makeDb });
+		usersDb = makeUsersDb({ makeDb });
 	});
 	it("insert a user", async () => {
 		const user = makeFakeUser();
-		const result = await usersDB.insert(user);
+		const result = await usersDb.insert(user);
 		expect(result).toEqual(user);
 		result.amazing = true;
 		expect(result).not.toEqual(user);
@@ -18,11 +18,18 @@ describe("users db", () => {
 	it("find a user by its email", async () => {
 		const fakeUserOne = makeFakeUser();
 		const fakeUserTwo = makeFakeUser();
-		const insertedOne = await usersDB.insert(fakeUserOne);
-		const u1 = await usersDB.findByEmail(fakeUserOne);
-		const insertedTwo = await usersDB.insert(fakeUserTwo);
 
-		expect(await usersDB.findByEmail(fakeUserOne)).toEqual(insertedOne);
+		const insertedOne = await usersDb.insert(fakeUserOne);
+		const insertedTwo = await usersDb.insert(fakeUserTwo);
+
+		insertedOne["id"] = insertedOne["_id"];
+		delete insertedOne["_id"];
+
+		insertedTwo["id"] = insertedTwo["_id"];
+		delete insertedTwo["_id"];
+
+		expect(await usersDb.findByEmail(fakeUserOne)).toEqual(insertedOne);
+		expect(await usersDb.findByEmail(fakeUserTwo)).toEqual(insertedTwo);
 	});
 });
 
