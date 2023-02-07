@@ -1,6 +1,7 @@
 import makeFakeUser from "../../__test__/fixtures/user";
 import makeUsersDb from "./user-db";
 import makeDb from "../../__test__/fixtures/db";
+// import { it } from "faker/lib/locales";
 
 describe("users db", () => {
 	let usersDb;
@@ -30,6 +31,11 @@ describe("users db", () => {
 
 		expect(await usersDb.findByEmail(fakeUserOne)).toEqual(insertedOne);
 		expect(await usersDb.findByEmail(fakeUserTwo)).toEqual(insertedTwo);
+	});
+	it("delete a user", async () => {
+		const user = makeFakeUser();
+		const insertedUser = await usersDb.insert(user);
+		return expect(await usersDb.remove(insertedUser)).toBe(1);
 	});
 });
 

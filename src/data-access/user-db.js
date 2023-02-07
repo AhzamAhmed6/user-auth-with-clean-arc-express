@@ -2,7 +2,14 @@ export default function makeUsersDb({ makeDb }) {
 	return Object.freeze({
 		findByEmail,
 		insert,
+		remove,
 	});
+	async function remove({ _id: _id }) {
+		const db = await makeDb();
+		const result = await db.collection("users").deleteOne({ _id });
+		return result.deletedCount;
+	}
+
 	async function findByEmail(user) {
 		const db = await makeDb();
 		const result = await db.collection("users").find({ email: user.email });
