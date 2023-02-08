@@ -8,6 +8,7 @@ export default function makeUsersDb({ makeDb }) {
 		insert,
 		remove,
 		updateName,
+		updatePassword,
 	});
 	async function findById({ id: _id }) {
 		const db = await makeDb();
@@ -27,6 +28,16 @@ export default function makeUsersDb({ makeDb }) {
 			.updateOne({ _id }, { $set: { firstName, lastName } });
 		return result.modifiedCount > 0
 			? { id: _id, firstName, lastName, ...userInfo }
+			: null;
+	}
+
+	async function updatePassword({ id: _id, password, ...userInfo }) {
+		const db = await makeDb();
+		const result = await db
+			.collection("users")
+			.updateOne({ _id }, { $set: { password } });
+		return result.modifiedCount > 0
+			? { id: _id, password, ...userInfo }
 			: null;
 	}
 
