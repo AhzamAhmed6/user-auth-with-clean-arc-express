@@ -16,6 +16,13 @@ describe("users db", () => {
 		result.amazing = true;
 		expect(result).not.toEqual(user);
 	});
+
+	it("find a user by its id", async () => {
+		const user = makeFakeUser();
+		await usersDb.insert(user);
+		const found = await usersDb.findById(user);
+		expect(found).toEqual(user);
+	});
 	it("find a user by its email", async () => {
 		const fakeUserOne = makeFakeUser();
 		const fakeUserTwo = makeFakeUser();

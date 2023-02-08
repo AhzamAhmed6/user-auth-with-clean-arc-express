@@ -3,11 +3,23 @@ import Id from "../Id";
 export default function makeUsersDb({ makeDb }) {
 	return Object.freeze({
 		findAll,
+		findById,
 		findByEmail,
 		insert,
 		remove,
 		updateName,
 	});
+	async function findById({ id: _id }) {
+		const db = await makeDb();
+		const result = await db.collection("users").find({ _id });
+		const found = await result.toArray();
+		if (found.length === 0) {
+			return null;
+		}
+		const { _id: id, ...info } = found[0];
+		return { id, ...info };
+	}
+
 	async function updateName({ id: _id, firstName, lastName, ...userInfo }) {
 		const db = await makeDb();
 		const result = await db
