@@ -28,6 +28,16 @@ describe("users db", () => {
 		const insertedUser = await usersDb.insert(user);
 		return expect(await usersDb.remove(insertedUser)).toBe(1);
 	});
+	it("lists users", async () => {
+		const inserts = await Promise.all(
+			[makeFakeUser(), makeFakeUser(), makeFakeUser()].map(usersDb.insert)
+		);
+		const found = await usersDb.findAll();
+		expect.assertions(inserts.length);
+		return inserts.forEach((insert) =>
+			expect(found).toContainEqual(insert)
+		);
+	});
 });
 
 /**

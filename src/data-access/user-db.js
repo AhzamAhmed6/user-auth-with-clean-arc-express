@@ -2,10 +2,20 @@ import Id from "../Id";
 
 export default function makeUsersDb({ makeDb }) {
 	return Object.freeze({
+		findAll,
 		findByEmail,
 		insert,
 		remove,
 	});
+	async function findAll() {
+		const db = await makeDb();
+		const result = await db.collection("users").find({});
+		return (await result.toArray()).map(({ _id: id, ...found }) => ({
+			id,
+			...found,
+		}));
+	}
+
 	async function remove({ id: _id }) {
 		const db = await makeDb();
 		const result = await db.collection("users").deleteOne({ _id });
