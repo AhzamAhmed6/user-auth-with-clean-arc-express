@@ -6,7 +6,18 @@ export default function makeUsersDb({ makeDb }) {
 		findByEmail,
 		insert,
 		remove,
+		updateName,
 	});
+	async function updateName({ id: _id, firstName, lastName, ...userInfo }) {
+		const db = await makeDb();
+		const result = await db
+			.collection("users")
+			.updateOne({ _id }, { $set: { firstName, lastName } });
+		return result.modifiedCount > 0
+			? { id: _id, firstName, lastName, ...userInfo }
+			: null;
+	}
+
 	async function findAll() {
 		const db = await makeDb();
 		const result = await db.collection("users").find({});

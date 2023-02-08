@@ -8,6 +8,7 @@ describe("users db", () => {
 	beforeEach(async () => {
 		usersDb = makeUsersDb({ makeDb });
 	});
+
 	it("insert a user", async () => {
 		const user = makeFakeUser();
 		const result = await usersDb.insert(user);
@@ -37,6 +38,37 @@ describe("users db", () => {
 		return inserts.forEach((insert) =>
 			expect(found).toContainEqual(insert)
 		);
+	});
+	it("update first and last names", async () => {
+		const user = makeFakeUser();
+		const email = user.email;
+
+		await usersDb.insert(user);
+
+		// update firstName
+		user.firstName = "Ahzam";
+		var updated = await usersDb.updateName(user);
+		expect(updated.firstName).toBe("Ahzam");
+
+		// update lastName
+		user.lastName = "Ahmed";
+		updated = await usersDb.updateName(user);
+		expect(updated.firstName).toBe("Ahzam");
+		expect(updated.lastName).toBe("Ahmed");
+
+		// update everything
+		user.email = "ahzamahmed6@gmail.com";
+		user.firstName = "James";
+		user.lastName = "Bond";
+		user.password = "1234";
+		await usersDb.updateName(user);
+
+		updated = await usersDb.findByEmail({ email });
+
+		expect(updated.firstName).toBe("James");
+		expect(updated.lastName).toBe("Bond");
+		expect(updated.email).not.toBe("ahzamahmed6@gmail.com");
+		expect(updated.password).not.toBe("1234");
 	});
 });
 
