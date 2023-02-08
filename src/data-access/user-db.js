@@ -1,10 +1,12 @@
+import Id from "../Id";
+
 export default function makeUsersDb({ makeDb }) {
 	return Object.freeze({
 		findByEmail,
 		insert,
 		remove,
 	});
-	async function remove({ _id: _id }) {
+	async function remove({ id: _id }) {
 		const db = await makeDb();
 		const result = await db.collection("users").deleteOne({ _id });
 		return result.deletedCount;
@@ -21,15 +23,18 @@ export default function makeUsersDb({ makeDb }) {
 		return { id, ...insertedInfo };
 	}
 
-	async function insert(userInfo) {
+	async function insert({ id: _id = Id.makeId(), ...userInfo }) {
 		const db = await makeDb();
-		const result = await db.collection("users").insertOne(userInfo);
+		const result = await db
+			.collection("users")
+			.insertOne({ _id, ...userInfo });
+
 		const userId = result.insertedId;
 		const user = await db
 			.collection("users")
 			.find({ _id: userId })
 			.toArray();
-		const finalUser = user[0];
-		return finalUser;
+		const { _id: id, ...finalUser } = user[0];
+		return { id, ...finalUser };
 	}
 }

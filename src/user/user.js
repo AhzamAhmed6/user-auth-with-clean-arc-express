@@ -1,5 +1,14 @@
-export default function buildMakeUser({ hashPassword }) {
-	return function makeUser({ firstName, lastName, email, password }) {
+export default function buildMakeUser({ Id, hashPassword }) {
+	return function makeUser({
+		id = Id.makeId(),
+		firstName,
+		lastName,
+		email,
+		password,
+	}) {
+		if (!Id.isValidId(id)) {
+			throw new Error("User must have a valid id.");
+		}
 		if (firstName.length < 1) {
 			throw new Error("First Name must not be empty");
 		}
@@ -17,6 +26,7 @@ export default function buildMakeUser({ hashPassword }) {
 
 		// whats the point of arrow function  here: we can use user.firstName() to access first name if user=user()
 		return Object.freeze({
+			getId: () => id,
 			getFirstName: () => firstName,
 			getLastName: () => lastName,
 			getEmail: () => email,

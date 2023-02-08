@@ -2,7 +2,6 @@ import { join } from "path";
 
 import { writeFileSync } from "fs";
 
-// import { MongoMemoryServer } from "mongodb-memory-server";
 const MongoMemoryServer = require("mongodb-memory-server").MongoMemoryServer;
 
 const globalConfigPath = join(__dirname, "globalConfigMongo.json");

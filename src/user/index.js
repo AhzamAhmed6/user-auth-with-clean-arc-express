@@ -1,7 +1,8 @@
 import buildMakeUser from "./user.js";
 import bcrypt from "bcrypt";
+import Id from "../Id";
 
-const makeUser = buildMakeUser({ hashPassword });
+const makeUser = buildMakeUser({ Id, hashPassword });
 
 export default makeUser;
 
