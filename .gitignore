@@ -3,3 +3,4 @@ package-lock.json
 mongo_data
 .env
 globalConfigMongo.json
+.vscode

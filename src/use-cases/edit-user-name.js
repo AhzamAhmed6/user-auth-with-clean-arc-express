@@ -18,7 +18,7 @@ export default function makeEditUserName({ usersDb }) {
 			throw new RangeError("User not found");
 		}
 		const user = makeUser({ firstName, lastName, ...rest });
-		const updated = await usersDb.update({
+		const updated = await usersDb.updateName({
 			firstName: user.getFirstName(),
 			lastName: user.getLastName(),
 			email: user.getEmail(),
