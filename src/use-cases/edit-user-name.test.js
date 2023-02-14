@@ -19,18 +19,26 @@ describe("edit user", () => {
 		const editUserName = makeEditUserName({ usersDb });
 		let userToEdit = makeFakeUser({ firstName: undefined });
 		await expect(editUserName(userToEdit)).rejects.toThrow(
-			"You must supply first name and last name"
+			"You must supply first name and last name."
 		);
 		userToEdit = makeFakeUser({ lastName: undefined });
 		await expect(editUserName(userToEdit)).rejects.toThrow(
-			"You must supply first name and last name"
+			"You must supply first name and last name."
 		);
 		userToEdit = makeFakeUser({
 			firstName: undefined,
 			lastName: undefined,
 		});
 		await expect(editUserName(userToEdit)).rejects.toThrow(
-			"You must supply first name and last name"
+			"You must supply first name and last name."
+		);
+	});
+
+	it("user not found", async () => {
+		const editUserName = makeEditUserName({ usersDb });
+		const userToEdit = makeFakeUser();
+		await expect(editUserName(userToEdit)).rejects.toThrow(
+			"User not found."
 		);
 	});
 });

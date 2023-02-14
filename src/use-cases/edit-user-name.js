@@ -10,12 +10,12 @@ export default function makeEditUserName({ usersDb }) {
 			throw new Error("You must supply an id.");
 		}
 		if (!firstName || !lastName) {
-			throw new Error("You must supply first name and last name");
+			throw new Error("You must supply first name and last name.");
 		}
 		const existing = await usersDb.findById({ id });
 
 		if (!existing) {
-			throw new RangeError("User not found");
+			throw new RangeError("User not found.");
 		}
 		const user = makeUser({ firstName, lastName, ...rest });
 		const updated = await usersDb.updateName({
