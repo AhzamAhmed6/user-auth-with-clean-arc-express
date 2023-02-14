@@ -1,4 +1,4 @@
-import buildMakeUser from "./user.js";
+import buildMakeUser from "./user";
 import bcrypt from "bcrypt";
 import Id from "../Id";
 

@@ -24,6 +24,6 @@ export default function makeEditUserName({ usersDb }) {
 			email: user.getEmail(),
 			password: user.getHashedPassword(),
 		});
-		return updated;
+		return { ...existing, ...updated };
 	};
 }

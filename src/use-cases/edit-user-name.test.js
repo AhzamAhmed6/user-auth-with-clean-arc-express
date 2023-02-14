@@ -8,13 +8,16 @@ describe("edit user", () => {
 	beforeAll(() => (usersDb = makeUsersDb({ makeDb })));
 
 	it("must include an id", async () => {
-		const editUserName = makeEditUserName({ usersDb });
-		const userToEdit = makeFakeUser();
-		userToEdit.id = undefined;
-		console.log(
-			"🚀 ~ file: edit-user-name.test.js:14 ~ it ~ userToEdit",
-			userToEdit
+		const editUserName = makeEditUserName({
+			usersDb: {
+				update: () => {
+					throw new Error("update should not have been called");
+				},
+			},
+		});
+		const userToEdit = makeFakeUser({ id: undefined });
+		await expect(editUserName(userToEdit)).rejects.toThrow(
+			"You must supply an id."
 		);
-		expect(async () => await editUserName(userToEdit)).toThrow(Error);
 	});
 });
