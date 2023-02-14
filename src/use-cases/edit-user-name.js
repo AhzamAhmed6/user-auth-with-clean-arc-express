@@ -9,7 +9,7 @@ export default function makeEditUserName({ usersDb }) {
 		if (!id) {
 			throw new Error("You must supply an id.");
 		}
-		if (!firstName.text && !lastName.text) {
+		if (!firstName || !lastName) {
 			throw new Error("You must supply first name and last name");
 		}
 		const existing = await usersDb.findById({ id });

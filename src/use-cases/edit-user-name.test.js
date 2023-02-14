@@ -8,16 +8,29 @@ describe("edit user", () => {
 	beforeAll(() => (usersDb = makeUsersDb({ makeDb })));
 
 	it("must include an id", async () => {
-		const editUserName = makeEditUserName({
-			usersDb: {
-				update: () => {
-					throw new Error("update should not have been called");
-				},
-			},
-		});
+		const editUserName = makeEditUserName({ usersDb });
 		const userToEdit = makeFakeUser({ id: undefined });
 		await expect(editUserName(userToEdit)).rejects.toThrow(
 			"You must supply an id."
+		);
+	});
+
+	it("must include first names", async () => {
+		const editUserName = makeEditUserName({ usersDb });
+		let userToEdit = makeFakeUser({ firstName: undefined });
+		await expect(editUserName(userToEdit)).rejects.toThrow(
+			"You must supply first name and last name"
+		);
+		userToEdit = makeFakeUser({ lastName: undefined });
+		await expect(editUserName(userToEdit)).rejects.toThrow(
+			"You must supply first name and last name"
+		);
+		userToEdit = makeFakeUser({
+			firstName: undefined,
+			lastName: undefined,
+		});
+		await expect(editUserName(userToEdit)).rejects.toThrow(
+			"You must supply first name and last name"
 		);
 	});
 });
