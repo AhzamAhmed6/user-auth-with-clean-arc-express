@@ -12,7 +12,7 @@ export default function makeAddUser({ usersDb }) {
 			firstName: user.getFirstName(),
 			lastName: user.getLastName(),
 			email: user.getEmail(),
-			hashedpassword: user.getHashedPassword(),
+			hashedPassword: user.getHashedPassword(),
 		});
 	};
 }
