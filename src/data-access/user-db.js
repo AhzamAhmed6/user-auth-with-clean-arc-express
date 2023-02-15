@@ -31,13 +31,13 @@ export default function makeUsersDb({ makeDb }) {
 			: null;
 	}
 
-	async function updatePassword({ id: _id, password, ...userInfo }) {
+	async function updatePassword({ id: _id, hashedPassword, ...userInfo }) {
 		const db = await makeDb();
 		const result = await db
 			.collection("users")
-			.updateOne({ _id }, { $set: { password } });
+			.updateOne({ _id }, { $set: { hashedPassword } });
 		return result.modifiedCount > 0
-			? { id: _id, password, ...userInfo }
+			? { id: _id, hashedPassword, ...userInfo }
 			: null;
 	}
 

@@ -29,7 +29,7 @@ export default function makeEditUserName({ usersDb }) {
 			firstName: user.getFirstName(),
 			lastName: user.getLastName(),
 			email: existing.email,
-			password: existing.hashedPassword,
+			hashedPassword: existing.hashedPassword,
 		});
 
 		return { ...updated };

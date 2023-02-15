@@ -84,12 +84,13 @@ describe("users db", () => {
 
 	it("update password", async () => {
 		const user = makeFakeUser();
-		const email = user.email;
+		user.hashedPassword = user.password;
+		const id = user.id;
 		await usersDb.insert(user);
-		user.password = "1234";
+		user.hashedPassword = "1234";
 		await usersDb.updatePassword(user);
-		const updated = await usersDb.findByEmail({ email });
-		expect(updated.password).toBe("1234");
+		const updated = await usersDb.findById({ id });
+		expect(updated.hashedPassword).toBe("1234");
 	});
 });
 
