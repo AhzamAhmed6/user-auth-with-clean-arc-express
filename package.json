@@ -4,7 +4,8 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"test": "jest src --watchAll"
+		"test": "jest src --watchAll",
+		"pretty": "prettier --write \"./**/*.{js,jsx,ts,tsx,json}\""
 	},
 	"keywords": [],
 	"author": "ahzamahmed6@gmail.com",

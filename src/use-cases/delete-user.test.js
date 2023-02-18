@@ -20,8 +20,7 @@ describe("delete User", () => {
 
     //-----------Delete User----------------
     const deleteUser = makeDeleteUser({ usersDb });
-    //const deleted1 = await deleteUser(inserted1);
-    //console.log("deleted1====>", deleted1);
+
     await expect(deleteUser(inserted1)).resolves.toEqual(1);
     await expect(deleteUser(inserted1)).rejects.toThrow("User not found.");
     await expect(deleteUser(inserted2)).resolves.toEqual(1);
