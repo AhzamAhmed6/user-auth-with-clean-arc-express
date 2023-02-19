@@ -13,7 +13,7 @@ export default function makePostUser({ addUser }) {
 			};
 		} catch (e) {
 			// TODO: Error logging
-			console.log("🚀 ~ file: post-user.js:15 ~ postUser ~ e", e);
+			console.log(e);
 
 			return {
 				headers: {
