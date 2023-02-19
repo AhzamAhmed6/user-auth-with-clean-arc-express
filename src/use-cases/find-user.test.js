@@ -5,47 +5,47 @@ import makeFindUser from "./find-user";
 import makeDb from "../../__test__/fixtures/db";
 
 describe("find user", () => {
-	let usersDb;
-	beforeAll(() => (usersDb = makeUsersDb({ makeDb })));
+  let usersDb;
+  beforeAll(() => (usersDb = makeUsersDb({ makeDb })));
 
-	it("find user that doesnt inserted in Db", async () => {
-		const fakeUser = makeFakeUser();
-		const findUser = makeFindUser({ usersDb });
+  it("find user that doesnt inserted in Db", async () => {
+    const fakeUser = makeFakeUser();
+    const findUser = makeFindUser({ usersDb });
 
-		await expect(findUser(fakeUser)).rejects.toThrow("User not found.");
-	});
+    await expect(findUser(fakeUser)).rejects.toThrow("User not found.");
+  });
 
-	it("find the inserted user by its id", async () => {
-		//------Insert User In Db-------------
-		const fakeUser = makeFakeUser();
-		const addUser = makeAddUser({ usersDb });
-		await addUser(fakeUser);
-		const id = fakeUser.id;
+  it("find the inserted user by its id", async () => {
+    //------Insert User In Db-------------
+    const fakeUser = makeFakeUser();
+    const addUser = makeAddUser({ usersDb });
+    await addUser(fakeUser);
+    const id = fakeUser.id;
 
-		//------Find User In Db-------------
-		const findUser = makeFindUser({ usersDb });
-		const user = await findUser({ id });
+    //------Find User In Db-------------
+    const findUser = makeFindUser({ usersDb });
+    const user = await findUser({ id });
 
-		delete user.hashedPassword;
-		delete fakeUser.password;
+    delete user.hashedPassword;
+    delete fakeUser.password;
 
-		expect(user).toMatchObject(fakeUser);
-	});
+    expect(user).toMatchObject(fakeUser);
+  });
 
-	it("find the inserted user by its email", async () => {
-		//------Insert User In Db-------------
-		const fakeUser = makeFakeUser();
-		const addUser = makeAddUser({ usersDb });
-		await addUser(fakeUser);
-		const email = fakeUser.email;
+  it("find the inserted user by its email", async () => {
+    //------Insert User In Db-------------
+    const fakeUser = makeFakeUser();
+    const addUser = makeAddUser({ usersDb });
+    await addUser(fakeUser);
+    const email = fakeUser.email;
 
-		//------Find User In Db-------------
-		const findUser = makeFindUser({ usersDb });
-		const user = await findUser({ email });
+    //------Find User In Db-------------
+    const findUser = makeFindUser({ usersDb });
+    const user = await findUser({ email });
 
-		delete user.hashedPassword;
-		delete fakeUser.password;
+    delete user.hashedPassword;
+    delete fakeUser.password;
 
-		expect(user).toMatchObject(fakeUser);
-	});
+    expect(user).toMatchObject(fakeUser);
+  });
 });

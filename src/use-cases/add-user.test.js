@@ -5,16 +5,16 @@ import makeDb from "../../__test__/fixtures/db";
 import makeUser from "../user";
 
 describe("add user", () => {
-	let usersDb;
-	beforeAll(() => (usersDb = makeUsersDb({ makeDb })));
+  let usersDb;
+  beforeAll(() => (usersDb = makeUsersDb({ makeDb })));
 
-	it("inserts users in the database", async () => {
-		const fakeUser = makeFakeUser();
-		const addUser = makeAddUser({ usersDb });
-		const inserted = await addUser(fakeUser);
-		delete inserted.hashedPassword;
-		delete fakeUser.password;
+  it("inserts users in the database", async () => {
+    const fakeUser = makeFakeUser();
+    const addUser = makeAddUser({ usersDb });
+    const inserted = await addUser(fakeUser);
+    delete inserted.hashedPassword;
+    delete fakeUser.password;
 
-		expect(inserted).toMatchObject(fakeUser);
-	});
+    expect(inserted).toMatchObject(fakeUser);
+  });
 });
