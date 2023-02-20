@@ -7,6 +7,11 @@ describe("user", () => {
 		expect(() => makeUser(user)).toThrow("First Name must not be empty");
 	});
 
+	test("unsatisfied firstName", () => {
+		const user = makeFakeUser({ firstName: undefined });
+		expect(() => makeUser(user)).toThrow("First Name must not be empty");
+	});
+
 	test("unsatisfied lastName", () => {
 		const user = makeFakeUser({ lastName: "" });
 		expect(() => makeUser(user)).toThrow("Last Name must not be empty");

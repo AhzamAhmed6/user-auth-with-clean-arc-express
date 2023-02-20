@@ -1,10 +1,14 @@
+// import NodeEnvironment from "jest-environment-node";
+const NodeEnvironment = require("jest-environment-node");
 import { readFileSync } from "fs";
-import NodeEnvironment from "jest-environment-node";
-const path = require("path");
+import path from "path";
+import { fileURLToPath } from "url";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const globalConfigPath = path.join(__dirname, "globalConfigMongo.json");
 
-class MongoEnvironment extends NodeEnvironment {
+export default class MongoEnvironment extends NodeEnvironment {
 	constructor(config) {
 		super(config);
 	}
@@ -26,5 +30,3 @@ class MongoEnvironment extends NodeEnvironment {
 		return super.runScript(script);
 	}
 }
-
-export default MongoEnvironment;

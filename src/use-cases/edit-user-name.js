@@ -1,4 +1,4 @@
-import makeUser from "../user";
+import makeUser from "../user/index.js";
 export default function makeEditUserName({ usersDb }) {
 	return async function editUserName({
 		id,

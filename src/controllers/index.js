@@ -4,13 +4,13 @@ import {
 	editUserPassword,
 	findUser,
 	removeUser,
-} from "../use-cases";
-import makeGetUser from "../use-cases/find-user";
-import makeDeleteUser from "./delete-user";
-import notFound from "./not-found";
-import makePatchUserName from "./patch-user-name";
-import makePatchUserPassword from "./patch-user-password";
-import makePostUser from "./post-user";
+} from "../use-cases/index.js";
+import makeGetUser from "./get-user.js";
+import makeDeleteUser from "./delete-user.js";
+import notFound from "./not-found.js";
+import makePatchUserName from "./patch-user-name.js";
+import makePatchUserPassword from "./patch-user-password.js";
+import makePostUser from "./post-user.js";
 
 const deleteUser = makeDeleteUser({ removeUser });
 const getUser = makeGetUser({ findUser });

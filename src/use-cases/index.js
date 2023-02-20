@@ -1,9 +1,9 @@
-import usersDb from "../data-access";
-import makeAddUser from "./add-user";
-import makeRemoveUser from "./remove-user";
-import makeEditUserName from "./edit-user-name";
-import makeEditUserPassword from "./edit-user-password";
-import makeFindUser from "./find-user";
+import usersDb from "../data-access/index.js";
+import makeAddUser from "./add-user.js";
+import makeRemoveUser from "./remove-user.js";
+import makeEditUserName from "./edit-user-name.js";
+import makeEditUserPassword from "./edit-user-password.js";
+import makeFindUser from "./find-user.js";
 
 const addUser = makeAddUser({ usersDb });
 const editUserName = makeEditUserName({ usersDb });

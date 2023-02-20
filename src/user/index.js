@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
-import Id from "../Id";
-import buildMakeUser from "./user";
+import Id from "../Id/index.js";
+import buildMakeUser from "./user.js";
 
 const makeUser = buildMakeUser({ Id, hashPassword });
 
