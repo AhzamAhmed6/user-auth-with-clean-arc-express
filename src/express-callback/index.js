@@ -1,4 +1,3 @@
-// module.export = function makeExpressCallBack(controller) {
 export default function makeExpressCallBack(controller) {
 	return (req, res) => {
 		const httpRequest = {
