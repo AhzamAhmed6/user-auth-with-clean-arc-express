@@ -3,9 +3,9 @@ POST http://localhost:8000/api/user/
 content-type: application/json
 
 {
-  "id":"cjld2cjxh0000qzrmn831i7rn",
+  "id":"cjld2cjxh0002qzrmn831i7rn",
   "firstName":"Ahzam",
   "lastName":"Ahmed",
-  "email":"test@test.com",
+  "email":"test1@test.com",
   "password":"Marvel-2001$"
 }

@@ -3,9 +3,11 @@ import makeUser from "../user/index.js";
 export default function makeAddUser({ usersDb }) {
 	return async function addUser(userInfo) {
 		const user = makeUser(userInfo);
-		const exists = await usersDb.findById({ id: user.getId() });
-		if (exists) {
-			return exists;
+		if (
+			(await usersDb.findById({ id: user.getId() })) ||
+			(await usersDb.findByEmail({ id: user.getId() }))
+		) {
+			return { message: " Email already registered" };
 		}
 		return usersDb.insert({
 			id: user.getId(),
