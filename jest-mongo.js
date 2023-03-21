@@ -1,5 +1,4 @@
-// import NodeEnvironment from "jest-environment-node";
-const NodeEnvironment = require("jest-environment-node");
+import NodeEnvironment from "jest-environment-node";
 import { readFileSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -9,24 +8,24 @@ const __dirname = path.dirname(__filename);
 const globalConfigPath = path.join(__dirname, "globalConfigMongo.json");
 
 export default class MongoEnvironment extends NodeEnvironment {
-	constructor(config) {
-		super(config);
-	}
+  constructor(config) {
+    super(config);
+  }
 
-	async setup() {
-		const globalConfig = JSON.parse(readFileSync(globalConfigPath, "utf-8"));
+  async setup() {
+    const globalConfig = JSON.parse(readFileSync(globalConfigPath, "utf-8"));
 
-		this.global.__MONGO_URI__ = globalConfig.mongoUri;
-		this.global.__MONGO_DB_NAME__ = globalConfig.mongoDBName;
+    this.global.__MONGO_URI__ = globalConfig.mongoUri;
+    this.global.__MONGO_DB_NAME__ = globalConfig.mongoDBName;
 
-		await super.setup();
-	}
+    await super.setup();
+  }
 
-	async teardown() {
-		await super.teardown();
-	}
+  async teardown() {
+    await super.teardown();
+  }
 
-	runScript(script) {
-		return super.runScript(script);
-	}
+  runScript(script) {
+    return super.runScript(script);
+  }
 }

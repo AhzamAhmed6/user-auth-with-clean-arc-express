@@ -1,9 +1,9 @@
 import {
-	addUser,
-	editUserName,
-	editUserPassword,
-	findUser,
-	removeUser,
+  addUser,
+  editUserName,
+  editUserPassword,
+  findUser,
+  removeUser,
 } from "../use-cases/index.js";
 import makeGetUser from "./get-user.js";
 import makeDeleteUser from "./delete-user.js";
@@ -19,20 +19,20 @@ const patchUserName = makePatchUserName({ editUserName });
 const patchUserPassword = makePatchUserPassword({ editUserPassword });
 
 const userController = Object.freeze({
-	deleteUser,
-	getUser,
-	postUser,
-	patchUserName,
-	patchUserPassword,
-	notFound,
+  deleteUser,
+  getUser,
+  postUser,
+  patchUserName,
+  patchUserPassword,
+  notFound,
 });
 
 export default userController;
 export {
-	deleteUser,
-	getUser,
-	postUser,
-	patchUserName,
-	patchUserPassword,
-	notFound,
+  deleteUser,
+  getUser,
+  postUser,
+  patchUserName,
+  patchUserPassword,
+  notFound,
 };

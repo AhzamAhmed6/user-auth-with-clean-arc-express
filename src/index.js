@@ -11,15 +11,15 @@ const app = express();
 app.use(bodyParser.json());
 
 app.use((_, res, next) => {
-	res.set({ Tk: "!" });
-	next();
+  res.set({ Tk: "!" });
+  next();
 });
 
 app.post(`${apiRoot}/user`, makeCallback(postUser));
 
 // listen for requests
 app.listen(8000, () => {
-	console.log("Server is listening on port 8000");
+  console.log("Server is listening on port 8000");
 });
 
 export default app;

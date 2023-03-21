@@ -9,10 +9,10 @@ const dbName = process.env.DM_USERS_DB_NAME;
 const client = new MongoClient(url, { useNewUrlParser: true });
 
 export async function makeDb() {
-	if (!client.isConnected()) {
-		await client.connect();
-	}
-	return client.db(dbName);
+  if (!client.isConnected()) {
+    await client.connect();
+  }
+  return client.db(dbName);
 }
 
 const usersDb = makeUsersDb({ makeDb });

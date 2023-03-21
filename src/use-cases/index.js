@@ -12,11 +12,11 @@ const removeUser = makeRemoveUser({ usersDb });
 const findUser = makeFindUser({ usersDb });
 
 const userService = Object.freeze({
-	addUser,
-	editUserName,
-	editUserPassword,
-	removeUser,
-	findUser,
+  addUser,
+  editUserName,
+  editUserPassword,
+  removeUser,
+  findUser,
 });
 
 export default userService;
