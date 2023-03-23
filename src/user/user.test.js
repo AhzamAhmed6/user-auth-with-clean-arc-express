@@ -2,19 +2,26 @@ import makeFakeUser from "../../__test__/fixtures/user";
 import makeUser from "./";
 
 describe("user", () => {
-  test("unsatisfied firstName", () => {
-    const user = makeFakeUser({ firstName: "" });
-    expect(() => makeUser(user)).toThrow("First Name must not be empty");
-  });
+  test("incomplete information", () => {
+    var user = makeFakeUser({ firstName: undefined });
+    expect(() => makeUser(user)).toThrow("Please provide complete information");
+    user = makeFakeUser({ firstName: "" });
+    expect(() => makeUser(user)).toThrow("Please provide complete information");
 
-  test("unsatisfied firstName", () => {
-    const user = makeFakeUser({ firstName: undefined });
-    expect(() => makeUser(user)).toThrow("First Name must not be empty");
-  });
+    var user = makeFakeUser({ lastName: undefined });
+    expect(() => makeUser(user)).toThrow("Please provide complete information");
+    user = makeFakeUser({ lastName: "" });
+    expect(() => makeUser(user)).toThrow("Please provide complete information");
 
-  test("unsatisfied lastName", () => {
-    const user = makeFakeUser({ lastName: "" });
-    expect(() => makeUser(user)).toThrow("Last Name must not be empty");
+    var user = makeFakeUser({ email: undefined });
+    expect(() => makeUser(user)).toThrow("Please provide complete information");
+    user = makeFakeUser({ email: "" });
+    expect(() => makeUser(user)).toThrow("Please provide complete information");
+
+    var user = makeFakeUser({ password: undefined });
+    expect(() => makeUser(user)).toThrow("Please provide complete information");
+    user = makeFakeUser({ password: "" });
+    expect(() => makeUser(user)).toThrow("Please provide complete information");
   });
 
   test("invalid email", () => {

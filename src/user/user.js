@@ -14,15 +14,13 @@ export default function buildMakeUser({ Id, hashPassword }) {
       firstName == undefined ||
       lastName == undefined ||
       email == undefined ||
-      password == undefined
+      password == undefined ||
+      firstName.length < 1 ||
+      lastName.length < 1 ||
+      email.length < 1 ||
+      password.length < 1
     ) {
       throw new Error("Please provide complete information");
-    }
-    if (firstName.length < 1) {
-      throw new Error("First Name must not be empty");
-    }
-    if (lastName.length < 1) {
-      throw new Error("Last Name must not be empty");
     }
     if (!validateEmail(email)) {
       throw new Error(`${email} is not a valid email`);
