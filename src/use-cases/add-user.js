@@ -5,9 +5,9 @@ export default function makeAddUser({ usersDb }) {
     const user = makeUser(userInfo);
     if (
       (await usersDb.findById({ id: user.getId() })) ||
-      (await usersDb.findByEmail({ id: user.getId() }))
+      (await usersDb.findByEmail({ email: user.getEmail() }))
     ) {
-      return { message: " Email already registered" };
+      throw new Error("User already registered")
     }
     return usersDb.insert({
       id: user.getId(),
