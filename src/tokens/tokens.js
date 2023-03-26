@@ -1,11 +1,12 @@
-export default function makeTokens({ jwt,jwtKey,expTime }) {
+export default function buildMakeTokens({ jwt, jwtKey, expTime }) {
   return Object.freeze({
-    generateToken, verifyToken
-  })
-  async function generateToken({ id}) {
-    return jwt.sign({ userId: id }, jwtKey, { expiresIn: expTime })
+    generateAccessToken,
+    verifyAccessToken,
+  });
+  async function generateAccessToken({ id }) {
+    return await jwt.sign({ userId: id }, jwtKey, { expiresIn: expTime });
   }
-  async function verifyToken({ token}) {
-    return jwt.verify(token, jwtKey)
+  async function verifyAccessToken({ accessToken }) {
+    return await jwt.verify(accessToken, jwtKey);
   }
 }

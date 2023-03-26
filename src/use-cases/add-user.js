@@ -7,7 +7,7 @@ export default function makeAddUser({ usersDb }) {
       (await usersDb.findById({ id: user.getId() })) ||
       (await usersDb.findByEmail({ email: user.getEmail() }))
     ) {
-      throw new Error("User already registered")
+      throw new Error("User already registered");
     }
     return usersDb.insert({
       id: user.getId(),

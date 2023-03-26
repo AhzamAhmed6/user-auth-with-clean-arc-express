@@ -16,18 +16,18 @@ describe("add user", () => {
 
     expect(inserted).toMatchObject(fakeUser);
   });
-  
+
   it("users already present in the database", async () => {
     var fakeUser = makeFakeUser();
     const addUser = makeAddUser({ usersDb });
     var inserted = await addUser(fakeUser);
-    
-    fakeUser = makeFakeUser();
-    fakeUser.id = inserted.id    
-    await expect(addUser(fakeUser)).rejects.toThrow('User already registered')
 
     fakeUser = makeFakeUser();
-    fakeUser.email = inserted.email
-    await expect(addUser(fakeUser)).rejects.toThrow('User already registered')
+    fakeUser.id = inserted.id;
+    await expect(addUser(fakeUser)).rejects.toThrow("User already registered");
+
+    fakeUser = makeFakeUser();
+    fakeUser.email = inserted.email;
+    await expect(addUser(fakeUser)).rejects.toThrow("User already registered");
   });
 });
