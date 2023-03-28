@@ -1,5 +1,6 @@
 export default function makePostUser({ addUser, makeTokens }) {
   return async function postUser(httpRequest) {
+    var success = false;
     try {
       const userInfo = httpRequest.body;
 
@@ -11,6 +12,9 @@ export default function makePostUser({ addUser, makeTokens }) {
         jwtKey: accessTokenKey,
         tokenExpTime: accessTokenExpTime,
       });
+      const accessTokenExpTimeInSeconds = makeTokens.getExpirationTime({
+        tokenExpTime: accessTokenExpTime,
+      });
 
       const refreshPayload = { userId: userInfo.id };
       const refreshTokenKey = process.env.REFRESH_KEY;
@@ -20,16 +24,33 @@ export default function makePostUser({ addUser, makeTokens }) {
         jwtKey: refreshTokenKey,
         tokenExpTime: refreshTokenExpTime,
       });
+      const refreshTokenExpTimeInSeconds = makeTokens.getExpirationTime({
+        tokenExpTime: refreshTokenExpTime,
+      });
 
-      const posted = await addUser(userInfo);
-      delete posted.hashedPassword;
+      const user = await addUser(userInfo);
+      delete user.hashedPassword;
+      success = true;
       return {
         headers: {
           "Content-Type": "application/json",
-          "Last-Modified": new Date(posted.modifiedOn).toUTCString(),
+          "Last-Modified": new Date(user.modifiedOn).toUTCString(),
         },
         statusCode: 201,
-        body: { posted, accessToken, refreshToken },
+        body: {
+          success,
+          user,
+          tokens: {
+            access: {
+              token: accessToken,
+              expiresIn: await accessTokenExpTimeInSeconds,
+            },
+            refresh: {
+              token: refreshToken,
+              expiresIn: await refreshTokenExpTimeInSeconds,
+            },
+          },
+        },
       };
     } catch (e) {
       // TODO: Error logging
@@ -41,6 +62,7 @@ export default function makePostUser({ addUser, makeTokens }) {
         },
         statusCode: 400,
         body: {
+          success,
           error: e.message,
         },
       };
