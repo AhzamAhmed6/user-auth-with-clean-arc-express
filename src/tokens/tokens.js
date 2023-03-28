@@ -4,11 +4,11 @@ export default function buildMakeTokens({ jwt }) {
     verifyToken,
     getExpirationTime,
   });
-  async function generateToken({ payload, jwtKey, tokenExpTime }) {
-    return await jwt.sign(payload, jwtKey, { expiresIn: tokenExpTime });
+  async function generateToken({ payload, tokenKey, tokenExpTime }) {
+    return await jwt.sign(payload, tokenKey, { expiresIn: tokenExpTime });
   }
-  async function verifyToken({ token, jwtKey }) {
-    return await jwt.verify(token, jwtKey);
+  async function verifyToken({ token, tokenKey }) {
+    return await jwt.verify(token, tokenKey);
   }
   async function getExpirationTime({ tokenExpTime }) {
     const regex = /(\d+y)?(\d+d)?(\d+h)?(\d+m)?(\d+s)?/;

@@ -9,7 +9,7 @@ export default function makePostUser({ addUser, makeTokens }) {
       const accessTokenExpTime = process.env.ACCESS_EXP_TIME;
       const accessToken = await makeTokens.generateToken({
         payload: accessPayload,
-        jwtKey: accessTokenKey,
+        tokenKey: accessTokenKey,
         tokenExpTime: accessTokenExpTime,
       });
       const accessTokenExpTimeInSeconds = makeTokens.getExpirationTime({
@@ -21,7 +21,7 @@ export default function makePostUser({ addUser, makeTokens }) {
       const refreshTokenExpTime = process.env.REFRESH_EXP_TIME;
       const refreshToken = await makeTokens.generateToken({
         payload: refreshPayload,
-        jwtKey: refreshTokenKey,
+        tokenKey: refreshTokenKey,
         tokenExpTime: refreshTokenExpTime,
       });
       const refreshTokenExpTimeInSeconds = makeTokens.getExpirationTime({

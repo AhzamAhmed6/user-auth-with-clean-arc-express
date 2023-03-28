@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest src --watchAll --silent",
     "pretty": "prettier --write \"./**/*.{js,jsx,ts,tsx,json}\"",
-    "start": "nodemon --no-warnings src"
+    "start": "nodemon --no-warnings src",
+    "stop": "npx kill-port 8000"
   },
   "type": "module",
   "keywords": [],
