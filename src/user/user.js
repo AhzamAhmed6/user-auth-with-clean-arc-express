@@ -37,7 +37,7 @@ export default function buildMakeUser({ Id, hashPassword }) {
       getFirstName: () => firstName,
       getLastName: () => lastName,
       getEmail: () => email,
-      getHashedPassword: () => hashPassword(password),
+      getHashedPassword: async()=>await hashPassword(password),
     });
 
     /**

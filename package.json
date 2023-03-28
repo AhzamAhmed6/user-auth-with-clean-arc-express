@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest src --watchAll --silent",
+    "test": "jest src --watchAll",
     "pretty": "prettier --write \"./**/*.{js,jsx,ts,tsx,json}\"",
     "start": "nodemon --no-warnings src",
     "stop": "npx kill-port 8000"

@@ -1,5 +1,6 @@
 import makeFakeUser from "../../__test__/fixtures/user";
 import makeUser from "./";
+import handlePassword from "../password";
 
 describe("user", () => {
   test("incomplete information", () => {
@@ -37,6 +38,13 @@ describe("user", () => {
       "Password must contains min 8 letter password, with at least a symbol, upper and lower case letters and a number"
     );
   });
+  test("verify hashed password", async() => {
+    const fakeUser = makeFakeUser()
+    const fakeUserPassword = fakeUser.password
+    const user = makeUser(fakeUser)
+    const isMatch = handlePassword.verifyPassword(fakeUserPassword, await user.getHashedPassword())
+    await expect(isMatch).resolves.toBe(true)
+  })
 
   test("Everything Correct", () => {
     for (var i = 0; i <= 10; i++) {

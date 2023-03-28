@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import express from "express";
 import { postUser } from "./controllers/index.js";
 import makeCallback from "./express-callback/index.js";
+import { loginUser } from "./controllers/index.js";
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ app.use((_, res, next) => {
 });
 
 app.post(`${apiRoot}/user`, makeCallback(postUser));
+app.post(`${apiRoot}/login`, makeCallback(loginUser));
 
 // listen for requests
 app.listen(8000, () => {

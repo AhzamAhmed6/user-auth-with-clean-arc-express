@@ -12,12 +12,14 @@ import makePatchUserName from "./patch-user-name.js";
 import makePatchUserPassword from "./patch-user-password.js";
 import makePostUser from "./post-user.js";
 import makeTokens from "../tokens/index.js";
+import makeLoginUser from "./login-user.js";
 
 const deleteUser = makeDeleteUser({ removeUser });
 const getUser = makeGetUser({ findUser });
 const postUser = makePostUser({ addUser, makeTokens });
 const patchUserName = makePatchUserName({ editUserName });
 const patchUserPassword = makePatchUserPassword({ editUserPassword });
+const loginUser = makeLoginUser({ findUser });
 
 const userController = Object.freeze({
   deleteUser,
@@ -26,6 +28,7 @@ const userController = Object.freeze({
   patchUserName,
   patchUserPassword,
   notFound,
+  loginUser,
 });
 
 export default userController;
@@ -36,4 +39,5 @@ export {
   patchUserName,
   patchUserPassword,
   notFound,
+  loginUser,
 };

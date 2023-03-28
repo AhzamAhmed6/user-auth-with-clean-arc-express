@@ -1,4 +1,4 @@
-# Post User
+### Post User
 POST http://localhost:8000/api/user/
 content-type: application/json
 
@@ -7,5 +7,15 @@ content-type: application/json
   "firstName":"Ahzam",
   "lastName":"Ahmed",
   "email":"test6@test.com",
+  "password":"Marvel-2001$"
+}
+
+
+### Login User
+POST http://localhost:8000/api/login/
+content-type: application/json
+
+{
+    "email":"test6@test.com",
   "password":"Marvel-2001$"
 }
