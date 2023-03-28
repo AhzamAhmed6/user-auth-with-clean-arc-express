@@ -1,49 +1,87 @@
 import makePostUser from "./post-user";
-import makeFakeUser from "../../__test__/fixtures/user";
 
-describe("post User controller", () => {
-  it("successfully posts a user", async () => {
-    const postUser = makePostUser({ addUser: (c) => c });
-    const user = makeFakeUser();
-    const request = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: user,
+describe("postUser", () => {
+  it("should return a success response with the user object and tokens", async () => {
+    const mockAddUser = jest.fn(() => ({
+      id: "123",
+      name: "John Doe",
+      email: "johndoe@example.com",
+      modifiedOn: new Date(),
+    }));
+    const mockMakeTokens = {
+      generateToken: jest.fn(() => "token"),
+      getExpirationTime: jest.fn(() => 3600),
     };
-
-    const expected = {
+    const postUser = makePostUser({
+      addUser: mockAddUser,
+      makeTokens: mockMakeTokens,
+    });
+    const httpRequest = {
+      body: {
+        id: "123",
+        name: "John Doe",
+        email: "johndoe@example.com",
+        password: "password",
+      },
+    };
+    const expectedAccessTokenExpTimeInSeconds = 3600;
+    const expectedRefreshTokenExpTimeInSeconds = 3600;
+    const expectedResponse = {
       headers: {
         "Content-Type": "application/json",
-        "Last-Modified": new Date(request.body.modifiedOn).toUTCString(),
+        "Last-Modified": new Date().toUTCString(),
       },
       statusCode: 201,
-      body: { posted: request.body },
+      body: {
+        success: true,
+        user: {
+          id: "123",
+          name: "John Doe",
+          email: "johndoe@example.com",
+          modifiedOn: expect.any(Date),
+        },
+        tokens: {
+          access: {
+            token: "token",
+            expiresIn: expectedAccessTokenExpTimeInSeconds,
+          },
+          refresh: {
+            token: "token",
+            expiresIn: expectedRefreshTokenExpTimeInSeconds,
+          },
+        },
+      },
     };
-
-    const actual = await postUser(request);
-    expect(actual).toEqual(expected);
+    const actualResponse = await postUser(httpRequest);
+    expect(actualResponse).toEqual(expectedResponse);
   });
 
-  it("reports user errors", async () => {
-    const postUser = makePostUser({
-      addUser: () => {
-        throw Error("This is Error.");
-      },
+  it("should return a failure response with an error message", async () => {
+    const mockAddUser = jest.fn(() => {
+      throw new Error("Failed to add user.");
     });
-    const fakeUser = makeFakeUser();
-    const request = {
+    const mockMakeTokens = {
+      generateToken: jest.fn(() => "token"),
+      getExpirationTime: jest.fn(() => 3600),
+    };
+    const postUser = makePostUser({
+      addUser: mockAddUser,
+      makeTokens: mockMakeTokens,
+    });
+    const httpRequest = {
+      body: {},
+    };
+    const expectedResponse = {
       headers: {
         "Content-Type": "application/json",
       },
-      body: fakeUser,
-    };
-    const expected = {
-      headers: { "Content-Type": "application/json" },
       statusCode: 400,
-      body: { error: "This is Error." },
+      body: {
+        success: false,
+        error: "Failed to add user.",
+      },
     };
-    const actual = await postUser(request);
-    expect(actual).toEqual(expected);
+    const actualResponse = await postUser(httpRequest);
+    expect(actualResponse).toEqual(expectedResponse);
   });
 });
