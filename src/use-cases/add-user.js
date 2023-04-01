@@ -14,7 +14,7 @@ export default function makeAddUser({ usersDb }) {
       firstName: user.getFirstName(),
       lastName: user.getLastName(),
       email: user.getEmail(),
-      hashedPassword: user.getHashedPassword(),
+      hashedPassword: await user.getHashedPassword(),
     });
   };
 }

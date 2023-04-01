@@ -37,7 +37,7 @@ export default function makeEditUserPassword({ usersDb, passwordValidator }) {
       firstName: user.getFirstName(),
       lastName: user.getLastName(),
       email: user.getEmail(),
-      hashedPassword: user.getHashedPassword(),
+      hashedPassword: await user.getHashedPassword(),
     });
 
     return updated;
