@@ -9,29 +9,18 @@ export default function buildMakeUser({ Id, hashPassword }) {
     if (!Id.isValidId(id)) {
       throw new Error("User must have a valid id.");
     }
-    if (
-      id == undefined ||
-      firstName == undefined ||
-      lastName == undefined ||
-      email == undefined ||
-      password == undefined ||
-      firstName.length < 1 ||
-      lastName.length < 1 ||
-      email.length < 1 ||
-      password.length < 1
-    ) {
+    if (![firstName, lastName, email, password].every(Boolean)) {
       throw new Error("Please provide complete information");
     }
-    if (!validateEmail(email)) {
+    if (!isValidEmail(email)) {
       throw new Error(`${email} is not a valid email`);
     }
-    if (!checkPassword(password)) {
+    if (!isValidPassword(password)) {
       throw new Error(
         "Password must contains min 8 letter password, with at least a symbol, upper and lower case letters and a number"
       );
     }
 
-    // whats the point of arrow function  here: we can use user.firstName() to access first name if user=user()
     return Object.freeze({
       getId: () => id,
       getFirstName: () => firstName,
@@ -40,31 +29,15 @@ export default function buildMakeUser({ Id, hashPassword }) {
       getHashedPassword: async () => await hashPassword({ password }),
     });
 
-    /**
-     * @ref https://www.simplilearn.com/tutorials/javascript-tutorial/email-validation-in-javascript
-     */
-    function validateEmail(input) {
-      var validRegex =
-        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-
-      if (input.match(validRegex)) {
-        return true;
-      } else {
-        return false;
-      }
+    function isValidEmail(email) {
+      const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[\w-]{2,}$/;
+      return emailRegex.test(email.toLowerCase());
     }
 
-    /**
-     * @ref https://stackoverflow.com/a/40923568/16325661
-     */
-    function checkPassword(str) {
-      var re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-      return re.test(str);
+    function isValidPassword(password) {
+      var passwordRegex =
+        /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+      return passwordRegex.test(password);
     }
   };
 }
-
-// when we do
-// var = function1
-// and function1 is returning function2, then, var stores the function2
-// and when we pass variables to var, it become variables of function2
