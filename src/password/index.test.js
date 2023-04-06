@@ -5,16 +5,16 @@ describe("handlePassword", () => {
   let hashedPassword;
 
   it("hashes the password correctly", async () => {
-    hashedPassword = await handlePassword.hashPassword(password);
+    hashedPassword = await handlePassword.hashPassword({ password });
     expect(typeof hashedPassword).toBe("string");
     expect(hashedPassword.length).toBeGreaterThan(0);
   });
 
   it("verifies the correct password", async () => {
-    const isMatch = await handlePassword.verifyPassword(
+    const isMatch = await handlePassword.verifyPassword({
       password,
-      hashedPassword
-    );
+      hashedPassword,
+    });
     expect(isMatch).toBe(true);
   });
 

@@ -21,10 +21,10 @@ export default function makeEditUserPassword({ usersDb, verifyPassword }) {
     }
     const oldHashedPassword = existing.hashedPassword;
 
-    const isPasswordMatched = await verifyPassword(
-      oldPassword,
-      oldHashedPassword
-    );
+    const isPasswordMatched = await verifyPassword({
+      password: oldPassword,
+      hashedPassword: oldHashedPassword,
+    });
 
     if (!isPasswordMatched) {
       throw new Error("Wrong Old Password.");

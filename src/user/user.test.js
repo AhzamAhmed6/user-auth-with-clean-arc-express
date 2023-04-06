@@ -42,10 +42,10 @@ describe("user", () => {
     const fakeUser = makeFakeUser();
     const fakeUserPassword = fakeUser.password;
     const user = makeUser(fakeUser);
-    const isMatch = handlePassword.verifyPassword(
-      fakeUserPassword,
-      await user.getHashedPassword()
-    );
+    const isMatch = handlePassword.verifyPassword({
+      password: fakeUserPassword,
+      hashedPassword: await user.getHashedPassword(),
+    });
     await expect(isMatch).resolves.toBe(true);
   });
 

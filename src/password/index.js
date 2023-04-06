@@ -9,8 +9,8 @@ const makeHashPassword = buildMakeHashPassword({ bcrypt, bcryptSalt });
 const makeVerifyPassword = buildMakeVerifyPassword({ bcrypt });
 
 const handlePassword = Object.freeze({
-  hashPassword: (password) => makeHashPassword({ password }),
-  verifyPassword: (password, hashedPassword) =>
+  hashPassword: ({ password }) => makeHashPassword({ password }),
+  verifyPassword: ({ password, hashedPassword }) =>
     makeVerifyPassword({ password, hashedPassword }),
 });
 
