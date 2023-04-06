@@ -1,6 +1,6 @@
 import makeUser from "../user/index.js";
 
-export default function makeEditUserPassword({ usersDb, passwordValidator }) {
+export default function makeEditUserPassword({ usersDb, verifyPassword }) {
   return async function editUserPassword({
     id,
     oldPassword,
@@ -21,10 +21,10 @@ export default function makeEditUserPassword({ usersDb, passwordValidator }) {
     }
     const oldHashedPassword = existing.hashedPassword;
 
-    const isPasswordMatched = await passwordValidator({
+    const isPasswordMatched = await verifyPassword(
       oldPassword,
-      oldHashedPassword,
-    });
+      oldHashedPassword
+    );
 
     if (!isPasswordMatched) {
       throw new Error("Wrong Old Password.");

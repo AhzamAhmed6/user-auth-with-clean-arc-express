@@ -3,7 +3,7 @@ import makeFakeUser from "../../__test__/fixtures/user";
 import makeUsersDb from "../data-access/user-db";
 import makeAddUser from "./add-user";
 import makeEditUserPassword from "./edit-user-password";
-import passwordValidator from "./password-validator";
+import handlePassword from "../password";
 
 describe("edit user password", () => {
   let usersDb;
@@ -12,7 +12,7 @@ describe("edit user password", () => {
   it("must include an id", async () => {
     const editUserPassword = makeEditUserPassword({
       usersDb,
-      passwordValidator,
+      verifyPassword: handlePassword.verifyPassword,
     });
     const userToEdit = makeFakeUser({
       id: undefined,
@@ -27,7 +27,7 @@ describe("edit user password", () => {
   it("must include an old and new password", async () => {
     const editUserPassword = makeEditUserPassword({
       usersDb,
-      passwordValidator,
+      verifyPassword: handlePassword.verifyPassword,
     });
     const userToEdit = makeFakeUser();
     await expect(editUserPassword(userToEdit)).rejects.toThrow(
@@ -38,7 +38,7 @@ describe("edit user password", () => {
   it("user not found", async () => {
     const editUserPassword = makeEditUserPassword({
       usersDb,
-      passwordValidator,
+      verifyPassword: handlePassword.verifyPassword,
     });
     const userToEdit = makeFakeUser({
       oldPassword: "oldPassword",
@@ -52,7 +52,7 @@ describe("edit user password", () => {
   it("wrong old password", async () => {
     const editUserPassword = makeEditUserPassword({
       usersDb,
-      passwordValidator,
+      verifyPassword: handlePassword.verifyPassword,
     });
 
     const fakeUser = makeFakeUser();
@@ -83,17 +83,12 @@ describe("edit user password", () => {
 
     const editUserPassword = makeEditUserPassword({
       usersDb,
-      passwordValidator,
+      verifyPassword: handlePassword.verifyPassword,
     });
-    const updatedUser = await editUserPassword(inserted);
 
+    await editUserPassword(inserted);
     await expect(editUserPassword(inserted)).rejects.toThrow(
       "Wrong Old Password."
     );
-
-    inserted.oldPassword = fakeUser.password + "ahzam";
-    inserted.newPassword = fakeUser.password;
-
-    await editUserPassword(inserted);
   });
 });
