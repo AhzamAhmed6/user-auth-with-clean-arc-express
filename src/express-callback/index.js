@@ -1,5 +1,5 @@
-export default function makeExpressCallBack(controller) {
-  return (req, res) => {
+export default function makeExpressCallback(controller) {
+  return async (req, res) => {
     const httpRequest = {
       body: req.body,
       query: req.query,
@@ -10,16 +10,16 @@ export default function makeExpressCallBack(controller) {
         "Content-Type": req.get("Content-Type"),
       },
     };
-    controller(httpRequest)
-      .then((httpResponse) => {
-        if (httpResponse.headers) {
-          res.set(httpResponse.headers);
-        }
-        res.type("json");
-        res.status(httpResponse.statusCode).send(httpResponse.body);
-      })
-      .catch((e) =>
-        res.status(500).send({ error: "An unkown error occurred." })
-      );
+    try {
+      const httpResponse = await controller(httpRequest);
+      const headers = httpResponse.headers || {};
+      Object.entries(headers).forEach(([key, value]) => {
+        res.set(key, value);
+      });
+      res.status(httpResponse.statusCode).json(httpResponse.body);
+    } catch (error) {
+      console.error(`Error: ${error}`);
+      res.status(500).json({ error: "An unknown error occurred." });
+    }
   };
 }

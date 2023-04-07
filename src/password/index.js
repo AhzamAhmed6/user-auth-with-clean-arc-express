@@ -1,5 +1,5 @@
-import buildMakeHashPassword from "./hash-password";
-import buildMakeVerifyPassword from "./verify-password";
+import buildMakeHashPassword from "./hash-password.js";
+import buildMakeVerifyPassword from "./verify-password.js";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 dotenv.config();

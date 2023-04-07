@@ -5,39 +5,24 @@ import {
   findUser,
   removeUser,
 } from "../use-cases/index.js";
-import makeGetUser from "./get-user.js";
+import makeTokens from "../tokens/index.js";
+
 import makeDeleteUser from "./delete-user.js";
-import notFound from "./not-found.js";
+import makeGetUser from "./get-user.js";
+import makeLoginUser from "./login-user.js";
 import makePatchUserName from "./patch-user-name.js";
 import makePatchUserPassword from "./patch-user-password.js";
 import makePostUser from "./post-user.js";
-import makeTokens from "../tokens/index.js";
-import makeLoginUser from "./login-user.js";
-
-const deleteUser = makeDeleteUser({ removeUser });
-const getUser = makeGetUser({ findUser });
-const postUser = makePostUser({ addUser, makeTokens });
-const patchUserName = makePatchUserName({ editUserName });
-const patchUserPassword = makePatchUserPassword({ editUserPassword });
-const loginUser = makeLoginUser({ findUser });
+import notFound from "./not-found.js";
 
 const userController = Object.freeze({
-  deleteUser,
-  getUser,
-  postUser,
-  patchUserName,
-  patchUserPassword,
-  notFound,
-  loginUser,
+  deleteUser: makeDeleteUser({ removeUser }),
+  getUser: makeGetUser({ findUser }),
+  postUser: makePostUser({ addUser, makeTokens }),
+  patchUserName: makePatchUserName({ editUserName }),
+  patchUserPassword: makePatchUserPassword({ editUserPassword }),
+  loginUser: makeLoginUser({ findUser }),
+  notFound: notFound,
 });
 
 export default userController;
-export {
-  deleteUser,
-  getUser,
-  postUser,
-  patchUserName,
-  patchUserPassword,
-  notFound,
-  loginUser,
-};

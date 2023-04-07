@@ -1,27 +1,31 @@
-import bodyParser from "body-parser";
-import dotenv from "dotenv";
 import express from "express";
-import { postUser } from "./controllers/index.js";
+import dotenv from "dotenv";
+
+import userController from "./controllers/index.js";
 import makeCallback from "./express-callback/index.js";
-import { loginUser } from "./controllers/index.js";
 
 dotenv.config();
 
-const apiRoot = process.env.DM_API_ROOT;
+// Initialize the app
 const app = express();
-app.use(bodyParser.json());
 
+// Middleware
+app.use(express.json());
 app.use((_, res, next) => {
-  res.set({ Tk: "!" });
+  res.set("Tk", "!");
   next();
 });
 
-app.post(`${apiRoot}/user`, makeCallback(postUser));
-app.post(`${apiRoot}/login`, makeCallback(loginUser));
+// Routes
+const apiRoot = process.env.DM_API_ROOT;
+app.post(`${apiRoot}/user`, makeCallback(userController.postUser));
+app.post(`${apiRoot}/login`, makeCallback(userController.loginUser));
 
-// listen for requests
-app.listen(8000, () => {
-  console.log("Server is listening on port 8000");
+// Start the server
+const PORT = process.env.PORT || 8000;
+app.listen(PORT, () => {
+  console.log(`Server is listening on port ${PORT}`);
 });
 
+// Export the app
 export default app;

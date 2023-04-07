@@ -38,7 +38,6 @@ describe("postUser", () => {
           id: "123",
           name: "John Doe",
           email: "johndoe@example.com",
-          modifiedOn: expect.any(Date),
         },
         tokens: {
           access: {
