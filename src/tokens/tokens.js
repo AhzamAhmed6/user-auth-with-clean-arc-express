@@ -21,11 +21,9 @@ export default function buildMakeTokens({ jwt }) {
           parseInt(minutes) * 60 +
           parseInt(seconds)) *
           1000
-    );
-
-    const secondsUntilExpiration = Math.floor((futureDate - Date.now()) / 1000);
-
-    return Promise.resolve(secondsUntilExpiration);
+    ).toUTCString();
+    
+    return futureDate
   }
 
   return Object.freeze({

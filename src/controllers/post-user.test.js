@@ -40,10 +40,12 @@ describe("postUser", () => {
         tokens: {
           access: {
             token: "token",
+            issuedAt: new Date(Date.now()).toUTCString(),
             expiresIn: expectedAccessTokenExpTimeInSeconds,
           },
           refresh: {
             token: "token",
+            issuedAt: new Date(Date.now()).toUTCString(),
             expiresIn: expectedRefreshTokenExpTimeInSeconds,
           },
         },

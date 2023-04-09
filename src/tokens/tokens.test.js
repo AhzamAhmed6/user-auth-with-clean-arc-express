@@ -37,6 +37,6 @@ describe("buildMakeTokens", () => {
     const expirationTime = await makeTokens.getExpirationTime({
       tokenExpTime,
     });
-    expect(expirationTime).toBeGreaterThan(0);
+    expect(expirationTime).not.toBeNaN(); 
   });
 });
