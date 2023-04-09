@@ -21,7 +21,8 @@ export default function makeLoginUser({
         tokenKey: accessTokenKey,
         tokenExpTime: accessTokenExpTime,
       });
-      const accessTokenExpTimeInSeconds = await getExpirationTime({
+      const accessTokenIssueTime = new Date(Date.now()).toUTCString()
+      const accessTokenExpirationTime = await getExpirationTime({
         tokenExpTime: accessTokenExpTime,
       });
 
@@ -33,7 +34,8 @@ export default function makeLoginUser({
         tokenKey: refreshTokenKey,
         tokenExpTime: refreshTokenExpTime,
       });
-      const refreshTokenExpTimeInSeconds = await getExpirationTime({
+      const refreshTokenIssueTime = new Date(Date.now()).toUTCString()
+      const refreshTokenExpirationTime = await getExpirationTime({
         tokenExpTime: refreshTokenExpTime,
       });
 
@@ -44,11 +46,13 @@ export default function makeLoginUser({
         tokens: {
           access: {
             token: accessToken,
-            expiresIn: accessTokenExpTimeInSeconds,
+            issuedAt: accessTokenIssueTime,
+            expiresIn: accessTokenExpirationTime,
           },
           refresh: {
             token: refreshToken,
-            expiresIn: refreshTokenExpTimeInSeconds,
+            issuedAt: refreshTokenIssueTime,
+            expiresIn: refreshTokenExpirationTime,
           },
         },
       };

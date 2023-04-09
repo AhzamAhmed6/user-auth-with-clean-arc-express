@@ -30,10 +30,12 @@ describe("loginUser", () => {
         tokens: {
           access: {
             token: "access_token",
+            issuedAt: new Date(Date.now()).toUTCString(),
             expiresIn: 3600,
           },
           refresh: {
             token: expect.any(String),
+            issuedAt: new Date(Date.now()).toUTCString(),
             expiresIn: expect.any(Number),
           },
         },
