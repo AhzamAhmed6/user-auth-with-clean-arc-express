@@ -1,11 +1,12 @@
 import { makeDb } from "../src/data-access/index.js";
 import dotenv from "dotenv";
+import logger from "../src/logger.js";
 
 dotenv.config();
 
 (async function setupDb() {
   try {
-    console.log("Setting up database...");
+    logger.info("Setting up database...");
     const db = await makeDb();
     const indexArr = [
       { key: { hash: 1 }, name: "hash_idx" },
@@ -13,11 +14,11 @@ dotenv.config();
       { key: { replyToId: -1 }, name: "replyToId_idx" },
     ];
     const result = await db.collection("users").createIndexes(indexArr);
-    console.log(result);
-    console.log("Database setup complete...");
+    logger.info(result);
+    logger.info("Database setup complete...");
     process.exit();
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     process.exit(1);
   }
 })();

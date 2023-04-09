@@ -1,3 +1,4 @@
+import logger from "../logger.js";
 export default function makeDeleteUser({ removeUser }) {
   return async function deleteUser(httpRequest) {
     const headers = {
@@ -12,7 +13,7 @@ export default function makeDeleteUser({ removeUser }) {
       };
     } catch (e) {
       // TODO: Error logging
-      console.log(e);
+      logger.error(e);
       return {
         headers,
         statusCode: 400,

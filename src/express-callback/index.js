@@ -1,3 +1,5 @@
+import logger from "../logger.js";
+
 export default function makeExpressCallback(controller) {
   return async (req, res) => {
     const httpRequest = {
@@ -18,7 +20,7 @@ export default function makeExpressCallback(controller) {
       });
       res.status(httpResponse.statusCode).json(httpResponse.body);
     } catch (error) {
-      console.error(`Error: ${error}`);
+      logger.error(`Error: ${error}`);
       res.status(500).json({ error: "An unknown error occurred." });
     }
   };

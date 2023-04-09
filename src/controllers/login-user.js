@@ -1,15 +1,30 @@
+import logger from "../logger.js";
+
+const requiredEnvVars = [
+  "ACCESS_KEY",
+  "ACCESS_EXP_TIME",
+  "REFRESH_KEY",
+  "REFRESH_EXP_TIME",
+];
+
 export default function makeLoginUser({
   authenticateUser,
   generateToken,
   getExpirationTime,
 }) {
   return async function loginUser(httpRequest) {
-    const accessTokenKey = process.env.ACCESS_KEY;
-    const accessTokenExpTime = process.env.ACCESS_EXP_TIME;
-    const refreshTokenKey = process.env.REFRESH_KEY;
-    const refreshTokenExpTime = process.env.REFRESH_EXP_TIME;
-
     try {
+      const envVars = {};
+      for (const envVar of requiredEnvVars) {
+        if (!process.env[envVar]) {
+          const error = new Error(`${envVar} environment variable not set`);
+          logger.error(`${error.message}\n${error.stack}`);
+
+          throw new Error(`An unknown error occurred.`);
+        }
+        envVars[envVar] = process.env[envVar];
+      }
+
       const credentials = httpRequest.body;
       const userInfo = await authenticateUser(credentials);
 
@@ -18,12 +33,12 @@ export default function makeLoginUser({
 
       const accessToken = await generateToken({
         payload: accessPayload,
-        tokenKey: accessTokenKey,
-        tokenExpTime: accessTokenExpTime,
+        tokenKey: envVars.ACCESS_KEY,
+        tokenExpTime: envVars.ACCESS_EXP_TIME,
       });
-      const accessTokenIssueTime = new Date(Date.now()).toUTCString()
+      const accessTokenIssueTime = new Date(Date.now()).toUTCString();
       const accessTokenExpirationTime = await getExpirationTime({
-        tokenExpTime: accessTokenExpTime,
+        tokenExpTime: envVars.ACCESS_EXP_TIME,
       });
 
       // Generate refresh token and calculate its expiration time
@@ -31,12 +46,12 @@ export default function makeLoginUser({
 
       const refreshToken = await generateToken({
         payload: refreshPayload,
-        tokenKey: refreshTokenKey,
-        tokenExpTime: refreshTokenExpTime,
+        tokenKey: envVars.REFRESH_KEY,
+        tokenExpTime: envVars.REFRESH_EXP_TIME,
       });
-      const refreshTokenIssueTime = new Date(Date.now()).toUTCString()
+      const refreshTokenIssueTime = new Date(Date.now()).toUTCString();
       const refreshTokenExpirationTime = await getExpirationTime({
-        tokenExpTime: refreshTokenExpTime,
+        tokenExpTime: envVars.REFRESH_EXP_TIME,
       });
 
       const { hashedPassword, ...userWithoutSensitiveData } = userInfo;
@@ -66,7 +81,7 @@ export default function makeLoginUser({
         body: responseBody,
       };
     } catch (error) {
-      console.error(`Error: ${error}`);
+      logger.error(`${error.message}\n${error.stack}`);
       // Return error response
       return {
         headers: {

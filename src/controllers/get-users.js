@@ -1,3 +1,5 @@
+import logger from "../logger";
+
 export default function makeGetUsers({ listUsers }) {
   return async function getUsers(httpRequest) {
     const headers = {
@@ -12,7 +14,7 @@ export default function makeGetUsers({ listUsers }) {
       };
     } catch (e) {
       // TODO: Error logging
-      console.log(e);
+      logger.error(e);
       return {
         headers,
         statusCode: 400,

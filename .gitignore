@@ -4,3 +4,5 @@ mongo_data
 .env
 globalConfigMongo.json
 .vscode
+*log
+logs/

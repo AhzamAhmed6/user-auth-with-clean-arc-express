@@ -22,8 +22,8 @@ export default function buildMakeTokens({ jwt }) {
           parseInt(seconds)) *
           1000
     ).toUTCString();
-    
-    return futureDate
+
+    return futureDate;
   }
 
   return Object.freeze({

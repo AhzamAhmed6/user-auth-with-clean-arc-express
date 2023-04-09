@@ -1,6 +1,7 @@
 // Import modules
-import express from "express";
 import { config } from "dotenv";
+import express from "express";
+import logger from "./logger.js";
 
 // Import controllers
 import userController from "./controllers/index.js";
@@ -14,10 +15,12 @@ const app = express();
 
 // Add middleware
 app.use(express.json());
-app.use((_, res, next) => {
+
+const setTkHeader = (req, res, next) => {
   res.set("Tk", "!");
   next();
-});
+};
+app.use(setTkHeader);
 
 // Define routes
 const apiRoot = process.env.DM_API_ROOT;
@@ -26,9 +29,14 @@ app.post(`${apiRoot}/login`, makeCallback(userController.loginUser));
 
 // Start the server
 const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => {
-  console.log(`Server is listening on port ${PORT}`);
-});
+
+app
+  .listen(PORT, () => {
+    logger.info(`Server is listening on port ${PORT}`);
+  })
+  .on("error", (err) => {
+    logger.error(`An error occur while starting Server\n\t\t${err.stack}`);
+  });
 
 // Export the app
 export default app;

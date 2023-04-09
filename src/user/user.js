@@ -1,3 +1,5 @@
+import logger from "../logger.js";
+
 export default function buildMakeUser({ Id, hashPassword }) {
   return function makeUser({
     id = Id.makeId(),
@@ -17,10 +19,17 @@ export default function buildMakeUser({ Id, hashPassword }) {
     if (!isValidEmail(email)) {
       throw new Error(`${email} is not a valid email`);
     }
+
     if (!isValidPassword(password)) {
-      throw new Error(
-        "Password must contains min 8 letter password, with at least a symbol, upper and lower case letters and a number"
-      );
+      const errorMessage =
+        "Password must contains min 8 letter password, with at least a symbol, upper and lower case letters and a number";
+      const logData = {
+        password: password,
+        functionName: "isValidPassword",
+        fileName: __filename,
+      };
+      logger.error(JSON.stringify(logData));
+      throw new Error(errorMessage);
     }
 
     return Object.freeze({

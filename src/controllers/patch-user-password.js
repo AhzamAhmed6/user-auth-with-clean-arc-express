@@ -1,3 +1,5 @@
+import logger from "../logger.js";
+
 export default function makePatchUserPassword({ editUserPassword }) {
   return async function makePatchUserPassword(httpRequest) {
     try {
@@ -17,7 +19,7 @@ export default function makePatchUserPassword({ editUserPassword }) {
       };
     } catch (e) {
       // TODO: Error logging
-      console.log(e);
+      logger.error(e);
       if (e.name === "RangeError") {
         return {
           headers: {
