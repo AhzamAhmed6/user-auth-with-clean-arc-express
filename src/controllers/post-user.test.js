@@ -14,7 +14,7 @@ describe("postUser", () => {
     };
     const postUser = makePostUser({
       addUser: mockAddUser,
-      makeTokens: mockMakeTokens,
+      ...mockMakeTokens,
     });
     const httpRequest = {
       body: {
@@ -65,7 +65,7 @@ describe("postUser", () => {
     };
     const postUser = makePostUser({
       addUser: mockAddUser,
-      makeTokens: mockMakeTokens,
+      ...mockMakeTokens,
     });
     const httpRequest = {
       body: {},

@@ -1,4 +1,8 @@
-export default function makePostUser({ addUser, makeTokens }) {
+export default function makePostUser({
+  addUser,
+  generateToken,
+  getExpirationTime,
+}) {
   return async function postUser(httpRequest) {
     try {
       const userInfo = httpRequest.body;
@@ -7,12 +11,12 @@ export default function makePostUser({ addUser, makeTokens }) {
       const accessPayload = { userId: userInfo.id, email: userInfo.email };
       const accessTokenKey = process.env.ACCESS_KEY;
       const accessTokenExpTime = process.env.ACCESS_EXP_TIME;
-      const accessToken = await makeTokens.generateToken({
+      const accessToken = await generateToken({
         payload: accessPayload,
         tokenKey: accessTokenKey,
         tokenExpTime: accessTokenExpTime,
       });
-      const accessTokenExpTimeInSeconds = await makeTokens.getExpirationTime({
+      const accessTokenExpTimeInSeconds = await getExpirationTime({
         tokenExpTime: accessTokenExpTime,
       });
 
@@ -20,12 +24,12 @@ export default function makePostUser({ addUser, makeTokens }) {
       const refreshPayload = { userId: userInfo.id };
       const refreshTokenKey = process.env.REFRESH_KEY;
       const refreshTokenExpTime = process.env.REFRESH_EXP_TIME;
-      const refreshToken = await makeTokens.generateToken({
+      const refreshToken = await generateToken({
         payload: refreshPayload,
         tokenKey: refreshTokenKey,
         tokenExpTime: refreshTokenExpTime,
       });
-      const refreshTokenExpTimeInSeconds = await makeTokens.getExpirationTime({
+      const refreshTokenExpTimeInSeconds = await getExpirationTime({
         tokenExpTime: refreshTokenExpTime,
       });
 

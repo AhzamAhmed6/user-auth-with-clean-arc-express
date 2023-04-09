@@ -1,4 +1,8 @@
-export default function makeLoginUser({ authenticateUser, makeTokens }) {
+export default function makeLoginUser({
+  authenticateUser,
+  generateToken,
+  getExpirationTime,
+}) {
   return async function loginUser(httpRequest) {
     const accessTokenKey = process.env.ACCESS_KEY;
     const accessTokenExpTime = process.env.ACCESS_EXP_TIME;
@@ -12,24 +16,24 @@ export default function makeLoginUser({ authenticateUser, makeTokens }) {
       // Generate access token and calculate its expiration time
       const accessPayload = { userId: userInfo.id, email: userInfo.email };
 
-      const accessToken = await makeTokens.generateToken({
+      const accessToken = await generateToken({
         payload: accessPayload,
         tokenKey: accessTokenKey,
         tokenExpTime: accessTokenExpTime,
       });
-      const accessTokenExpTimeInSeconds = await makeTokens.getExpirationTime({
+      const accessTokenExpTimeInSeconds = await getExpirationTime({
         tokenExpTime: accessTokenExpTime,
       });
 
       // Generate refresh token and calculate its expiration time
       const refreshPayload = { userId: userInfo.id };
 
-      const refreshToken = await makeTokens.generateToken({
+      const refreshToken = await generateToken({
         payload: refreshPayload,
         tokenKey: refreshTokenKey,
         tokenExpTime: refreshTokenExpTime,
       });
-      const refreshTokenExpTimeInSeconds = await makeTokens.getExpirationTime({
+      const refreshTokenExpTimeInSeconds = await getExpirationTime({
         tokenExpTime: refreshTokenExpTime,
       });
 

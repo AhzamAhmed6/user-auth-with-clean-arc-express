@@ -7,7 +7,6 @@ import {
   removeUser,
 } from "../use-cases/index.js";
 import makeTokens from "../tokens/index.js";
-import handlePassword from "../password/index.js";
 
 import makeDeleteUser from "./delete-user.js";
 import makeGetUser from "./get-user.js";
@@ -18,16 +17,20 @@ import makePostUser from "./post-user.js";
 import notFound from "./not-found.js";
 
 const userController = Object.freeze({
-  deleteUser: makeDeleteUser({ removeUser }),
-  getUser: makeGetUser({ findUser }),
+  postUser: makePostUser({
+    addUser,
+    ...makeTokens,
+  }),
   loginUser: makeLoginUser({
     authenticateUser,
-    makeTokens,
+    ...makeTokens,
   }),
+  deleteUser: makeDeleteUser({ removeUser }),
+  getUser: makeGetUser({ findUser }),
+
   notFound,
   patchUserName: makePatchUserName({ editUserName }),
   patchUserPassword: makePatchUserPassword({ editUserPassword }),
-  postUser: makePostUser({ addUser, makeTokens }),
 });
 
 export default userController;
