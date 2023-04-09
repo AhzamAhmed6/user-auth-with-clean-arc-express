@@ -18,6 +18,8 @@ export default function makeAddUser({ usersDb }) {
       firstName: user.getFirstName(),
       lastName: user.getLastName(),
       email: user.getEmail(),
+      createdOn: user.getCreatedOn(),
+      modifiedOn: user.getModifiedOn(),
       hashedPassword: await user.getHashedPassword(),
     };
 

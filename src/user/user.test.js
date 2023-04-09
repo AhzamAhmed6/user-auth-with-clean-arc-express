@@ -55,4 +55,11 @@ describe("user", () => {
       makeUser(makeFakeUser());
     }
   });
+  test("is modifiedOn now in UTC", () => {
+    const noModifiedOnDate = makeFakeUser({ modifiedOn: undefined });
+    expect(noModifiedOnDate.modifiedOn).not.toBeDefined();
+    const d = makeUser(noModifiedOnDate).getCreatedOn();
+    expect(d).toBeDefined();
+    expect(new Date(d).toUTCString().substring(26)).toBe("GMT");
+  });
 });

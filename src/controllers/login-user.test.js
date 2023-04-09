@@ -19,7 +19,6 @@ describe("loginUser", () => {
     const expectedResponse = {
       headers: {
         "Content-Type": "application/json",
-        "Last-Modified": expect.any(String),
       },
       statusCode: 201,
       body: {

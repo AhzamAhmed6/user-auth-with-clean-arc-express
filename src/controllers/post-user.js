@@ -35,7 +35,7 @@ export default function makePostUser({
 
       // Add user to the database and prepare response body
       const user = await addUser(userInfo);
-      const { modifiedOn, hashedPassword, ...userWithoutSensitiveData } = user;
+      const { hashedPassword, ...userWithoutSensitiveData } = user;
       const responseBody = {
         success: true,
         user: userWithoutSensitiveData,
@@ -55,7 +55,6 @@ export default function makePostUser({
       return {
         headers: {
           "Content-Type": "application/json",
-          "Last-Modified": new Date(modifiedOn).toUTCString(),
         },
         statusCode: 201,
         body: responseBody,

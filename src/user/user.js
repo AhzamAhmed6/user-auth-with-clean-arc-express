@@ -5,6 +5,8 @@ export default function buildMakeUser({ Id, hashPassword }) {
     lastName,
     email,
     password,
+    modifiedOn = new Date(Date.now()).toUTCString(),
+    createdOn = new Date(Date.now()).toUTCString(),
   }) {
     if (!Id.isValidId(id)) {
       throw new Error("User must have a valid id.");
@@ -26,6 +28,8 @@ export default function buildMakeUser({ Id, hashPassword }) {
       getFirstName: () => firstName,
       getLastName: () => lastName,
       getEmail: () => email,
+      getModifiedOn: () => modifiedOn,
+      getCreatedOn: () => createdOn,
       getHashedPassword: async () => await hashPassword({ password }),
     });
 

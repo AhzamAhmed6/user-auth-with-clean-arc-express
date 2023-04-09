@@ -12,6 +12,8 @@ export default function makeFakeUser(overrides) {
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
     email: faker.internet.email(),
+    modifiedOn: new Date(Date.now()).toUTCString(),
+    createdOn: new Date(Date.now()).toUTCString(),
     password: faker.internet.password() + "+-$1@#" + faker.internet.password(),
   };
 

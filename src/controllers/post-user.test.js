@@ -6,7 +6,6 @@ describe("postUser", () => {
       id: "123",
       name: "John Doe",
       email: "johndoe@example.com",
-      modifiedOn: new Date(),
     }));
     const mockMakeTokens = {
       generateToken: jest.fn(() => "token"),
@@ -29,7 +28,6 @@ describe("postUser", () => {
     const expectedResponse = {
       headers: {
         "Content-Type": "application/json",
-        "Last-Modified": new Date().toUTCString(),
       },
       statusCode: 201,
       body: {

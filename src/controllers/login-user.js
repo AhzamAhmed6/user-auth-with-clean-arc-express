@@ -37,8 +37,7 @@ export default function makeLoginUser({
         tokenExpTime: refreshTokenExpTime,
       });
 
-      const { modifiedOn, hashedPassword, ...userWithoutSensitiveData } =
-        userInfo;
+      const { hashedPassword, ...userWithoutSensitiveData } = userInfo;
       const responseBody = {
         success: true,
         user: userWithoutSensitiveData,
@@ -58,7 +57,6 @@ export default function makeLoginUser({
       return {
         headers: {
           "Content-Type": "application/json",
-          "Last-Modified": new Date(modifiedOn).toUTCString(),
         },
         statusCode: 201,
         body: responseBody,
