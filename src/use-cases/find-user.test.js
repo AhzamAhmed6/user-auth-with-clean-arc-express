@@ -3,7 +3,6 @@ import makeFakeUser from "../../__test__/fixtures/user";
 import makeUsersDb from "../data-access/user-db";
 import makeAddUser from "./add-user";
 import makeFindUser from "./find-user";
-import makeUser from "../user";
 
 describe("find user", () => {
   let usersDb;

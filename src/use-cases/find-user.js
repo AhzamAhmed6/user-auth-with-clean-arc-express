@@ -1,5 +1,5 @@
 export default function makeFindUser({ usersDb }) {
-  return async function findUser({ id, email, ...rest }) {
+  return async function findUser({ id, email }) {
     if (!id && !email) {
       throw new Error("Provide id or email");
     }
