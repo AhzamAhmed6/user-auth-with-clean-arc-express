@@ -1,8 +1,4 @@
-export default function makeLoginUser({
-  findUser,
-  makeTokens,
-  verifyPassword,
-}) {
+export default function makeLoginUser({ authenticateUser, makeTokens }) {
   return async function loginUser(httpRequest) {
     const accessTokenKey = process.env.ACCESS_KEY;
     const accessTokenExpTime = process.env.ACCESS_EXP_TIME;
@@ -10,18 +6,8 @@ export default function makeLoginUser({
     const refreshTokenExpTime = process.env.REFRESH_EXP_TIME;
 
     try {
-      const user = httpRequest.body;
-      const userInfo = await findUser(user);
-      if (user.password == undefined) {
-        throw new Error("Please provide Password");
-      }
-      const isPasswordMatch = await verifyPassword({
-        password: user.password,
-        hashedPassword: userInfo.hashedPassword,
-      });
-      if (!isPasswordMatch) {
-        throw new Error("Wrong Password");
-      }
+      const credentials = httpRequest.body;
+      const userInfo = await authenticateUser(credentials);
 
       // Generate access token and calculate its expiration time
       const accessPayload = { userId: userInfo.id, email: userInfo.email };

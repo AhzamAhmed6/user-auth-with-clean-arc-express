@@ -1,5 +1,6 @@
 import {
   addUser,
+  authenticateUser,
   editUserName,
   editUserPassword,
   findUser,
@@ -20,9 +21,8 @@ const userController = Object.freeze({
   deleteUser: makeDeleteUser({ removeUser }),
   getUser: makeGetUser({ findUser }),
   loginUser: makeLoginUser({
-    findUser,
+    authenticateUser,
     makeTokens,
-    verifyPassword: handlePassword.verifyPassword,
   }),
   notFound,
   patchUserName: makePatchUserName({ editUserName }),
