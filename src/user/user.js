@@ -60,7 +60,7 @@ export default function buildMakeUser({ Id, hashPassword }) {
         throw error;
       }
       logger.error(
-        `An error was encountered User Validation.\n\t\t${error.stack}`
+        `The makeUser function failed due to an error.\n\t\t${error.stack}`
       );
       throw new Error("Something went wrong");
     }
