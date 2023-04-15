@@ -12,10 +12,12 @@ export default function buildMakeUser({ Id, hashPassword }) {
   }) {
     try {
       if (!Id.isValidId(id)) {
-        throw new Error("User must have a valid id.");
+        throw new Error("The user ID provided is not valid");
       }
       if (![firstName, lastName, email, password].every(Boolean)) {
-        throw new Error("Please provide complete information");
+        throw new Error(
+          "All fields are required. Please provide complete information for the user"
+        );
       }
       if (!isValidEmail(email)) {
         throw new Error(`${email} is not a valid email`);
@@ -23,7 +25,7 @@ export default function buildMakeUser({ Id, hashPassword }) {
 
       if (!isValidPassword(password)) {
         const errorMessage =
-          "Password must contains min 8 letter password, with at least a symbol, upper and lower case letters and a number";
+          "The password must be at least 8 characters long and include at least one symbol, uppercase letter, lowercase letter, and number.";
         throw new Error(errorMessage);
       }
 
@@ -62,7 +64,9 @@ export default function buildMakeUser({ Id, hashPassword }) {
       logger.error(
         `The makeUser function failed due to an error.\n\t\t${error.stack}`
       );
-      throw new Error("Something went wrong");
+      throw new Error(
+        "An error occurred while processing your request. Please try again later."
+      );
     }
   };
 }

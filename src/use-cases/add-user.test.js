@@ -24,10 +24,14 @@ describe("add user", () => {
 
     fakeUser = makeFakeUser();
     fakeUser.id = inserted.id;
-    await expect(addUser(fakeUser)).rejects.toThrow("User already registered");
+    await expect(addUser(fakeUser)).rejects.toThrow(
+      "Unable to register user. The provided email address is already associated with an existing account."
+    );
 
     fakeUser = makeFakeUser();
     fakeUser.email = inserted.email;
-    await expect(addUser(fakeUser)).rejects.toThrow("User already registered");
+    await expect(addUser(fakeUser)).rejects.toThrow(
+      "Unable to register user. The provided email address is already associated with an existing account."
+    );
   });
 });

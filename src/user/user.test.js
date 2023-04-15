@@ -11,12 +11,12 @@ describe("user", () => {
       const user = makeFakeUser({ ...completeUser, [field]: undefined });
 
       expect(() => makeUser(user)).toThrow(
-        "Please provide complete information"
+        "All fields are required. Please provide complete information for the user"
       );
 
       user[field] = "";
       expect(() => makeUser(user)).toThrow(
-        "Please provide complete information"
+        "All fields are required. Please provide complete information for the user"
       );
     });
   });
@@ -33,7 +33,7 @@ describe("user", () => {
     const user = makeFakeUser({ password: "1234" });
 
     expect(() => makeUser(user)).toThrow(
-      "Password must contains min 8 letter password, with at least a symbol, upper and lower case letters and a number"
+      "The password must be at least 8 characters long and include at least one symbol, uppercase letter, lowercase letter, and number."
     );
   });
 

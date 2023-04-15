@@ -12,7 +12,9 @@ export default function makeAddUser({ usersDb }) {
       });
 
       if (existingUserById || existingUserByEmail) {
-        throw new Error("User already registered");
+        throw new Error(
+          "Unable to register user. The provided email address is already associated with an existing account."
+        );
       }
       const newUser = {
         id: user.getId(),
@@ -32,7 +34,9 @@ export default function makeAddUser({ usersDb }) {
       logger.error(
         `The addUser function failed due to an error.\n\t\t${error.stack}`
       );
-      throw new Error("Something went wrong");
+      throw new Error(
+        "An error occurred while processing your request. Please try again later."
+      );
     }
   };
 }
