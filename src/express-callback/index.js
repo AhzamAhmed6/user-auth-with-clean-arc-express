@@ -1,4 +1,4 @@
-import logger from "../logger.js";
+import logger from "../logger/index.js";
 
 export default function makeExpressCallback(controller) {
   return async (req, res) => {

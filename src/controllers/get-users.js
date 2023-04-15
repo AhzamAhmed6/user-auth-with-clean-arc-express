@@ -1,4 +1,4 @@
-import logger from "../logger";
+import logger from "../logger/index.js";
 
 export default function makeGetUsers({ listUsers }) {
   return async function getUsers(httpRequest) {

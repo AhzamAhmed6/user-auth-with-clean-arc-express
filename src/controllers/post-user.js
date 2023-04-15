@@ -1,4 +1,4 @@
-import logger from "../logger.js";
+import logger from "../logger/index.js";
 
 const requiredEnvVars = [
   "ACCESS_KEY",
@@ -85,8 +85,6 @@ export default function makePostUser({
         body: responseBody,
       };
     } catch (error) {
-      logger.error(`${error.message}\n${error.stack}`);
-
       // Return error response
       return {
         headers: {

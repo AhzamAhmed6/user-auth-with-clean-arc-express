@@ -1,7 +1,7 @@
 // Import modules
 import { config } from "dotenv";
 import express from "express";
-import logger from "./logger.js";
+import logger from "./logger/index.js";
 
 // Import controllers
 import userController from "./controllers/index.js";
@@ -35,7 +35,9 @@ app
     logger.info(`Server is listening on port ${PORT}`);
   })
   .on("error", (err) => {
-    logger.error(`An error occur while starting Server\n\t\t${err.stack}`);
+    logger.error(
+      `An error was encountered during server startup.\n\t\t${err.stack}`
+    );
   });
 
 // Export the app
