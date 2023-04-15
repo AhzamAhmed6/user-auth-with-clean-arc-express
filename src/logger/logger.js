@@ -32,7 +32,7 @@ export default function makeLogger({
 
   const logger = createLogger({
     format: customFormat,
-    transports: [fileTransport],
+    transports: [new transports.Console(), fileTransport],
   });
   return logger;
 }

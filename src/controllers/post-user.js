@@ -85,7 +85,22 @@ export default function makePostUser({
         body: responseBody,
       };
     } catch (error) {
-      // Return error response
+      if (error instanceof Error) {
+        // Return error response
+        return {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          statusCode: 400,
+          body: {
+            success: false,
+            error: error.message,
+          },
+        };
+      }
+      logger.error(
+        `The postUser function failed due to an error.\n\t\t${error.stack}`
+      );
       return {
         headers: {
           "Content-Type": "application/json",
@@ -93,7 +108,8 @@ export default function makePostUser({
         statusCode: 400,
         body: {
           success: false,
-          error: error.message,
+          error:
+            "An error occurred while processing your request. Please try again later.",
         },
       };
     }
