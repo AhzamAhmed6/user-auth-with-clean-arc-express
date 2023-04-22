@@ -26,6 +26,7 @@ app.use(setTkHeader);
 const apiRoot = process.env.DM_API_ROOT;
 app.post(`${apiRoot}/user`, makeCallback(userController.postUser));
 app.post(`${apiRoot}/login`, makeCallback(userController.loginUser));
+app.delete(`${apiRoot}/delete`, makeCallback(userController.deleteUser));
 
 // Start the server
 const PORT = process.env.PORT || 8000;
