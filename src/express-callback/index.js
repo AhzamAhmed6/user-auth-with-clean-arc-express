@@ -10,6 +10,7 @@ export default function makeExpressCallback(controller) {
       path: req.path,
       headers: {
         "Content-Type": req.get("Content-Type"),
+        Authorization: req.get("Authorization"),
       },
     };
     try {

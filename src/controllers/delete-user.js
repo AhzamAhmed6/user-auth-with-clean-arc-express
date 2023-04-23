@@ -12,13 +12,31 @@ export default function makeDeleteUser({ removeUser }) {
       const body = { success: true, message };
       return { headers, statusCode, body };
     } catch (error) {
+      if (error instanceof Error) {
+        // Return error response
+        const errorHeaders = { "Content-Type": "application/json" };
+        const errorStatusCode = 400;
+        const errorBody = {
+          success: false,
+          error: error.message,
+        };
+        return {
+          headers: errorHeaders,
+          statusCode: errorStatusCode,
+          body: errorBody,
+        };
+      }
       logger.error(
         `The deleteUser function failed due to an error.\n\t\t${error.stack}`
       );
 
       const headers = { "Content-Type": "application/json" };
       const statusCode = 400;
-      const body = { success: false, error: error.message };
+      const body = {
+        success: false,
+        error:
+          "An error occurred while processing your request. Please try again later.",
+      };
       return { headers, statusCode, body };
     }
   };

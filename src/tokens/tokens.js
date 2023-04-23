@@ -6,7 +6,12 @@ export default function buildMakeTokens({ jwt }) {
   }
 
   function verifyToken({ token, tokenKey }) {
-    return jwt.verify(token, tokenKey);
+    try {
+      return jwt.verify(token, tokenKey);
+    } catch (error) {
+      console.log("🚀 ~ file: tokens.js:12 ~ verifyToken ~ error:", error);
+      return false;
+    }
   }
 
   async function getExpirationTime({ tokenExpTime }) {

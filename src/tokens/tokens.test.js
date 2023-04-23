@@ -28,6 +28,7 @@ describe("buildMakeTokens", () => {
     const tokenKey = "secret";
     jwt.verify.mockReturnValueOnce({ id: "123" });
     const payload = await makeTokens.verifyToken({ token, tokenKey });
+    console.log("🚀 ~ file: tokens.test.js:31 ~ it ~ payload:", payload);
     expect(jwt.verify).toHaveBeenCalledWith(token, tokenKey);
     expect(payload).toEqual({ id: "123" });
   });

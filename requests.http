@@ -24,3 +24,9 @@ content-type: application/json
 ### Delete User
 DELETE http://localhost:8000/api/delete?id=cjld2cjxh0006qzrmn831i7rn
 content-type: application/json
+
+
+### Verify User
+GET http://localhost:8000/api/verify
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjamxkMmNqeGgwMDA2cXpybW44MzFpN3JuIiwiZW1haWwiOiJ0ZXN0NkB0ZXN0LmNvbSIsImlhdCI6MTY4MjM2NjE0NCwiZXhwIjoxNjg0MDk0MTQ0fQ.m3-2qpEreqDrDGTVhmDyHWDKQ6pM7mpJTalCCyyHxt8
