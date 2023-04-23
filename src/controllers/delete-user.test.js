@@ -6,10 +6,7 @@ describe("Delete User Controller", () => {
   it("Delete an inserted user", async () => {
     const user = makeFakeUser();
     const deleteRequest = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      params: {
+      query: {
         id: user.id,
       },
     };
@@ -19,7 +16,7 @@ describe("Delete User Controller", () => {
     const expected = {
       headers: { "Content-Type": "application/json" },
       statusCode: 200,
-      body: { deleted: { id: user.id } },
+      body: { message: "User deleted successfully", success: true },
     };
 
     expect(actual).toEqual(expected);
@@ -28,15 +25,12 @@ describe("Delete User Controller", () => {
   it("Delete user, not present in Db", async () => {
     const user = makeFakeUser();
     const deleteRequest = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      params: {
+      query: {
         id: user.id,
       },
     };
     const deleteUser = makeDeleteUser({
-      removeUser: (c) => {
+      removeUser: () => {
         throw new Error("User not found.");
       },
     });
@@ -45,7 +39,7 @@ describe("Delete User Controller", () => {
     const expected = {
       headers: { "Content-Type": "application/json" },
       statusCode: 400,
-      body: { error: "User not found." },
+      body: { error: "User not found.", success: false },
     };
 
     expect(actual).toEqual(expected);
