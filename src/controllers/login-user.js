@@ -73,25 +73,40 @@ export default function makeLoginUser({
       };
 
       // Return success response
-      return {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        statusCode: 201,
-        body: responseBody,
-      };
+      const headers = { "Content-Type": "application/json" };
+      const statusCode = 201;
+      const body = responseBody;
+      return { headers, statusCode, body };
     } catch (error) {
-      // Return error response
-      return {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        statusCode: 400,
-        body: {
+      const errorHeaders = { "Content-Type": "application/json" };
+      if (error instanceof Error) {
+        // Return error response
+        const errorStatusCode = 400;
+        const errorBody = {
           success: false,
           error: error.message,
-        },
-      };
+        };
+        return {
+          headers: errorHeaders,
+          statusCode: errorStatusCode,
+          body: errorBody,
+        };
+      } else {
+        logger.error(
+          `The loginUser function failed due to an error.\n\t\t${error.stack}`
+        );
+        const unknownErrorStatusCode = 400;
+        const unknownErrorBody = {
+          success: false,
+          error:
+            "An error occurred while processing your request. Please try again later.",
+        };
+        return {
+          headers: errorHeaders,
+          statusCode: unknownErrorStatusCode,
+          body: unknownErrorBody,
+        };
+      }
     }
   };
 }

@@ -20,7 +20,6 @@ export default function makePostUser({
         if (!process.env[envVar]) {
           const error = new Error(`${envVar} environment variable not set`);
           logger.error(`${error.message}\n${error.stack}`);
-
           throw new Error(`An unknown error occurred.`);
         }
         envVars[envVar] = process.env[envVar];
@@ -77,41 +76,40 @@ export default function makePostUser({
       };
 
       // Return success response
-      return {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        statusCode: 201,
-        body: responseBody,
-      };
+      const headers = { "Content-Type": "application/json" };
+      const statusCode = 201;
+      const body = responseBody;
+      return { headers, statusCode, body };
     } catch (error) {
+      const errorHeaders = { "Content-Type": "application/json" };
       if (error instanceof Error) {
         // Return error response
-        return {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          statusCode: 400,
-          body: {
-            success: false,
-            error: error.message,
-          },
+        const errorStatusCode = 400;
+        const errorBody = {
+          success: false,
+          error: error.message,
         };
-      }
-      logger.error(
-        `The postUser function failed due to an error.\n\t\t${error.stack}`
-      );
-      return {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        statusCode: 400,
-        body: {
+        return {
+          headers: errorHeaders,
+          statusCode: errorStatusCode,
+          body: errorBody,
+        };
+      } else {
+        logger.error(
+          `The postUser function failed due to an error.\n\t\t${error.stack}`
+        );
+        const unknownErrorStatusCode = 400;
+        const unknownErrorBody = {
           success: false,
           error:
             "An error occurred while processing your request. Please try again later.",
-        },
-      };
+        };
+        return {
+          headers: errorHeaders,
+          statusCode: unknownErrorStatusCode,
+          body: unknownErrorBody,
+        };
+      }
     }
   };
 }
