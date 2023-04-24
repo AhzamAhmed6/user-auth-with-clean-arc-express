@@ -25,10 +25,11 @@ const userController = Object.freeze({
     authenticateUser,
     ...makeTokens,
   }),
-  deleteUser: makeDeleteUser({ removeUser }),
-  // verifyUser: makeVerifyUser({ ...makeTokens }),
+  deleteUser: makeDeleteUser({
+    verifyToken: makeTokens.verifyToken,
+    removeUser,
+  }),
   verifyUser: makeVerifyUser({ verifyToken: makeTokens.verifyToken }),
-  // verifyUser: makeVerifyUser({ verifytoken: ({token})=>true }),
 
   getUser: makeGetUser({ findUser }),
 
