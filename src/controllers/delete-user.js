@@ -3,23 +3,15 @@ import logger from "../logger/index.js";
 export default function makeDeleteUser({ verifyToken, removeUser }) {
   return async function deleteUser(httpRequest) {
     const headers = { "Content-Type": "application/json" };
-    const token = httpRequest.headers.authorization?.split(" ")[1];
+    const requestId = httpRequest.query.id;
+    const { userId } = httpRequest.user;
 
     try {
-      if (!token) {
-        throw new Error("Authorization header is missing or invalid.");
-      }
-
-      const isValidToken = await verifyToken({
-        token,
-        tokenKey: process.env.ACCESS_KEY,
-      });
-
-      if (!isValidToken) {
+      if (requestId != userId) {
         throw new Error("You do not have permission to perform this action");
       }
 
-      const { deletedCount } = await removeUser({ id: httpRequest.query.id });
+      const deletedCount = await removeUser({ id: requestId });
 
       const statusCode = deletedCount ? 200 : 404;
       const message = deletedCount
@@ -29,7 +21,6 @@ export default function makeDeleteUser({ verifyToken, removeUser }) {
 
       return { headers, statusCode, body };
     } catch (error) {
-      const errorHeaders = { "Content-Type": "application/json" };
       const statusCode = error instanceof Error ? 400 : 500;
       const message =
         error instanceof Error
@@ -43,7 +34,7 @@ export default function makeDeleteUser({ verifyToken, removeUser }) {
         );
       }
 
-      return { headers: errorHeaders, statusCode, body };
+      return { headers, statusCode, body };
     }
   };
 }

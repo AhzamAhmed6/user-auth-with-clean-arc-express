@@ -9,7 +9,6 @@ export default function buildMakeTokens({ jwt }) {
     try {
       return jwt.verify(token, tokenKey);
     } catch (error) {
-      console.log("🚀 ~ file: tokens.js:12 ~ verifyToken ~ error:", error);
       return false;
     }
   }

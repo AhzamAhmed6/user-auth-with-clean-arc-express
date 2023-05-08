@@ -3,6 +3,9 @@ import { config } from "dotenv";
 import express from "express";
 import logger from "./logger/index.js";
 
+// Import middlewares
+import authUser from "./middleware/index.js";
+
 // Import controllers
 import userController from "./controllers/index.js";
 import makeCallback from "./express-callback/index.js";
@@ -22,11 +25,16 @@ const setTkHeader = (req, res, next) => {
 };
 app.use(setTkHeader);
 
-// Define routes
 const apiRoot = process.env.DM_API_ROOT;
+
+// Define routes
 app.post(`${apiRoot}/user`, makeCallback(userController.postUser));
 app.post(`${apiRoot}/login`, makeCallback(userController.loginUser));
-app.delete(`${apiRoot}/delete`, makeCallback(userController.deleteUser));
+app.delete(
+  `${apiRoot}/delete`,
+  authUser,
+  makeCallback(userController.deleteUser)
+);
 app.get(`${apiRoot}/verify`, makeCallback(userController.verifyUser));
 
 // Start the server

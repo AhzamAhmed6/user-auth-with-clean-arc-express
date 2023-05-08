@@ -13,6 +13,10 @@ export default function makeExpressCallback(controller) {
         Authorization: req.get("Authorization"),
       },
     };
+    // for the routes that called authUser middeware
+    if (req.user != undefined) {
+      httpRequest.user = req.user;
+    }
     try {
       const httpResponse = await controller(httpRequest);
       const headers = httpResponse.headers || {};
