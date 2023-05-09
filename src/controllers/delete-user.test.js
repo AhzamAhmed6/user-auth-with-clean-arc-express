@@ -21,6 +21,7 @@ describe("deleteUser", () => {
     const httpRequest = {
       query: { id: "123" },
       user: { userId: "456" },
+      valid: true,
     };
     const expectedResponse = {
       headers: { "Content-Type": "application/json" },
@@ -45,6 +46,7 @@ describe("deleteUser", () => {
     const httpRequest = {
       query: { id: "123" },
       user: { userId: "123" },
+      valid: true,
     };
     const expectedResponse = {
       headers: { "Content-Type": "application/json" },
@@ -65,6 +67,7 @@ describe("deleteUser", () => {
     const httpRequest = {
       query: { id: "123" },
       user: { userId: "123" },
+      valid: true,
     };
     const expectedResponse = {
       headers: { "Content-Type": "application/json" },
@@ -80,7 +83,27 @@ describe("deleteUser", () => {
 
   test("should return a 400 status code and an error message if an Error is thrown", async () => {
     const error = new Error("Invalid input.");
-    const httpRequest = { query: { id: "123" }, user: { userId: "456" } };
+    const httpRequest = {
+      query: { id: "123" },
+      user: { userId: "456" },
+      valid: true,
+    };
+    const removeUser = jest.fn().mockRejectedValueOnce(error);
+    const deleteUser = makeDeleteUser({ verifyToken: jest.fn(), removeUser });
+    const { statusCode, body } = await deleteUser(httpRequest);
+    expect(statusCode).toBe(400);
+    expect(body).toEqual({
+      success: false,
+      error: "You do not have permission to perform this action",
+    });
+  });
+
+  test("should return a 400 status code and an error message if an valid is false", async () => {
+    const error = new Error("Invalid input.");
+    const httpRequest = {
+      query: { id: "123" },
+      valid: false,
+    };
     const removeUser = jest.fn().mockRejectedValueOnce(error);
     const deleteUser = makeDeleteUser({ verifyToken: jest.fn(), removeUser });
     const { statusCode, body } = await deleteUser(httpRequest);

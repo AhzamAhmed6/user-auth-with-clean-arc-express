@@ -13,12 +13,11 @@ export default function makeAuthUser({ verifyToken }) {
       tokenKey: process.env.ACCESS_KEY,
     });
 
-    if (!isValidToken) {
-      return httpResponse
-        .status(401)
-        .json({ error: "You do not have permission to perform this action." });
+    if (isValidToken === false) {
+      httpRequest.valid = false;
+      nextFunction();
     }
-
+    httpRequest.valid = true;
     httpRequest.user = isValidToken;
 
     nextFunction();

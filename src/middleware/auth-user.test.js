@@ -74,11 +74,7 @@ describe("makeAuthUser middleware", () => {
       nextFunction
     );
 
-    expect(httpResponse.status).toHaveBeenCalledWith(401);
-    expect(httpResponse.json).toHaveBeenCalledWith({
-      error: "You do not have permission to perform this action.",
-    });
-    expect(nextFunction).not.toHaveBeenCalled();
+    expect(nextFunction).toHaveBeenCalled();
     expect(verifyToken).toHaveBeenCalledWith({
       token: "InvalidToken",
       tokenKey: process.env.ACCESS_KEY,
@@ -101,6 +97,7 @@ describe("makeAuthUser middleware", () => {
     );
 
     expect(httpRequest.user).toEqual({ name: "John" });
+    expect(httpRequest.valid).toEqual(true);
     expect(nextFunction).toHaveBeenCalled();
     expect(verifyToken).toHaveBeenCalledWith({
       token: "ValidToken",

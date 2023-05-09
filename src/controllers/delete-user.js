@@ -4,9 +4,14 @@ export default function makeDeleteUser({ removeUser }) {
   return async function deleteUser(httpRequest) {
     const headers = { "Content-Type": "application/json" };
     const requestId = httpRequest.query.id;
-    const { userId } = httpRequest.user;
+    const { valid } = httpRequest;
 
     try {
+      if (valid === false) {
+        throw new Error("You do not have permission to perform this action");
+      }
+      const { userId } = httpRequest.user;
+
       if (requestId != userId) {
         throw new Error("You do not have permission to perform this action");
       }
