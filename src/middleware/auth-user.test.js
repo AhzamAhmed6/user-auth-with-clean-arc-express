@@ -1,6 +1,6 @@
-import makeAuthUser from './auth-user.js';
+import makeAuthUser from "./auth-user.js";
 
-describe('makeAuthUser middleware', () => {
+describe("makeAuthUser middleware", () => {
   const verifyToken = jest.fn();
   const nextFunction = jest.fn();
 
@@ -8,7 +8,7 @@ describe('makeAuthUser middleware', () => {
     jest.clearAllMocks();
   });
 
-  test('should return 401 error when authorization header is missing', async () => {
+  test("should return 401 error when authorization header is missing", async () => {
     const httpRequest = {
       headers: {},
     };
@@ -17,20 +17,24 @@ describe('makeAuthUser middleware', () => {
       json: jest.fn(),
     };
 
-    await makeAuthUser({ verifyToken })(httpRequest, httpResponse, nextFunction);
+    await makeAuthUser({ verifyToken })(
+      httpRequest,
+      httpResponse,
+      nextFunction
+    );
 
     expect(httpResponse.status).toHaveBeenCalledWith(401);
     expect(httpResponse.json).toHaveBeenCalledWith({
-      error: 'Authorization header is missing or invalid.',
+      error: "Authorization header is missing or invalid.",
     });
     expect(nextFunction).not.toHaveBeenCalled();
     expect(verifyToken).not.toHaveBeenCalled();
   });
 
-  test('should return 401 error when authorization header is invalid', async () => {
+  test("should return 401 error when authorization header is invalid", async () => {
     const httpRequest = {
       headers: {
-        authorization: 'InvalidToken',
+        authorization: "InvalidToken",
       },
     };
     const httpResponse = {
@@ -38,20 +42,24 @@ describe('makeAuthUser middleware', () => {
       json: jest.fn(),
     };
 
-    await makeAuthUser({ verifyToken })(httpRequest, httpResponse, nextFunction);
+    await makeAuthUser({ verifyToken })(
+      httpRequest,
+      httpResponse,
+      nextFunction
+    );
 
     expect(httpResponse.status).toHaveBeenCalledWith(401);
     expect(httpResponse.json).toHaveBeenCalledWith({
-      error: 'Authorization header is missing or invalid.',
+      error: "Authorization header is missing or invalid.",
     });
     expect(nextFunction).not.toHaveBeenCalled();
     expect(verifyToken).not.toHaveBeenCalled();
   });
 
-  test('should return 401 error when token is not valid', async () => {
+  test("should return 401 error when token is not valid", async () => {
     const httpRequest = {
       headers: {
-        authorization: 'Bearer InvalidToken',
+        authorization: "Bearer InvalidToken",
       },
     };
     const httpResponse = {
@@ -60,34 +68,42 @@ describe('makeAuthUser middleware', () => {
     };
     verifyToken.mockResolvedValueOnce(false);
 
-    await makeAuthUser({ verifyToken })(httpRequest, httpResponse, nextFunction);
+    await makeAuthUser({ verifyToken })(
+      httpRequest,
+      httpResponse,
+      nextFunction
+    );
 
     expect(httpResponse.status).toHaveBeenCalledWith(401);
     expect(httpResponse.json).toHaveBeenCalledWith({
-      error: 'You do not have permission to perform this action.',
+      error: "You do not have permission to perform this action.",
     });
     expect(nextFunction).not.toHaveBeenCalled();
     expect(verifyToken).toHaveBeenCalledWith({
-      token: 'InvalidToken',
+      token: "InvalidToken",
       tokenKey: process.env.ACCESS_KEY,
     });
   });
 
-  test('should set the user in the request and call nextFunction when token is valid', async () => {
+  test("should set the user in the request and call nextFunction when token is valid", async () => {
     const httpRequest = {
       headers: {
-        authorization: 'Bearer ValidToken',
+        authorization: "Bearer ValidToken",
       },
     };
     const httpResponse = {};
-    verifyToken.mockResolvedValueOnce({ name: 'John' });
+    verifyToken.mockResolvedValueOnce({ name: "John" });
 
-    await makeAuthUser({ verifyToken })(httpRequest, httpResponse, nextFunction);
+    await makeAuthUser({ verifyToken })(
+      httpRequest,
+      httpResponse,
+      nextFunction
+    );
 
-    expect(httpRequest.user).toEqual({ name: 'John' });
+    expect(httpRequest.user).toEqual({ name: "John" });
     expect(nextFunction).toHaveBeenCalled();
     expect(verifyToken).toHaveBeenCalledWith({
-      token: 'ValidToken',
+      token: "ValidToken",
       tokenKey: process.env.ACCESS_KEY,
     });
   });

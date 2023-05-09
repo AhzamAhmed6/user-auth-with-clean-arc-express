@@ -1,6 +1,6 @@
 import logger from "../logger/index.js";
 
-export default function makeDeleteUser({ verifyToken, removeUser }) {
+export default function makeDeleteUser({ removeUser }) {
   return async function deleteUser(httpRequest) {
     const headers = { "Content-Type": "application/json" };
     const requestId = httpRequest.query.id;
