@@ -35,7 +35,7 @@ app.delete(
   authUser,
   makeCallback(userController.deleteUser)
 );
-app.get(`${apiRoot}/verify`, makeCallback(userController.verifyUser));
+app.get(`${apiRoot}/verify`, authUser, makeCallback(userController.verifyUser));
 
 // Start the server
 const PORT = process.env.PORT || 8000;

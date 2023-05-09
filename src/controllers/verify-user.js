@@ -1,30 +1,33 @@
 import logger from "../logger/index.js";
-
-export default function makeVerifyUser({ verifyToken }) {
+export default function makeVerifyUser({ findUser }) {
   return async function verifyUser(httpRequest) {
     const headers = {
       "Content-Type": "application/json",
     };
+    const { valid } = httpRequest;
 
     try {
-      const token = httpRequest.headers.Authorization?.split(" ")[1];
-      if (!token) {
-        throw new Error("Authorization header is missing or invalid.");
+      if (valid === false) {
+        return {
+          headers,
+          statusCode: 200,
+          body: { valid },
+        };
       }
+      const { userId } = httpRequest.user;
 
-      const isValidToken = await verifyToken({
-        token,
-        tokenKey: process.env.ACCESS_KEY,
-      });
-
-      const responseBody = {
-        valid: isValidToken !== false,
-      };
-
+      const user = findUser({ id: userId });
+      if (user === undefined) {
+        return {
+          headers,
+          statusCode: 200,
+          body: { valid: false },
+        };
+      }
       return {
         headers,
         statusCode: 200,
-        body: responseBody,
+        body: { valid: true },
       };
     } catch (error) {
       logger.error(

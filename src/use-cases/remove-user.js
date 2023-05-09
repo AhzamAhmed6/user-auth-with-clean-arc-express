@@ -1,9 +1,21 @@
 export default function makeRemoveUser({ usersDb }) {
-  return async function removeUser({ id, ...rest }) {
-    const existist = await usersDb.findById({ id: id });
-    if (!existist) {
+  return async function removeUser({ id }) {
+    const existingUser = await findUserById(id, usersDb);
+    validateUserExists(existingUser);
+    return deleteUser(id, usersDb);
+  };
+
+  async function findUserById(id, usersDb) {
+    return await usersDb.findById({ id });
+  }
+
+  function validateUserExists(user) {
+    if (!user) {
       throw new Error("User not found.");
     }
-    return await usersDb.remove({ id: id });
-  };
+  }
+
+  async function deleteUser(id, usersDb) {
+    return await usersDb.remove({ id });
+  }
 }

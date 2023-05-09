@@ -14,102 +14,160 @@ export default function makePostUser({
 }) {
   return async function postUser(httpRequest) {
     try {
-      // Check required environment variables
-      const envVars = {};
-      for (const envVar of requiredEnvVars) {
-        if (!process.env[envVar]) {
-          const error = new Error(`${envVar} environment variable not set`);
-          logger.error(`${error.message}\n${error.stack}`);
-          throw new Error(`An unknown error occurred.`);
-        }
-        envVars[envVar] = process.env[envVar];
-      }
+      const envVars = checkRequiredEnvVars();
 
-      // Generate access token and calculate its expiration time
       const userInfo = httpRequest.body;
-      const accessPayload = {
-        userId: userInfo.id,
-        email: userInfo.email,
-      };
-      const accessToken = await generateToken({
-        payload: accessPayload,
-        tokenKey: envVars.ACCESS_KEY,
-        tokenExpTime: envVars.ACCESS_EXP_TIME,
-      });
-      const accessTokenIssueTime = new Date().toUTCString();
-      const accessTokenExpirationTime = await getExpirationTime({
-        tokenExpTime: envVars.ACCESS_EXP_TIME,
-      });
+      const tokens = await generateTokens(
+        userInfo,
+        envVars,
+        generateToken,
+        getExpirationTime
+      );
 
-      // Generate refresh token and calculate its expiration time
-      const refreshPayload = {
-        userId: userInfo.id,
-      };
-      const refreshToken = await generateToken({
-        payload: refreshPayload,
-        tokenKey: envVars.REFRESH_KEY,
-        tokenExpTime: envVars.REFRESH_EXP_TIME,
-      });
-      const refreshTokenIssueTime = new Date().toUTCString();
-      const refreshTokenExpirationTime = await getExpirationTime({
-        tokenExpTime: envVars.REFRESH_EXP_TIME,
-      });
+      const userWithoutSensitiveData = await addUserToDatabase(
+        userInfo,
+        addUser
+      );
 
-      // Add user to the database and prepare response body
-      const user = await addUser(userInfo);
-      const { hashedPassword, ...userWithoutSensitiveData } = user;
-      const responseBody = {
-        success: true,
-        user: userWithoutSensitiveData,
-        tokens: {
-          access: {
-            token: accessToken,
-            issuedAt: accessTokenIssueTime,
-            expiresIn: accessTokenExpirationTime,
-          },
-          refresh: {
-            token: refreshToken,
-            issuedAt: refreshTokenIssueTime,
-            expiresIn: refreshTokenExpirationTime,
-          },
-        },
-      };
+      const responseBody = prepareResponseBody(
+        userWithoutSensitiveData,
+        tokens
+      );
 
-      // Return success response
       const headers = { "Content-Type": "application/json" };
       const statusCode = 201;
       const body = responseBody;
       return { headers, statusCode, body };
     } catch (error) {
-      const errorHeaders = { "Content-Type": "application/json" };
       if (error instanceof Error) {
-        // Return error response
-        const errorStatusCode = 400;
-        const errorBody = {
-          success: false,
-          error: error.message,
-        };
-        return {
-          headers: errorHeaders,
-          statusCode: errorStatusCode,
-          body: errorBody,
-        };
-      } else {
-        logger.error(
-          `The postUser function failed due to an error.\n\t\t${error.stack}`
-        );
-        const unknownErrorStatusCode = 400;
-        const unknownErrorBody = {
-          success: false,
-          error:
-            "An error occurred while processing your request. Please try again later.",
-        };
-        return {
-          headers: errorHeaders,
-          statusCode: unknownErrorStatusCode,
-          body: unknownErrorBody,
-        };
+        return handleError(error, handleClientError);
       }
+      return handleError(error, handleServerError);
     }
   };
+
+  function checkRequiredEnvVars() {
+    const envVars = {};
+    for (const envVar of requiredEnvVars) {
+      if (!process.env[envVar]) {
+        const error = new Error(`${envVar} environment variable not set`);
+        logger.error(`${error.message}\n${error.stack}`);
+        throw new Error(`An unknown error occurred.`);
+      }
+      envVars[envVar] = process.env[envVar];
+    }
+    return envVars;
+  }
+
+  async function generateTokens(userInfo, envVars, generateToken) {
+    const accessToken = await generateAccessToken(
+      userInfo,
+      envVars,
+      generateToken
+    );
+    const refreshToken = await generateRefreshToken(
+      userInfo,
+      envVars,
+      generateToken
+    );
+    return {
+      ...accessToken,
+      ...refreshToken,
+    };
+  }
+
+  async function generateAccessToken(userInfo, envVars, generateToken) {
+    const accessPayload = {
+      userId: userInfo.id,
+      email: userInfo.email,
+    };
+    const accessToken = await generateToken({
+      payload: accessPayload,
+      tokenKey: envVars.ACCESS_KEY,
+      tokenExpTime: envVars.ACCESS_EXP_TIME,
+    });
+    const accessTokenIssueTime = new Date().toUTCString();
+    const accessTokenExpirationTime = await calculateTokenExpirationTime(
+      envVars.ACCESS_EXP_TIME
+    );
+    return {
+      accessToken,
+      accessTokenIssueTime,
+      accessTokenExpirationTime,
+    };
+  }
+
+  async function generateRefreshToken(userInfo, envVars, generateToken) {
+    const refreshPayload = {
+      userId: userInfo.id,
+    };
+    const refreshToken = await generateToken({
+      payload: refreshPayload,
+      tokenKey: envVars.REFRESH_KEY,
+      tokenExpTime: envVars.REFRESH_EXP_TIME,
+    });
+    const refreshTokenIssueTime = new Date().toUTCString();
+    const refreshTokenExpirationTime = await calculateTokenExpirationTime(
+      envVars.REFRESH_EXP_TIME
+    );
+    return {
+      refreshToken,
+      refreshTokenIssueTime,
+      refreshTokenExpirationTime,
+    };
+  }
+
+  async function calculateTokenExpirationTime(tokenExpTime) {
+    return await getExpirationTime({tokenExpTime});
+  }
+
+  async function addUserToDatabase(userInfo, addUser) {
+    const user = await addUser(userInfo);
+    const { hashedPassword, ...userWithoutSensitiveData } = user;
+    return userWithoutSensitiveData;
+  }
+
+  function prepareResponseBody(userWithoutSensitiveData, tokens) {
+    const responseBody = {
+      success: true,
+      user: userWithoutSensitiveData,
+      tokens: {
+        access: {
+          token: tokens.accessToken,
+          issuedAt: tokens.accessTokenIssueTime,
+          expiresIn: tokens.accessTokenExpirationTime,
+        },
+        refresh: {
+          token: tokens.refreshToken,
+          issuedAt: tokens.refreshTokenIssueTime,
+          expiresIn: tokens.refreshTokenExpirationTime,
+        },
+      },
+    };
+    return responseBody;
+  }
+
+  function handleError(error, errorHandler) {
+    return errorHandler(error);
+  }
+
+  function handleClientError(error) {
+    const headers = { "Content-Type": "application/json" };
+    const statusCode = 400;
+    const message = error.message;
+    const body = { success: false, error: message };
+    return { headers, statusCode, body };
+  }
+
+  function handleServerError(error) {
+    const headers = { "Content-Type": "application/json" };
+    const statusCode = 500;
+    const message =
+      "An error occurred while processing your request. Please try again later.";
+    const body = { success: false, error: message };
+    logger.error(
+      `An unknown error occurred while processing a request.\n\t\t${error.stack}`
+    );
+    return { headers, statusCode, body };
+  }
 }

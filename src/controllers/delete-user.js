@@ -2,44 +2,84 @@ import logger from "../logger/index.js";
 
 export default function makeDeleteUser({ removeUser }) {
   return async function deleteUser(httpRequest) {
-    const headers = { "Content-Type": "application/json" };
     const requestId = httpRequest.query.id;
-    const { valid } = httpRequest;
 
     try {
-      if (valid === false) {
-        throw new Error("You do not have permission to perform this action");
-      }
-      const { userId } = httpRequest.user;
-
-      if (requestId != userId) {
+      const isAuthorized = authorizeUser(httpRequest);
+      if (!isAuthorized) {
         throw new Error("You do not have permission to perform this action");
       }
 
       const deletedCount = await removeUser({ id: requestId });
-
-      const statusCode = deletedCount ? 200 : 404;
-      const message = deletedCount
-        ? "User deleted successfully"
-        : "User not found";
-      const body = { success: true, message };
-
-      return { headers, statusCode, body };
-    } catch (error) {
-      const statusCode = error instanceof Error ? 400 : 500;
-      const message =
-        error instanceof Error
-          ? error.message
-          : "An error occurred while processing your request. Please try again later.";
-      const body = { success: false, error: message };
-
-      if (!(error instanceof Error)) {
-        logger.error(
-          `The deleteUser function failed due to an error.\n\t\t${error.stack}`
-        );
+      if (deletedCount == 0) {
+        return createNotFoundResponse();
       }
-
-      return { headers, statusCode, body };
+      return createSuccessResponse();
+    } catch (error) {
+      if (error instanceof Error) {
+        return handleError(error, handleClientError);
+      }
+      return handleError(error, handleServerError);
     }
   };
+
+  function authorizeUser(httpRequest) {
+    const requestId = httpRequest.query.id;
+    const { valid } = httpRequest;
+    if (valid === false) {
+      return false;
+    }
+
+    const { userId } = httpRequest.user;
+    if (requestId != userId) {
+      return false;
+    }
+    return true;
+  }
+
+  function createSuccessResponse() {
+    const response = {
+      success: true,
+      message: "User deleted successfully",
+    };
+    return createHttpResponse(200, response);
+  }
+
+  function createNotFoundResponse() {
+    const response = {
+      success: false,
+      message: "User not found",
+    };
+    return createHttpResponse(404, response);
+  }
+
+  function createHttpResponse(statusCode, message) {
+    const headers = { "Content-Type": "application/json" };
+    const body = message;
+    return { headers, statusCode, body };
+  }
+
+  function handleError(error, errorHandler) {
+    return errorHandler(error);
+  }
+
+  function handleClientError(error) {
+    const statusCode = 400;
+    const message = error.message;
+    const body = { success: false, error: message };
+    const headers = { "Content-Type": "application/json" };
+    return { headers, statusCode, body };
+  }
+
+  function handleServerError(error) {
+    const statusCode = 500;
+    const message =
+      "An error occurred while processing your request. Please try again later.";
+    const body = { success: false, error: message };
+    const headers = { "Content-Type": "application/json" };
+    logger.error(
+      `The deleteUser function failed due to an error.\n\t\t${error.stack}`
+    );
+    return { headers, statusCode, body };
+  }
 }

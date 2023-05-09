@@ -11,7 +11,7 @@ import makeTokens from "../tokens/index.js";
 import makeDeleteUser from "./delete-user.js";
 import makeGetUser from "./get-user.js";
 import makeLoginUser from "./login-user.js";
-import makeVerifyUser from "./verify-user.js";
+import verifyUser from "./verify-user.js";
 import makePatchUserName from "./patch-user-name.js";
 import makePatchUserPassword from "./patch-user-password.js";
 import makePostUser from "./post-user.js";
@@ -29,7 +29,7 @@ const userController = Object.freeze({
     verifyToken: makeTokens.verifyToken,
     removeUser,
   }),
-  verifyUser: makeVerifyUser({ verifyToken: makeTokens.verifyToken }),
+  verifyUser,
 
   getUser: makeGetUser({ findUser }),
 

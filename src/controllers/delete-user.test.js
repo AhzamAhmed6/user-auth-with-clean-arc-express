@@ -51,7 +51,7 @@ describe("deleteUser", () => {
     const expectedResponse = {
       headers: { "Content-Type": "application/json" },
       statusCode: 404,
-      body: { success: true, message: "User not found" },
+      body: { success: false, message: "User not found" },
     };
 
     const actualResponse = await deleteUser(httpRequest);
