@@ -9,10 +9,11 @@ describe("Delete User Controller", () => {
       query: {
         id: user.id,
       },
+      user: {UserId: user.id}
     };
     const deleteUser = makeDeleteUser({ removeUser: (c) => c });
     const actual = await deleteUser(deleteRequest);
-
+ 
     const expected = {
       headers: { "Content-Type": "application/json" },
       statusCode: 200,
