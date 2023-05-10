@@ -22,62 +22,62 @@ export default function makeDeleteUser({ removeUser }) {
       return handleError(error, handleServerError);
     }
   };
+}
 
-  function authorizeUser(httpRequest) {
-    const requestId = httpRequest.query.id;
-    const { user } = httpRequest;
-    if (user === false) {
-      return false;
-    }
-    if (requestId != user.userId) {
-      return false;
-    }
-    return true;
+function authorizeUser(httpRequest) {
+  const requestId = httpRequest.query.id;
+  const { user } = httpRequest;
+  if (user === false) {
+    return false;
   }
+  if (requestId != user.userId) {
+    return false;
+  }
+  return true;
+}
 
-  function createSuccessResponse() {
-    const response = {
-      success: true,
-      message: "User deleted successfully",
-    };
-    return createHttpResponse(200, response);
-  }
+function createSuccessResponse() {
+  const response = {
+    success: true,
+    message: "User deleted successfully",
+  };
+  return createHttpResponse(200, response);
+}
 
-  function createNotFoundResponse() {
-    const response = {
-      success: false,
-      message: "User not found",
-    };
-    return createHttpResponse(404, response);
-  }
+function createNotFoundResponse() {
+  const response = {
+    success: false,
+    message: "User not found",
+  };
+  return createHttpResponse(404, response);
+}
 
-  function createHttpResponse(statusCode, message) {
-    const headers = { "Content-Type": "application/json" };
-    const body = message;
-    return { headers, statusCode, body };
-  }
+function createHttpResponse(statusCode, message) {
+  const headers = { "Content-Type": "application/json" };
+  const body = message;
+  return { headers, statusCode, body };
+}
 
-  function handleError(error, errorHandler) {
-    return errorHandler(error);
-  }
+function handleError(error, errorHandler) {
+  return errorHandler(error);
+}
 
-  function handleClientError(error) {
-    const statusCode = 400;
-    const message = error.message;
-    const body = { success: false, error: message };
-    const headers = { "Content-Type": "application/json" };
-    return { headers, statusCode, body };
-  }
+function handleClientError(error) {
+  const statusCode = 400;
+  const { message } = error;
+  const body = { success: false, error: message };
+  const headers = { "Content-Type": "application/json" };
+  return { headers, statusCode, body };
+}
 
-  function handleServerError(error) {
-    const statusCode = 500;
-    const message =
-      "An error occurred while processing your request. Please try again later.";
-    const body = { success: false, error: message };
-    const headers = { "Content-Type": "application/json" };
-    logger.error(
-      `The deleteUser function failed due to an error.\n\t\t${error.stack}`
-    );
-    return { headers, statusCode, body };
-  }
+function handleServerError(error) {
+  const statusCode = 500;
+  const message =
+    "An error occurred while processing your request. Please try again later.";
+  const body = { success: false, error: message };
+  const headers = { "Content-Type": "application/json" };
+  logger.error(
+    `The deleteUser function failed due to an error.\n\t\t${error.stack}`
+  );
+  return { headers, statusCode, body };
 }

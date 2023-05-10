@@ -1,6 +1,7 @@
 import makeDb from "../../__test__/fixtures/db";
 import makeFakeUser from "../../__test__/fixtures/user";
 import makeUsersDb from "../data-access/user-db";
+import makeUser from "../user/index.js";
 import makeAddUser from "./add-user";
 import makeEditUserName from "./edit-user-name";
 
@@ -43,7 +44,7 @@ describe("edit user names", () => {
 
   it("change first and last name", async () => {
     const fakeUser = makeFakeUser();
-    const addUser = makeAddUser({ usersDb });
+    const addUser = makeAddUser({ makeUser, usersDb });
     const inserted = await addUser(fakeUser);
     inserted.firstName = "Ahzam";
     inserted.lastName = "Ahmed";

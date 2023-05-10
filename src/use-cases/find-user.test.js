@@ -1,6 +1,7 @@
 import makeDb from "../../__test__/fixtures/db";
 import makeFakeUser from "../../__test__/fixtures/user";
 import makeUsersDb from "../data-access/user-db";
+import makeUser from "../user/index.js";
 import makeAddUser from "./add-user";
 import makeFindUser from "./find-user";
 
@@ -18,7 +19,7 @@ describe("find user", () => {
   it("find the inserted user by its id", async () => {
     //------Insert User In Db-------------
     const fakeUser = makeFakeUser();
-    const addUser = makeAddUser({ usersDb });
+    const addUser = makeAddUser({ makeUser, usersDb });
     await addUser(fakeUser);
     const id = fakeUser.id;
 
@@ -35,7 +36,7 @@ describe("find user", () => {
   it("find the inserted user by its email", async () => {
     //------Insert User In Db-------------
     const fakeUser = makeFakeUser();
-    const addUser = makeAddUser({ usersDb });
+    const addUser = makeAddUser({ makeUser, usersDb });
     await addUser(fakeUser);
     const email = fakeUser.email;
 

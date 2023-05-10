@@ -1,9 +1,10 @@
 import makeDb from "../../__test__/fixtures/db";
 import makeFakeUser from "../../__test__/fixtures/user";
 import makeUsersDb from "../data-access/user-db";
+import handlePassword from "../password";
+import makeUser from "../user/index.js";
 import makeAddUser from "./add-user";
 import makeEditUserPassword from "./edit-user-password";
-import handlePassword from "../password";
 
 describe("edit user password", () => {
   let usersDb;
@@ -57,7 +58,7 @@ describe("edit user password", () => {
 
     const fakeUser = makeFakeUser();
 
-    const addUser = makeAddUser({ usersDb });
+    const addUser = makeAddUser({ makeUser, usersDb });
     const inserted = await addUser(fakeUser);
     inserted.oldPassword = "Old-Password";
     inserted.newPassword = "New-Password";
@@ -71,7 +72,7 @@ describe("edit user password", () => {
     // ------------Insert User in DB----------
     const fakeUser = makeFakeUser();
 
-    const addUser = makeAddUser({ usersDb });
+    const addUser = makeAddUser({ makeUser, usersDb });
     const inserted = await addUser(fakeUser);
 
     // ------------Change user's new Password--------

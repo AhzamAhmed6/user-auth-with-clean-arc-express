@@ -16,14 +16,24 @@ import makePatchUserName from "./patch-user-name.js";
 import makePatchUserPassword from "./patch-user-password.js";
 import makePostUser from "./post-user.js";
 import notFound from "./not-found.js";
+
+const requiredEnvVars = [
+  "ACCESS_KEY",
+  "ACCESS_EXP_TIME",
+  "REFRESH_KEY",
+  "REFRESH_EXP_TIME",
+];
+
 const userController = Object.freeze({
   postUser: makePostUser({
     addUser,
     ...makeTokens,
+    requiredEnvVars,
   }),
   loginUser: makeLoginUser({
     authenticateUser,
     ...makeTokens,
+    requiredEnvVars,
   }),
   deleteUser: makeDeleteUser({
     verifyToken: makeTokens.verifyToken,

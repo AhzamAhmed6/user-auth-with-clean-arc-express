@@ -1,6 +1,7 @@
 import makeDb from "../../__test__/fixtures/db";
 import makeFakeUser from "../../__test__/fixtures/user";
 import makeUsersDb from "../data-access/user-db";
+import makeUser from "../user/index.js";
 import makeAddUser from "./add-user";
 
 describe("add user", () => {
@@ -9,7 +10,7 @@ describe("add user", () => {
 
   it("inserts users in the database", async () => {
     const fakeUser = makeFakeUser();
-    const addUser = makeAddUser({ usersDb });
+    const addUser = makeAddUser({ makeUser, usersDb });
     const inserted = await addUser(fakeUser);
     delete inserted.hashedPassword;
     delete fakeUser.password;
@@ -19,7 +20,7 @@ describe("add user", () => {
 
   it("users already present in the database", async () => {
     var fakeUser = makeFakeUser();
-    const addUser = makeAddUser({ usersDb });
+    const addUser = makeAddUser({ makeUser, usersDb });
     var inserted = await addUser(fakeUser);
 
     fakeUser = makeFakeUser();

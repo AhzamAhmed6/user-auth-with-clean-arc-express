@@ -1,6 +1,7 @@
 import makeDb from "../../__test__/fixtures/db";
 import makeFakeUser from "../../__test__/fixtures/user";
 import makeUserDb from "../data-access/user-db";
+import makeUser from "../user/index.js";
 import makeAddUser from "./add-user";
 import makeRemoveUser from "./remove-user";
 
@@ -12,7 +13,7 @@ describe("remove User", () => {
     const fakeUser1 = makeFakeUser();
     const fakeUser2 = makeFakeUser();
 
-    const addUser = makeAddUser({ usersDb });
+    const addUser = makeAddUser({ makeUser, usersDb });
 
     const inserted1 = await addUser(fakeUser1);
     const inserted2 = await addUser(fakeUser2);

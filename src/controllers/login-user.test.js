@@ -1,5 +1,12 @@
 import makeLoginUser from "./login-user";
 
+const requiredEnvVars = [
+  "ACCESS_KEY",
+  "ACCESS_EXP_TIME",
+  "REFRESH_KEY",
+  "REFRESH_EXP_TIME",
+];
+
 describe("loginUser", () => {
   test("makeLoginUser returns a success response when given valid user credentials", async () => {
     // Arrange
@@ -47,6 +54,7 @@ describe("loginUser", () => {
       authenticateUser,
       generateToken,
       getExpirationTime,
+      requiredEnvVars,
     });
     const actualResponse = await loginUser(httpRequest);
 
@@ -97,6 +105,7 @@ describe("loginUser", () => {
       authenticateUser,
       generateToken,
       getExpirationTime,
+      requiredEnvVars,
     });
     const actualResponse = await loginUser(httpRequest);
 
@@ -122,6 +131,7 @@ describe("loginUser", () => {
       authenticateUser,
       generateToken,
       getExpirationTime,
+      requiredEnvVars,
     });
     const httpRequest = {
       body: { email: "test@example.com", password: "password" },

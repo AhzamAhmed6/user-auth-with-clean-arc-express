@@ -1,5 +1,12 @@
 import makePostUser from "./post-user";
 
+const requiredEnvVars = [
+  "ACCESS_KEY",
+  "ACCESS_EXP_TIME",
+  "REFRESH_KEY",
+  "REFRESH_EXP_TIME",
+];
+
 describe("postUser", () => {
   it("should return a success response with the user object and tokens", async () => {
     const mockAddUser = jest.fn(() => ({
@@ -14,6 +21,7 @@ describe("postUser", () => {
     const postUser = makePostUser({
       addUser: mockAddUser,
       ...mockMakeTokens,
+      requiredEnvVars,
     });
     const httpRequest = {
       body: {
@@ -66,6 +74,7 @@ describe("postUser", () => {
     const postUser = makePostUser({
       addUser: mockAddUser,
       ...mockMakeTokens,
+      requiredEnvVars,
     });
     const httpRequest = {
       body: {},

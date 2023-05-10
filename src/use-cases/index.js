@@ -1,13 +1,14 @@
 import usersDb from "../data-access/index.js";
+import handlePassword from "../password/index.js";
+import makeUser from "../user/index.js";
 import makeAddUser from "./add-user.js";
-import makeRemoveUser from "./remove-user.js";
+import makeAuthenticateUser from "./authenticate-user.js";
 import makeEditUserName from "./edit-user-name.js";
 import makeEditUserPassword from "./edit-user-password.js";
 import makeFindUser from "./find-user.js";
-import handlePassword from "../password/index.js";
-import makeAuthenticateUser from "./authenticate-user.js";
+import makeRemoveUser from "./remove-user.js";
 
-const addUser = makeAddUser({ usersDb });
+const addUser = makeAddUser({ makeUser, makeUser, usersDb });
 const authenticateUser = makeAuthenticateUser({
   usersDb,
   verifyPassword: handlePassword.verifyPassword,
@@ -32,6 +33,6 @@ export {
   authenticateUser,
   editUserName,
   editUserPassword,
-  removeUser,
   findUser,
+  removeUser,
 };
