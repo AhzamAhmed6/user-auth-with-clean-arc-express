@@ -116,9 +116,8 @@ export default function makeLoginUser({
   }
 
   async function calculateTokenExpirationTime(tokenExpTime) {
-    return await getExpirationTime({tokenExpTime});
+    return await getExpirationTime({ tokenExpTime });
   }
-  
 
   function prepareResponseBody(userWithoutSensitiveData, tokens) {
     const responseBody = {

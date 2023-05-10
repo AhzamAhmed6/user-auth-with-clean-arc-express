@@ -17,9 +17,6 @@ export default function makeExpressCallback(controller) {
     if (req.user != undefined) {
       httpRequest.user = req.user;
     }
-    if (req.valid != undefined) {
-      httpRequest.valid = req.valid;
-    }
     try {
       const httpResponse = await controller(httpRequest);
       const headers = httpResponse.headers || {};

@@ -21,7 +21,6 @@ describe("deleteUser", () => {
     const httpRequest = {
       query: { id: "123" },
       user: { userId: "456" },
-      valid: true,
     };
     const expectedResponse = {
       headers: { "Content-Type": "application/json" },
@@ -46,7 +45,6 @@ describe("deleteUser", () => {
     const httpRequest = {
       query: { id: "123" },
       user: { userId: "123" },
-      valid: true,
     };
     const expectedResponse = {
       headers: { "Content-Type": "application/json" },
@@ -67,7 +65,6 @@ describe("deleteUser", () => {
     const httpRequest = {
       query: { id: "123" },
       user: { userId: "123" },
-      valid: true,
     };
     const expectedResponse = {
       headers: { "Content-Type": "application/json" },
@@ -86,7 +83,6 @@ describe("deleteUser", () => {
     const httpRequest = {
       query: { id: "123" },
       user: { userId: "456" },
-      valid: true,
     };
     const removeUser = jest.fn().mockRejectedValueOnce(error);
     const deleteUser = makeDeleteUser({ verifyToken: jest.fn(), removeUser });
@@ -102,7 +98,7 @@ describe("deleteUser", () => {
     const error = new Error("Invalid input.");
     const httpRequest = {
       query: { id: "123" },
-      valid: false,
+      user: false,
     };
     const removeUser = jest.fn().mockRejectedValueOnce(error);
     const deleteUser = makeDeleteUser({ verifyToken: jest.fn(), removeUser });

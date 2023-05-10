@@ -25,13 +25,11 @@ export default function makeDeleteUser({ removeUser }) {
 
   function authorizeUser(httpRequest) {
     const requestId = httpRequest.query.id;
-    const { valid } = httpRequest;
-    if (valid === false) {
+    const { user } = httpRequest;
+    if (user === false) {
       return false;
     }
-
-    const { userId } = httpRequest.user;
-    if (requestId != userId) {
+    if (requestId != user.userId) {
       return false;
     }
     return true;

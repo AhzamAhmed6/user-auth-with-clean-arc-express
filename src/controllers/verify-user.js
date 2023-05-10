@@ -1,26 +1,28 @@
 import logger from "../logger/index.js";
+
 export default function makeVerifyUser({ findUser }) {
   return async function verifyUser(httpRequest) {
     const headers = {
       "Content-Type": "application/json",
     };
-    const { valid } = httpRequest;
 
     try {
-      if (valid === false) {
+      let { user } = httpRequest;
+
+      if (user === false) {
         return {
           headers,
-          statusCode: 200,
+          statusCode: 400,
           body: { valid },
         };
       }
       const { userId } = httpRequest.user;
 
-      const user = findUser({ id: userId });
+      user = await findUser({ id: userId });
       if (user === undefined) {
         return {
           headers,
-          statusCode: 200,
+          statusCode: 400,
           body: { valid: false },
         };
       }
@@ -30,6 +32,15 @@ export default function makeVerifyUser({ findUser }) {
         body: { valid: true },
       };
     } catch (error) {
+      if (error instanceof Error) {
+        const statusCode = 400;
+
+        return {
+          headers,
+          statusCode,
+          body: { valid: false },
+        };
+      }
       logger.error(
         `The verifyUser function failed due to an error.\n\t\t${error.stack}`
       );
@@ -39,18 +50,8 @@ export default function makeVerifyUser({ findUser }) {
         error:
           "An error occurred while processing your request. Please try again later.",
       };
-
-      let statusCode = 500;
-      if (error instanceof Error) {
-        statusCode = 400;
-        responseBody.valid = false;
-      }
-
-      return {
-        headers,
-        statusCode,
-        body: responseBody,
-      };
+      const statusCode = 500;
+      return { headers, statusCode, responseBody };
     }
   };
 }

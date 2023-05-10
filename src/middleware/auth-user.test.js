@@ -97,7 +97,6 @@ describe("makeAuthUser middleware", () => {
     );
 
     expect(httpRequest.user).toEqual({ name: "John" });
-    expect(httpRequest.valid).toEqual(true);
     expect(nextFunction).toHaveBeenCalled();
     expect(verifyToken).toHaveBeenCalledWith({
       token: "ValidToken",

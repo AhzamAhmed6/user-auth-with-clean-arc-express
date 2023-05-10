@@ -118,7 +118,7 @@ export default function makePostUser({
   }
 
   async function calculateTokenExpirationTime(tokenExpTime) {
-    return await getExpirationTime({tokenExpTime});
+    return await getExpirationTime({ tokenExpTime });
   }
 
   async function addUserToDatabase(userInfo, addUser) {
