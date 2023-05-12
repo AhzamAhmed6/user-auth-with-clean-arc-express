@@ -1,12 +1,10 @@
 import Id from "../Id/index.js";
-import buildMakeUser from "./user.js";
 import handlePassword from "../password/index.js";
+import buildMakeUser from "./user.js";
+import validateInputs from "./validate-inputs.js";
 
-const dependencies = {
-  Id: Id,
-  hashPassword: handlePassword.hashPassword,
-};
+const { hashPassword } = handlePassword;
 
-const makeUser = buildMakeUser(dependencies);
+const makeUser = buildMakeUser({ Id, hashPassword, validateInputs });
 
 export default makeUser;
