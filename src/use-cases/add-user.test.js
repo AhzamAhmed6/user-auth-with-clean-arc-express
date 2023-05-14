@@ -1,16 +1,23 @@
-import makeDb from "../../__test__/fixtures/db";
 import makeFakeUser from "../../__test__/fixtures/user";
-import makeUsersDb from "../data-access/user-db";
-import makeUser from "../user/index.js";
 import makeAddUser from "./add-user";
+import makeUser from "../user";
+import addUserDependencies from "../helper/add-user.helper";
+
+const { formatUser, handleError } = addUserDependencies;
 
 describe("add user", () => {
-  let usersDb;
-  beforeAll(() => (usersDb = makeUsersDb({ makeDb })));
-
   it("inserts users in the database", async () => {
+    const checkUserExists = jest.fn(() => null);
+    const insertUser = jest.fn((userInfo) => userInfo);
+
     const fakeUser = makeFakeUser();
-    const addUser = makeAddUser({ makeUser, usersDb });
+    const addUser = makeAddUser({
+      makeUser,
+      checkUserExists,
+      formatUser,
+      insertUser,
+      handleError,
+    });
     const inserted = await addUser(fakeUser);
     delete inserted.hashedPassword;
     delete fakeUser.password;
@@ -19,18 +26,23 @@ describe("add user", () => {
   });
 
   it("users already present in the database", async () => {
-    var fakeUser = makeFakeUser();
-    const addUser = makeAddUser({ makeUser, usersDb });
-    var inserted = await addUser(fakeUser);
+    const checkUserExists = jest.fn(() => {
+      throw new Error(
+        "Unable to register user. The provided email address is already associated with an existing account."
+      );
+    });
+    const insertUser = jest.fn((userInfo) => userInfo);
 
-    fakeUser = makeFakeUser();
-    fakeUser.id = inserted.id;
-    await expect(addUser(fakeUser)).rejects.toThrow(
-      "Unable to register user. The provided email address is already associated with an existing account."
-    );
+    const addUser = makeAddUser({
+      makeUser,
+      checkUserExists,
+      formatUser,
+      insertUser,
+      handleError,
+    });
 
-    fakeUser = makeFakeUser();
-    fakeUser.email = inserted.email;
+    const fakeUser = makeFakeUser();
+
     await expect(addUser(fakeUser)).rejects.toThrow(
       "Unable to register user. The provided email address is already associated with an existing account."
     );

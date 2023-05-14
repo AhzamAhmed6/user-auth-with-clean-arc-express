@@ -7,8 +7,9 @@ import makeEditUserName from "./edit-user-name.js";
 import makeEditUserPassword from "./edit-user-password.js";
 import makeFindUser from "./find-user.js";
 import makeRemoveUser from "./remove-user.js";
+import addUserDependencies from "../helper/add-user.helper.js";
 
-const addUser = makeAddUser({ makeUser, makeUser, usersDb });
+const addUser = makeAddUser({ makeUser, ...addUserDependencies });
 const authenticateUser = makeAuthenticateUser({
   usersDb,
   verifyPassword: handlePassword.verifyPassword,
