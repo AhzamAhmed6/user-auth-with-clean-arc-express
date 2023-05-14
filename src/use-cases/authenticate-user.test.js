@@ -57,9 +57,9 @@ describe("authenticate user", () => {
 
   it("check the respones if user not found", async () => {
     const fakeUser = makeFakeUser();
-    const checkUserExists = jest.fn(
-      () => { throw new "User not found. Please check the provided details and try again." }
-    );
+    const checkUserExists = jest.fn(() => {
+      throw new "User not found. Please check the provided details and try again."();
+    });
     const authenticateUser = makeAuthenticateUser({
       checkUserExists,
       matchPassword,

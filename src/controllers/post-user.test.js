@@ -1,27 +1,36 @@
 import makePostUser from "./post-user";
+import postUserDependencies from "../controller-helper/post-user.helper";
 
-const requiredEnvVars = [
-  "ACCESS_KEY",
-  "ACCESS_EXP_TIME",
-  "REFRESH_KEY",
-  "REFRESH_EXP_TIME",
-];
+const { addUserToDatabase, prepareResponseBody, handleError } =
+  postUserDependencies;
 
 describe("postUser", () => {
-  it("should return a success response with the user object and tokens", async () => {
-    const mockAddUser = jest.fn(() => ({
-      id: "123",
-      name: "John Doe",
-      email: "johndoe@example.com",
-    }));
-    const mockMakeTokens = {
-      generateToken: jest.fn(() => "token"),
-      getExpirationTime: jest.fn(() => 3600),
-    };
+  it("post a user into Database", async () => {
+    const fixedDate = new Date(Date.UTC(2022, 0, 1, 12, 0, 0));
+    const fixedUTCString = fixedDate.toUTCString();
+    const addUserToDatabase = jest.fn((userInfo) => {
+      delete userInfo.password;
+      userInfo.createdOn = fixedUTCString;
+      userInfo.modifiedOn = fixedUTCString;
+      return userInfo;
+    });
+    const generateTokens = jest.fn(() => {
+      {
+        return {
+          accessToken: "accessToken",
+          accessTokenIssueTime: "Mon, 15 May 2023 17:28:20 GMT",
+          accessTokenExpirationTime: "Sun, 04 Jun 2023 17:28:20 GMT",
+          refreshToken: "refreshToken",
+          refreshTokenIssueTime: "Mon, 15 May 2023 17:28:20 GMT",
+          refreshTokenExpirationTime: "Tue, 14 May 2024 17:28:20 GMT",
+        };
+      }
+    });
     const postUser = makePostUser({
-      addUser: mockAddUser,
-      ...mockMakeTokens,
-      requiredEnvVars,
+      generateTokens,
+      addUserToDatabase,
+      prepareResponseBody,
+      handleError,
     });
     const httpRequest = {
       body: {
@@ -31,12 +40,9 @@ describe("postUser", () => {
         password: "password",
       },
     };
-    const expectedAccessTokenExpTimeInSeconds = 3600;
-    const expectedRefreshTokenExpTimeInSeconds = 3600;
+    const response = await postUser(httpRequest);
     const expectedResponse = {
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       statusCode: 201,
       body: {
         success: true,
@@ -44,52 +50,63 @@ describe("postUser", () => {
           id: "123",
           name: "John Doe",
           email: "johndoe@example.com",
+          createdOn: "Sat, 01 Jan 2022 12:00:00 GMT",
+          modifiedOn: "Sat, 01 Jan 2022 12:00:00 GMT",
         },
         tokens: {
           access: {
-            token: "token",
-            issuedAt: new Date(Date.now()).toUTCString(),
-            expiresIn: expectedAccessTokenExpTimeInSeconds,
+            token: "accessToken",
+            issuedAt: "Mon, 15 May 2023 17:28:20 GMT",
+            expiresIn: "Sun, 04 Jun 2023 17:28:20 GMT",
           },
           refresh: {
-            token: "token",
-            issuedAt: new Date(Date.now()).toUTCString(),
-            expiresIn: expectedRefreshTokenExpTimeInSeconds,
+            token: "refreshToken",
+            issuedAt: "Mon, 15 May 2023 17:28:20 GMT",
+            expiresIn: "Tue, 14 May 2024 17:28:20 GMT",
           },
         },
       },
     };
-    const actualResponse = await postUser(httpRequest);
-    expect(actualResponse).toEqual(expectedResponse);
+    expect(response).toMatchObject(expectedResponse);
   });
 
-  it("should return a failure response with an error message", async () => {
-    const mockAddUser = jest.fn(() => {
-      throw new Error("Failed to add user.");
+  it("post a user with incomplete Information", async () => {
+    const generateTokens = jest.fn(() => {
+      {
+        return {
+          accessToken: "accessToken",
+          accessTokenIssueTime: "Mon, 15 May 2023 17:28:20 GMT",
+          accessTokenExpirationTime: "Sun, 04 Jun 2023 17:28:20 GMT",
+          refreshToken: "refreshToken",
+          refreshTokenIssueTime: "Mon, 15 May 2023 17:28:20 GMT",
+          refreshTokenExpirationTime: "Tue, 14 May 2024 17:28:20 GMT",
+        };
+      }
     });
-    const mockMakeTokens = {
-      generateToken: jest.fn(() => "token"),
-      getExpirationTime: jest.fn(() => 3600),
-    };
     const postUser = makePostUser({
-      addUser: mockAddUser,
-      ...mockMakeTokens,
-      requiredEnvVars,
+      generateTokens,
+      addUserToDatabase,
+      prepareResponseBody,
+      handleError,
     });
     const httpRequest = {
-      body: {},
-    };
-    const expectedResponse = {
-      headers: {
-        "Content-Type": "application/json",
+      body: {
+        id: "cjld2cjxh0006qzrmn831i7rn",
+        firstName: "John",
+        lastName: "Doe",
+        email: "johndoe@example.com",
       },
+    };
+    const response = await postUser(httpRequest);
+    const expectedResponse = {
+      headers: { "Content-Type": "application/json" },
       statusCode: 400,
       body: {
         success: false,
-        error: "Failed to add user.",
+        error:
+          "All fields are required. Please provide complete information for the user",
       },
     };
-    const actualResponse = await postUser(httpRequest);
-    expect(actualResponse).toEqual(expectedResponse);
+    expect(response).toMatchObject(expectedResponse);
   });
 });

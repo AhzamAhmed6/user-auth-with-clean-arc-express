@@ -1,3 +1,5 @@
+import Id from "../Id/index.js";
+
 function makeValidateInputs({
   validateId,
   validateRequiredFields,
@@ -44,7 +46,6 @@ function validatePassword({ password }) {
   }
 }
 
-import Id from "../Id/index.js";
 const validateId = makeValidateId({ Id });
 const validateInputs = makeValidateInputs({
   validateId,
