@@ -1,34 +1,16 @@
-export default function makeFindUser({ usersDb }) {
+export default function makeFindUser({
+  validateInput,
+  findUserById,
+  findUserByEmail,
+}) {
   return async function findUser({ id, email }) {
     validateInput({ id, email });
 
     if (id) {
-      return findUserById({ id, usersDb });
+      return findUserById({ id });
     }
     if (email) {
-      return findUserByEmail({ email, usersDb });
+      return findUserByEmail({ email });
     }
   };
-}
-
-function validateInput({ id, email }) {
-  if (!id && !email) {
-    throw new Error("Provide id or email");
-  }
-}
-
-async function findUserById({ id, usersDb }) {
-  const exists = await usersDb.findById({ id: id });
-  if (!exists) {
-    throw new Error("User not found.");
-  }
-  return exists;
-}
-
-async function findUserByEmail({ email, usersDb }) {
-  const exists = await usersDb.findByEmail({ email: email });
-  if (!exists) {
-    throw new Error("User not found.");
-  }
-  return exists;
 }
