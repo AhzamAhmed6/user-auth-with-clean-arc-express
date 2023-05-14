@@ -1,7 +1,7 @@
 import makeFakeUser from "../../__test__/fixtures/user";
 import makeAddUser from "./add-user";
 import makeUser from "../user";
-import addUserDependencies from "../helper/add-user.helper";
+import addUserDependencies from "../use-case-helper/add-user.helper.js";
 
 const { formatUser, handleError } = addUserDependencies;
 

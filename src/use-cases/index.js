@@ -6,10 +6,10 @@ import makeEditUserName from "./edit-user-name.js";
 import makeEditUserPassword from "./edit-user-password.js";
 import makeFindUser from "./find-user.js";
 import makeRemoveUser from "./remove-user.js";
-import addUserDependencies from "../helper/add-user.helper.js";
-import authenticateUserDependencies from "../helper/authenticate-user.helper.js";
-import findUserDependencies from "../helper/find-user.helper.js";
-import removeUserDependencies from "../helper/remove-user.helper.js";
+import addUserDependencies from "../use-case-helper/add-user.helper.js";
+import authenticateUserDependencies from "../use-case-helper/authenticate-user.helper.js";
+import findUserDependencies from "../use-case-helper/find-user.helper.js";
+import removeUserDependencies from "../use-case-helper/remove-user.helper.js";
 
 const addUser = makeAddUser({ makeUser, ...addUserDependencies });
 const authenticateUser = makeAuthenticateUser(authenticateUserDependencies);
