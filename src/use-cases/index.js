@@ -9,13 +9,15 @@ import makeRemoveUser from "./remove-user.js";
 import addUserDependencies from "../helper/add-user.helper.js";
 import authenticateUserDependencies from "../helper/authenticate-user.helper.js";
 import findUserDependencies from "../helper/find-user.helper.js";
+import removeUserDependencies from "../helper/remove-user.helper.js";
 
 const addUser = makeAddUser({ makeUser, ...addUserDependencies });
 const authenticateUser = makeAuthenticateUser(authenticateUserDependencies);
 const findUser = makeFindUser(findUserDependencies);
+const removeUser = makeRemoveUser(removeUserDependencies);
+
 const editUserName = makeEditUserName({ usersDb });
 const editUserPassword = makeEditUserPassword({ usersDb });
-const removeUser = makeRemoveUser({ usersDb });
 
 const userService = Object.freeze({
   addUser,

@@ -1,29 +1,30 @@
-import makeDb from "../../__test__/fixtures/db";
-import makeFakeUser from "../../__test__/fixtures/user";
-import makeUserDb from "../data-access/user-db";
-import makeUser from "../user/index.js";
-import makeAddUser from "./add-user";
+import removeUserDependencies from "../helper/remove-user.helper";
 import makeRemoveUser from "./remove-user";
 
+const { validateId } = removeUserDependencies;
+
 describe("remove User", () => {
-  let usersDb;
-  beforeAll(() => (usersDb = makeUserDb({ makeDb })));
   it("remove an inserted user from Db", async () => {
-    // -----------Add User------------------
-    const fakeUser1 = makeFakeUser();
-    const fakeUser2 = makeFakeUser();
+    const findUserById = jest.fn(() => null);
+    const deleteUser = jest.fn(() => 1);
+    const removeUser = makeRemoveUser({ validateId, findUserById, deleteUser });
+    const deleteCount = await removeUser({ id: "1234" });
+    expect(deleteCount).toBe(1);
+  });
 
-    const addUser = makeAddUser({ makeUser, usersDb });
+  it("remove a user that is not present in DB", async () => {
+    const findUserById = jest.fn(() => {
+      throw new Error("User not found.");
+    });
+    const deleteUser = jest.fn(() => 1);
+    const removeUser = makeRemoveUser({ validateId, findUserById, deleteUser });
+    await expect(removeUser({ id: "1234" })).rejects.toThrow("User not found.");
+  });
 
-    const inserted1 = await addUser(fakeUser1);
-    const inserted2 = await addUser(fakeUser2);
-
-    //-----------Remove User----------------
-    const removeUser = makeRemoveUser({ usersDb });
-
-    await expect(removeUser(inserted1)).resolves.toEqual(1);
-    await expect(removeUser(inserted1)).rejects.toThrow("User not found.");
-    await expect(removeUser(inserted2)).resolves.toEqual(1);
-    await expect(removeUser(inserted2)).rejects.toThrow("User not found.");
+  it("id not provided", async () => {
+    const findUserById = jest.fn(() => null);
+    const deleteUser = jest.fn(() => 0);
+    const removeUser = makeRemoveUser({ validateId, findUserById, deleteUser });
+    await expect(removeUser({})).rejects.toThrow("Plz provide Id");
   });
 });
