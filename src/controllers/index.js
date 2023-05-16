@@ -17,6 +17,7 @@ import makePatchUserPassword from "./patch-user-password.js";
 import makePostUser from "./post-user.js";
 import notFound from "./not-found.js";
 import postUserDependencies from "../controller-helper/post-user.helper.js";
+import loginUserDependencies from "../controller-helper/login-user.helper.js";
 
 const requiredEnvVars = [
   "ACCESS_KEY",
@@ -27,11 +28,7 @@ const requiredEnvVars = [
 
 const userController = Object.freeze({
   postUser: makePostUser(postUserDependencies),
-  loginUser: makeLoginUser({
-    authenticateUser,
-    ...makeTokens,
-    requiredEnvVars,
-  }),
+  loginUser: makeLoginUser({ authenticateUser, ...loginUserDependencies }),
   deleteUser: makeDeleteUser({
     verifyToken: makeTokens.verifyToken,
     removeUser,

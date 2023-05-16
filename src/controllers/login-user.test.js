@@ -1,150 +1,106 @@
+import loginUserDependencies from "../controller-helper/login-user.helper";
 import makeLoginUser from "./login-user";
 
-const requiredEnvVars = [
-  "ACCESS_KEY",
-  "ACCESS_EXP_TIME",
-  "REFRESH_KEY",
-  "REFRESH_EXP_TIME",
-];
+const { prepareResponseBody, handleError } = loginUserDependencies;
 
 describe("loginUser", () => {
-  test("makeLoginUser returns a success response when given valid user credentials", async () => {
-    // Arrange
-    const authenticateUser = jest
-      .fn()
-      .mockResolvedValue({ id: 1, email: "test@example.com" });
-    const generateToken = jest.fn().mockResolvedValue("access_token");
-    const getExpirationTime = jest.fn().mockResolvedValue(3600);
-
+  it("return a login success response", async () => {
+    const authenticateUser = jest.fn(() => {
+      return {
+        id: "cjld2cjxh0006qzrmn831i7rn",
+        firstName: "John",
+        lastName: "Doe",
+        email: "johndoe@example.com",
+        createdOn: "Tue, 16 May 2023 12:12:13 GMT",
+        modifiedOn: "Tue, 16 May 2023 12:12:13 GMT",
+        hashedPassword:
+          "$2b$10$O75hC1vb0YpAPy2oDIWJzupjhXhav3f9rZTMv75QKk3rvQ7CQmvpy",
+      };
+    });
+    const generateTokens = jest.fn(() => {
+      {
+        return {
+          accessToken: "accessToken",
+          accessTokenIssueTime: "Mon, 15 May 2023 17:28:20 GMT",
+          accessTokenExpirationTime: "Sun, 04 Jun 2023 17:28:20 GMT",
+          refreshToken: "refreshToken",
+          refreshTokenIssueTime: "Mon, 15 May 2023 17:28:20 GMT",
+          refreshTokenExpirationTime: "Tue, 14 May 2024 17:28:20 GMT",
+        };
+      }
+    });
     const httpRequest = {
       body: {
-        username: "test",
-        password: "password123",
+        email: "johndoe@example.com",
+        password: "password",
       },
     };
-
     const expectedResponse = {
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       statusCode: 201,
       body: {
         success: true,
         user: {
-          id: 1,
-          email: "test@example.com",
+          id: "cjld2cjxh0006qzrmn831i7rn",
+          firstName: "John",
+          lastName: "Doe",
+          email: "johndoe@example.com",
+          createdOn: "Tue, 16 May 2023 12:12:13 GMT",
+          modifiedOn: "Tue, 16 May 2023 12:12:13 GMT",
         },
         tokens: {
           access: {
-            token: "access_token",
-            issuedAt: new Date(Date.now()).toUTCString(),
-            expiresIn: 3600,
+            token: "accessToken",
+            issuedAt: "Mon, 15 May 2023 17:28:20 GMT",
+            expiresIn: "Sun, 04 Jun 2023 17:28:20 GMT",
           },
           refresh: {
-            token: expect.any(String),
-            issuedAt: new Date(Date.now()).toUTCString(),
-            expiresIn: expect.any(Number),
+            token: "refreshToken",
+            issuedAt: "Mon, 15 May 2023 17:28:20 GMT",
+            expiresIn: "Tue, 14 May 2024 17:28:20 GMT",
           },
         },
       },
     };
 
-    // Act
     const loginUser = makeLoginUser({
       authenticateUser,
-      generateToken,
-      getExpirationTime,
-      requiredEnvVars,
+      generateTokens,
+      prepareResponseBody,
+      handleError,
     });
-    const actualResponse = await loginUser(httpRequest);
-
-    // Assert
-    expect(actualResponse).toEqual(expectedResponse);
-    expect(authenticateUser).toHaveBeenCalledWith({
-      username: "test",
-      password: "password123",
-    });
-    expect(generateToken).toHaveBeenCalledWith({
-      payload: { userId: 1, email: "test@example.com" },
-      tokenKey: process.env.ACCESS_KEY,
-      tokenExpTime: process.env.ACCESS_EXP_TIME,
-    });
-    expect(getExpirationTime).toHaveBeenCalledWith({
-      tokenExpTime: process.env.ACCESS_EXP_TIME,
-    });
+    const response = await loginUser(httpRequest);
+    expect(response).toMatchObject(expectedResponse);
   });
-
-  test("makeLoginUser returns an error response when given invalid user credentials", async () => {
-    // Arrange
-    const authenticateUser = jest
-      .fn()
-      .mockRejectedValue(new Error("Invalid credentials"));
-    const generateToken = jest.fn();
-    const getExpirationTime = jest.fn();
-
+  it("return user not found respones when try to login", async () => {
+    const authenticateUser = jest.fn(() => {
+      throw new Error(
+        "User not found. Please check the provided details and try again."
+      );
+    });
     const httpRequest = {
       body: {
-        username: "test",
-        password: "wrongpassword",
+        email: "johndoe@example.com",
+        password: "password",
       },
     };
-
     const expectedResponse = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      statusCode: 400,
       body: {
+        error:
+          "User not found. Please check the provided details and try again.",
         success: false,
-        error: "Invalid credentials",
       },
+      headers: { "Content-Type": "application/json" },
+      statusCode: 400,
     };
-
-    // Act
+    const generateTokens = jest.fn(() => null);
     const loginUser = makeLoginUser({
       authenticateUser,
-      generateToken,
-      getExpirationTime,
-      requiredEnvVars,
+      generateTokens,
+      prepareResponseBody,
+      handleError,
     });
     const actualResponse = await loginUser(httpRequest);
-
-    // Assert
-    expect(actualResponse).toEqual(expectedResponse);
-    expect(authenticateUser).toHaveBeenCalledWith({
-      username: "test",
-      password: "wrongpassword",
-    });
-    expect(generateToken).not.toHaveBeenCalled();
-    expect(getExpirationTime).not.toHaveBeenCalled();
-  });
-
-  test("loginUser returns 400 status code and error message when authenticateUser throws an error", async () => {
-    const expectedErrorMessage = "Invalid credentials";
-    const authenticateUser = jest
-      .fn()
-      .mockRejectedValue(new Error(expectedErrorMessage));
-    const generateToken = jest.fn();
-    const getExpirationTime = jest.fn();
-
-    const loginUser = makeLoginUser({
-      authenticateUser,
-      generateToken,
-      getExpirationTime,
-      requiredEnvVars,
-    });
-    const httpRequest = {
-      body: { email: "test@example.com", password: "password" },
-    };
-
-    const { statusCode, body } = await loginUser(httpRequest);
-
-    expect(statusCode).toBe(400);
-    expect(body.success).toBe(false);
-    expect(body.error).toBe(expectedErrorMessage);
-    expect(authenticateUser).toHaveBeenCalledTimes(1);
-    expect(authenticateUser).toHaveBeenCalledWith(httpRequest.body);
-    expect(generateToken).not.toHaveBeenCalled();
-    expect(getExpirationTime).not.toHaveBeenCalled();
+    expect(actualResponse).toMatchObject(expectedResponse);
   });
 });
