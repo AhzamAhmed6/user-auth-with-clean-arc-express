@@ -109,4 +109,43 @@ describe("postUser", () => {
     };
     expect(response).toMatchObject(expectedResponse);
   });
+  it("post a already present user", async () => {
+    const addUserToDatabase = jest.fn(() => { throw Error("Unable to register user. The provided email address is already associated with an existing account.") })
+    const generateTokens = jest.fn(() => {
+      {
+        return {
+          accessToken: "accessToken",
+          accessTokenIssueTime: "Mon, 15 May 2023 17:28:20 GMT",
+          accessTokenExpirationTime: "Sun, 04 Jun 2023 17:28:20 GMT",
+          refreshToken: "refreshToken",
+          refreshTokenIssueTime: "Mon, 15 May 2023 17:28:20 GMT",
+          refreshTokenExpirationTime: "Tue, 14 May 2024 17:28:20 GMT",
+        };
+      }
+    });
+    const postUser = makePostUser({ generateTokens,
+      addUserToDatabase,
+      prepareResponseBody,
+      handleError,
+    })
+    const httpRequest = {
+      body: {
+        id: "123",
+        name: "John Doe",
+        email: "johndoe@example.com",
+        password: "password",
+      },
+    };
+    const expectedResponse = {
+      headers: { "Content-Type": "application/json" },
+      statusCode: 400,
+      body: {
+        "success": false,
+        "error": "Unable to register user. The provided email address is already associated with an existing account."
+      }
+    };
+    const response = await postUser(httpRequest);
+    expect(response).toMatchObject(expectedResponse);
+
+  })
 });

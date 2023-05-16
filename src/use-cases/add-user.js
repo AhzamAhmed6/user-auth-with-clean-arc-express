@@ -14,7 +14,7 @@ export default function makeAddUser({
       const formattedUser = await formatUser(user);
       return await insertUser(formattedUser);
     } catch (error) {
-      handleError(error);
+      return handleError(error);
     }
   };
 }
