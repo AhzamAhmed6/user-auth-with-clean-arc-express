@@ -12,30 +12,14 @@ function authorizeUser(httpRequest) {
   return true;
 }
 
-function createHttpResponse({ statusCode, message }) {
+function createResponse() {
   const headers = { "Content-Type": "application/json" };
-  const body = message;
+  const statusCode = 200;
+  const body = {
+    success: true,
+    message: "User deleted successfully",
+  };
   return { headers, statusCode, body };
-}
-
-function makeCreateSuccessResponse({ createHttpResponse }) {
-  return function createSuccessResponse() {
-    const response = {
-      success: true,
-      message: "User deleted successfully",
-    };
-    return createHttpResponse({ statusCode: 200, message: response });
-  };
-}
-
-function makeCreateNotFoundResponse({ createHttpResponse }) {
-  return function createNotFoundResponse() {
-    const response = {
-      success: false,
-      message: "User not found",
-    };
-    return createHttpResponse({ statusCode: 404, message: response });
-  };
 }
 
 function makeHandleError({ handleClientError, handleServerError }) {
@@ -69,17 +53,12 @@ function makeHandleServerError({ logger }) {
   };
 }
 
-const createSuccessResponse = makeCreateSuccessResponse({ createHttpResponse });
-const createNotFoundResponse = makeCreateNotFoundResponse({
-  createHttpResponse,
-});
 const handleServerError = makeHandleServerError({ logger });
 const handleError = makeHandleError({ handleClientError, handleServerError });
 
 const deleteUserDependencies = {
   authorizeUser,
-  createNotFoundResponse,
-  createSuccessResponse,
+  createResponse,
   handleError,
 };
 

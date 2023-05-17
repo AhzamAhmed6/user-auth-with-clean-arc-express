@@ -1,8 +1,7 @@
-import makeDeleteUser from "../../src/controllers/delete-user.js";
 import deleteUserDependencies from "../../src/controller-helper/delete-user.helper.js";
+import makeDeleteUser from "../../src/controllers/delete-user.js";
 
-const { createNotFoundResponse, createSuccessResponse, handleError } =
-  deleteUserDependencies;
+const { createResponse, handleError } = deleteUserDependencies;
 
 describe("deleteUser", () => {
   it("successfully deleted message", async () => {
@@ -12,8 +11,7 @@ describe("deleteUser", () => {
     const deleteUser = makeDeleteUser({
       authorizeUser,
       removeUser,
-      createNotFoundResponse,
-      createSuccessResponse,
+      createResponse,
       handleError,
     });
     const actualResponse = await deleteUser(httpRequest);
@@ -34,8 +32,7 @@ describe("deleteUser", () => {
     const deleteUser = makeDeleteUser({
       authorizeUser,
       removeUser,
-      createNotFoundResponse,
-      createSuccessResponse,
+      createResponse,
       handleError,
     });
     const actualResponse = await deleteUser(httpRequest);
@@ -51,19 +48,20 @@ describe("deleteUser", () => {
   });
   it("user not found response when delete a user", async () => {
     const authorizeUser = jest.fn(() => true);
-    const removeUser = jest.fn(() => 0);
+    const removeUser = jest.fn(() => {
+      throw Error("User not found");
+    });
     const httpRequest = { query: { id: "1234" } };
     const deleteUser = makeDeleteUser({
       authorizeUser,
       removeUser,
-      createNotFoundResponse,
-      createSuccessResponse,
+      createResponse,
       handleError,
     });
     const actualResponse = await deleteUser(httpRequest);
     const expectedResponse = {
       headers: { "Content-Type": "application/json" },
-      statusCode: 404,
+      statusCode: 400,
       body: {
         success: false,
         message: "User not found",
