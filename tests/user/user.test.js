@@ -1,6 +1,6 @@
 import makeFakeUser from "../../__test__/fixtures/user";
-import handlePassword from "../password";
-import makeUser from "./";
+import handlePassword from "../../src/password";
+import makeUser from "../../src/user";
 
 describe("user", () => {
   const completeUser = makeFakeUser();

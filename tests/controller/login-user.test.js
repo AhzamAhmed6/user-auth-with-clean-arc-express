@@ -1,5 +1,5 @@
-import loginUserDependencies from "../controller-helper/login-user.helper";
-import makeLoginUser from "./login-user";
+import loginUserDependencies from "../../src/controller-helper/login-user.helper";
+import makeLoginUser from "../../src/controllers/login-user";
 
 const { prepareResponseBody, handleError } = loginUserDependencies;
 

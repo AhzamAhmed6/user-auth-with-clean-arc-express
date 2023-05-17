@@ -1,7 +1,7 @@
 import makeFakeUser from "../../__test__/fixtures/user";
-import makeUser from "../user";
-import authenticateUserDependencies from "../use-case-helper/authenticate-user.helper.js";
-import makeAuthenticateUser from "./authenticate-user";
+import makeUser from "../../src/user";
+import authenticateUserDependencies from "../../src/use-case-helper/authenticate-user.helper.js";
+import makeAuthenticateUser from "../../src/use-cases/authenticate-user";
 
 const { matchPassword, handleError } = authenticateUserDependencies;
 

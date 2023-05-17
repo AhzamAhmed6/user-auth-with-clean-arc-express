@@ -1,5 +1,5 @@
-import makePostUser from "./post-user";
-import postUserDependencies from "../controller-helper/post-user.helper";
+import makePostUser from "../../src/controllers/post-user";
+import postUserDependencies from "../../src/controller-helper/post-user.helper";
 
 const { addUserToDatabase, prepareResponseBody, handleError } =
   postUserDependencies;

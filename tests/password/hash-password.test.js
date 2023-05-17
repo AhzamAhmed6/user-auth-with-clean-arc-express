@@ -1,4 +1,4 @@
-import buildMakeHashPassword from "./hash-password";
+import buildMakeHashPassword from "../../src/password/hash-password";
 import bcrypt from "bcrypt";
 
 describe("makeHashPassword", () => {

@@ -1,5 +1,5 @@
-import removeUserDependencies from "../use-case-helper/remove-user.helper";
-import makeRemoveUser from "./remove-user";
+import removeUserDependencies from "../../src/use-case-helper/remove-user.helper";
+import makeRemoveUser from "../../src/use-cases/remove-user";
 
 const { validateId } = removeUserDependencies;
 

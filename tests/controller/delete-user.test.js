@@ -1,5 +1,5 @@
-import makeDeleteUser from "./delete-user.js";
-import deleteUserDependencies from "../controller-helper/delete-user.helper.js";
+import makeDeleteUser from "../../src/controllers/delete-user.js";
+import deleteUserDependencies from "../../src/controller-helper/delete-user.helper.js";
 
 const { createNotFoundResponse, createSuccessResponse, handleError } =
   deleteUserDependencies;

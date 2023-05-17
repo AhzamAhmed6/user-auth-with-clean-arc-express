@@ -1,4 +1,4 @@
-import buildMakeTokens from "./tokens";
+import buildMakeTokens from "../../src/tokens/tokens";
 
 describe("buildMakeTokens", () => {
   const jwt = {

@@ -1,5 +1,5 @@
-import verifyUserDependencies from "../controller-helper/verify-user.helper";
-import makeVerifyUser from "./verify-user";
+import verifyUserDependencies from "../../src/controller-helper/verify-user.helper";
+import makeVerifyUser from "../../src/controllers/verify-user";
 const { handleError } = verifyUserDependencies;
 
 describe("verifyUser", () => {

@@ -1,4 +1,4 @@
-import makeAuthUser from "./auth-user.js";
+import makeAuthUser from "../../src/middleware/auth-user.js";
 
 describe("makeAuthUser middleware", () => {
   const verifyToken = jest.fn();

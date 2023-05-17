@@ -1,6 +1,6 @@
 import makeDb from "../../__test__/fixtures/db";
 import makeFakeUser from "../../__test__/fixtures/user";
-import makeUsersDb from "./user-db";
+import makeUsersDb from "../../src/data-access/user-db";
 
 describe("users db", () => {
   let usersDb;

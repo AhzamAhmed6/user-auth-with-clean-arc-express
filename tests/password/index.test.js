@@ -1,4 +1,4 @@
-import handlePassword from "./index";
+import handlePassword from "../../src/password/index";
 
 describe("handlePassword", () => {
   const password = "password";

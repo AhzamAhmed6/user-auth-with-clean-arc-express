@@ -1,4 +1,4 @@
-import buildVerifyPassword from "./verify-password";
+import buildVerifyPassword from "../../src/password/verify-password";
 import bcrypt from "bcrypt";
 
 describe("verifyPassword", () => {

@@ -1,5 +1,5 @@
-import findUserDependencies from "../use-case-helper/find-user.helper";
-import makeFindUser from "./find-user";
+import findUserDependencies from "../../src/use-case-helper/find-user.helper.js";
+import makeFindUser from "../../src/use-cases/find-user.js";
 
 const { validateInput } = findUserDependencies;
 
