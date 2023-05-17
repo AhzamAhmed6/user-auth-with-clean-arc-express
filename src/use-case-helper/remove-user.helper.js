@@ -17,7 +17,7 @@ function makeFindUserById({ usersDb }) {
 }
 
 function makeDeleteUser({ usersDb }) {
-  return async function deleteUser({id}) {
+  return async function deleteUser({ id }) {
     return await usersDb.remove({ id });
   };
 }

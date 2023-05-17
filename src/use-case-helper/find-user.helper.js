@@ -26,8 +26,8 @@ function makeFindUserByEmail({ usersDb }) {
   };
 }
 
-const findById = makeFindUserById({ usersDb });
+const findUserById = makeFindUserById({ usersDb });
 const findByEmail = makeFindUserByEmail({ usersDb });
 
-const findUserDependencies = { validateInput, findById, findByEmail };
+const findUserDependencies = { validateInput, findUserById, findByEmail };
 export default findUserDependencies;

@@ -5,7 +5,7 @@ export default function makeRemoveUser({
 }) {
   return async function removeUser({ id }) {
     validateId({ id });
-    await findUserById({id});
-    return deleteUser({id});
+    await findUserById({ id });
+    return deleteUser({ id });
   };
 }
