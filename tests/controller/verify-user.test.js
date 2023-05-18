@@ -1,13 +1,9 @@
-import verifyUserDependencies from "../../src/controller-helper/verify-user.helper";
-import makeVerifyUser from "../../src/controllers/verify-user";
-const { handleError } = verifyUserDependencies;
+import verifyUser from "../../src/controllers/verify-user";
 
 describe("verifyUser", () => {
   it("token not valid response", async () => {
-    const validateUser = jest.fn(() => false);
-    const verifyUser = makeVerifyUser({ validateUser, handleError });
     const httpRequest = { query: { id: "1234" } };
-    const actualResponse = await verifyUser(httpRequest);
+    const actualResponse = verifyUser(httpRequest);
     const expectedResponse = {
       headers: { "Content-Type": "application/json" },
       statusCode: 200,
@@ -19,10 +15,8 @@ describe("verifyUser", () => {
   });
 
   it("valid token response", async () => {
-    const validateUser = jest.fn(() => false);
-    const verifyUser = makeVerifyUser({ validateUser, handleError });
     const httpRequest = { query: { id: "1234" } };
-    const actualResponse = await verifyUser(httpRequest);
+    const actualResponse = verifyUser(httpRequest);
     const expectedResponse = {
       headers: { "Content-Type": "application/json" },
       statusCode: 200,

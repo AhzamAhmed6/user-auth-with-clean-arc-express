@@ -1,15 +1,8 @@
 import logger from "../logger/index.js";
 
 function authorizeUser(httpRequest) {
-  const requestId = httpRequest.query.id;
-  const { user } = httpRequest;
-  if (user === false) {
-    return false;
-  }
-  if (requestId != user.userId) {
-    return false;
-  }
-  return true;
+  const { requestId, user } = httpRequest;
+  return user && requestId === user.id;
 }
 
 function createResponse() {

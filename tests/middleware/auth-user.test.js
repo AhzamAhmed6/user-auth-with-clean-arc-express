@@ -2,6 +2,13 @@ import makeAuthUser from "../../src/middleware/auth-user.js";
 
 describe("makeAuthUser middleware", () => {
   const verifyToken = jest.fn();
+  const findUser = () => {
+    return {
+      id: "1234",
+      firstName: "jhon",
+      lastName: "adward",
+    };
+  };
   const nextFunction = jest.fn();
 
   beforeEach(() => {
@@ -17,7 +24,7 @@ describe("makeAuthUser middleware", () => {
       json: jest.fn(),
     };
 
-    await makeAuthUser({ verifyToken })(
+    await makeAuthUser({ verifyToken, findUser })(
       httpRequest,
       httpResponse,
       nextFunction
@@ -25,6 +32,7 @@ describe("makeAuthUser middleware", () => {
 
     expect(httpResponse.status).toHaveBeenCalledWith(401);
     expect(httpResponse.json).toHaveBeenCalledWith({
+      success: false,
       error: "Authorization header is missing or invalid.",
     });
     expect(nextFunction).not.toHaveBeenCalled();
@@ -42,7 +50,7 @@ describe("makeAuthUser middleware", () => {
       json: jest.fn(),
     };
 
-    await makeAuthUser({ verifyToken })(
+    await makeAuthUser({ verifyToken, findUser })(
       httpRequest,
       httpResponse,
       nextFunction
@@ -50,6 +58,7 @@ describe("makeAuthUser middleware", () => {
 
     expect(httpResponse.status).toHaveBeenCalledWith(401);
     expect(httpResponse.json).toHaveBeenCalledWith({
+      success: false,
       error: "Authorization header is missing or invalid.",
     });
     expect(nextFunction).not.toHaveBeenCalled();
@@ -68,7 +77,7 @@ describe("makeAuthUser middleware", () => {
     };
     verifyToken.mockResolvedValueOnce(false);
 
-    await makeAuthUser({ verifyToken })(
+    await makeAuthUser({ verifyToken, findUser })(
       httpRequest,
       httpResponse,
       nextFunction
@@ -90,13 +99,17 @@ describe("makeAuthUser middleware", () => {
     const httpResponse = {};
     verifyToken.mockResolvedValueOnce({ name: "John" });
 
-    await makeAuthUser({ verifyToken })(
+    await makeAuthUser({ verifyToken, findUser })(
       httpRequest,
       httpResponse,
       nextFunction
     );
 
-    expect(httpRequest.user).toEqual({ name: "John" });
+    expect(httpRequest.user).toMatchObject({
+      firstName: "jhon",
+      id: "1234",
+      lastName: "adward",
+    });
     expect(nextFunction).toHaveBeenCalled();
     expect(verifyToken).toHaveBeenCalledWith({
       token: "ValidToken",
