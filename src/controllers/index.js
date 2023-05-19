@@ -17,12 +17,15 @@ import notFound from "./not-found.js";
 import postUserDependencies from "../controller-helper/post-user.helper.js";
 import loginUserDependencies from "../controller-helper/login-user.helper.js";
 import deleteUserDependencies from "../controller-helper/delete-user.helper.js";
+import issueTokenDependencies from "../controller-helper/issue-token.helper.js";
+import makeIssueToken from "./issue-token.js";
 
 const userController = Object.freeze({
   postUser: makePostUser(postUserDependencies),
   loginUser: makeLoginUser({ authenticateUser, ...loginUserDependencies }),
   deleteUser: makeDeleteUser({ removeUser, ...deleteUserDependencies }),
   verifyUser,
+  issueToken: makeIssueToken(issueTokenDependencies),
 
   getUser: makeGetUser({ findUser }),
   notFound,
