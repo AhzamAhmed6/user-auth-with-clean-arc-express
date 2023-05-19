@@ -91,15 +91,18 @@ function buildResponse(tokens) {
   const headers = { "Content-Type": "application/json" };
   const statusCode = 201;
   const body = {
-    access: {
-      token: tokens.accessToken,
-      issuedAt: tokens.accessTokenIssueTime,
-      expiresIn: tokens.accessTokenExpirationTime,
-    },
-    refresh: {
-      token: tokens.refreshToken,
-      issuedAt: tokens.refreshTokenIssueTime,
-      expiresIn: tokens.refreshTokenExpirationTime,
+    success: false,
+    tokens: {
+      access: {
+        token: tokens.accessToken,
+        issuedAt: tokens.accessTokenIssueTime,
+        expiresIn: tokens.accessTokenExpirationTime,
+      },
+      refresh: {
+        token: tokens.refreshToken,
+        issuedAt: tokens.refreshTokenIssueTime,
+        expiresIn: tokens.refreshTokenExpirationTime,
+      },
     },
   };
   return { headers, statusCode, body };
