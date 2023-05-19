@@ -9,7 +9,7 @@ export default function makeDeleteUser({
     try {
       const isAuthorized = authorizeUser(httpRequest);
       if (!isAuthorized) {
-        throw new Error("You do not have permission to perform this action");
+        throw new Error("User not found");
       }
       await removeUser({ id: requestId });
       return createResponse();

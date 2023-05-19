@@ -22,9 +22,7 @@ export default function makeAuthUser({ verifyToken, findUser }) {
     try {
       httpRequest.user = await findUser({ id: user.userId });
     } catch (error) {
-      return httpResponse
-        .status(401)
-        .json({ success: false, message: error.message });
+      httpRequest.user = false;
     }
 
     nextFunction();

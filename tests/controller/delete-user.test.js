@@ -41,7 +41,7 @@ describe("deleteUser", () => {
       statusCode: 400,
       body: {
         success: false,
-        message: "You do not have permission to perform this action",
+        message: "User not found",
       },
     };
     expect(actualResponse).toMatchObject(expectedResponse);
