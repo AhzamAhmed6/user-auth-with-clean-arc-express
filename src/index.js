@@ -41,6 +41,11 @@ app.get(
   authUser,
   makeCallback(userController.issueToken)
 );
+app.patch(
+  `${apiRoot}/changepassword`,
+  authUser,
+  makeCallback(userController.patchPassword)
+);
 
 // Start the server
 const PORT = process.env.PORT || 8000;
