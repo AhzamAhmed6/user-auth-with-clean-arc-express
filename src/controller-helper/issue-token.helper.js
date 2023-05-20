@@ -89,9 +89,9 @@ function makeCalculateTokenExpirationTime({ getExpirationTime }) {
 
 function buildResponse(tokens) {
   const headers = { "Content-Type": "application/json" };
-  const statusCode = 201;
+  const statusCode = 200;
   const body = {
-    success: false,
+    success: true,
     tokens: {
       access: {
         token: tokens.accessToken,
