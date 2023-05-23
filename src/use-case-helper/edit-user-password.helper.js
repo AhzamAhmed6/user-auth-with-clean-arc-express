@@ -59,7 +59,6 @@ function makeUpdateUserPassword({ usersDb, makeUser }) {
   };
 }
 
-
 function makeHandleError({ handleClientError, handleServerError }) {
   return function handleError(error) {
     if (error instanceof Error) {
@@ -84,7 +83,6 @@ function makeHandleServerError({ logger }) {
   };
 }
 
-
 const findUserById = makeFindUserById({ usersDb });
 const validateOldPassword = makeValidateOldPassword({ verifyPassword });
 const updateUserPassword = makeUpdateUserPassword({ usersDb, makeUser });
@@ -97,7 +95,7 @@ const editUserPasswordDependencies = {
   validateUserExists,
   validateOldPassword,
   updateUserPassword,
-  handleError
+  handleError,
 };
 
 export default editUserPasswordDependencies;

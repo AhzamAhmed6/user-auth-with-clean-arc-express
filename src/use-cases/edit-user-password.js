@@ -4,7 +4,7 @@ export default function makeEditUserPassword({
   validateUserExists,
   validateOldPassword,
   updateUserPassword,
-  handleError
+  handleError,
 }) {
   return async function editUserPassword({ id, oldPassword, newPassword }) {
     try {
@@ -21,7 +21,7 @@ export default function makeEditUserPassword({
 
       return updated;
     } catch (error) {
-      return handleError(error)
+      return handleError(error);
     }
   };
 }
