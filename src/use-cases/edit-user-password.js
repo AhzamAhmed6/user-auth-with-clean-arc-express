@@ -1,7 +1,6 @@
 export default function makeEditUserPassword({
   validateInputs,
   findUserById,
-  validateUserExists,
   validateOldPassword,
   updateUserPassword,
   handleError,
@@ -11,8 +10,6 @@ export default function makeEditUserPassword({
       validateInputs({ id, oldPassword, newPassword });
 
       const existing = await findUserById({ id });
-
-      validateUserExists(existing);
 
       const { hashedPassword } = existing;
       await validateOldPassword({ oldPassword, hashedPassword });

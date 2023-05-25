@@ -15,9 +15,9 @@ export default function makePatchUserPassword({
         oldPassword,
         newPassword,
       });
-      
+
       // In this section, we generate new tokens when the password is changed,
-      // as part of our strategy to invalidate all previously issued access 
+      // as part of our strategy to invalidate all previously issued access
       // and refresh tokens for the user.
       const tokens = await generateTokens(userInfo);
 
@@ -27,7 +27,7 @@ export default function makePatchUserPassword({
         tokens
       );
 
-     const headers = { "Content-Type": "application/json" };
+      const headers = { "Content-Type": "application/json" };
       const statusCode = 200;
       const body = responseBody;
       return { headers, statusCode, body };

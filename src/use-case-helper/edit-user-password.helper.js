@@ -24,12 +24,6 @@ function makeFindUserById({ usersDb }) {
   };
 }
 
-function validateUserExists(user) {
-  if (!user) {
-    throw new RangeError("User not found.");
-  }
-}
-
 function makeValidateOldPassword({ verifyPassword }) {
   return async function validateOldPassword({ oldPassword, hashedPassword }) {
     const isPasswordMatched = await verifyPassword({
@@ -92,7 +86,6 @@ const handleError = makeHandleError({ handleClientError, handleServerError });
 const editUserPasswordDependencies = {
   validateInputs,
   findUserById,
-  validateUserExists,
   validateOldPassword,
   updateUserPassword,
   handleError,

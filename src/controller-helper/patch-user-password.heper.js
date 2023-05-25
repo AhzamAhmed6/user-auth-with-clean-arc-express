@@ -2,7 +2,6 @@ import logger from "../logger/index.js";
 import makeTokens from "../tokens/index.js";
 const { getExpirationTime, generateToken } = makeTokens;
 
-
 const requiredEnvVars = [
   "ACCESS_KEY",
   "ACCESS_EXP_TIME",
@@ -30,7 +29,6 @@ function authorizeUser(httpRequest) {
   }
   return user;
 }
-
 
 function makeGenerateTokens({ generateAccessToken, generateRefreshToken }) {
   return async function generateTokens(userInfo) {
@@ -147,7 +145,6 @@ function makeHandleServerError({ logger }) {
   };
 }
 
-
 const envVars = checkRequiredEnvVars(requiredEnvVars);
 const calculateTokenExpirationTime = makeCalculateTokenExpirationTime({
   getExpirationTime,
@@ -169,5 +166,10 @@ const generateTokens = makeGenerateTokens({
 const handleServerError = makeHandleServerError({ logger });
 const handleError = makeHandleError({ handleClientError, handleServerError });
 
-const patchUserPasswordDependencies = { authorizeUser, generateTokens, prepareResponseBody, handleError };
+const patchUserPasswordDependencies = {
+  authorizeUser,
+  generateTokens,
+  prepareResponseBody,
+  handleError,
+};
 export default patchUserPasswordDependencies;
