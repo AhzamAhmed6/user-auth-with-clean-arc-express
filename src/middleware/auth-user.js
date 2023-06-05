@@ -15,7 +15,7 @@ export default function makeAuthUser({ verifyToken, findUser }) {
     });
 
     if (user === false) {
-      httpResponse.user = false;
+      httpRequest.user = false;
       nextFunction();
     }
 

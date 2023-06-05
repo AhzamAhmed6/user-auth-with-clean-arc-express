@@ -7,8 +7,8 @@ export default function makePatchUserPassword({
 }) {
   return async function patchUserPassword(httpRequest) {
     try {
-      const { oldPassword, newPassword } = httpRequest.body;
       const user = authorizeUser(httpRequest);
+      const { oldPassword, newPassword } = httpRequest.body;
 
       const userInfo = await editUserPassword({
         id: user.id,
