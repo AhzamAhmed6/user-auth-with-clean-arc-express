@@ -46,6 +46,11 @@ app.patch(
   authUser,
   makeCallback(userController.patchPassword)
 );
+app.patch(
+  `${apiRoot}/changename`,
+  authUser,
+  makeCallback(userController.patchUserName)
+);
 
 // Start the server
 const PORT = process.env.PORT || 8000;

@@ -48,3 +48,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjamxkM
   "oldPassword":"Marvel-2001$",
   "newPassword":"Marvel-2001$new"
 }
+
+
+### Change Name
+PATCH http://localhost:8000/api/changeName
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjamxkMmNqeGgwMDA2cXpybW44MzFpN3JuIiwiZW1haWwiOiJ0ZXN0NkB0ZXN0LmNvbSIsImlhdCI6MTY4ODQ1Nzk3NCwiZXhwIjoxNjkwMTg1OTc0fQ.nl2MV0jFq1Ca8pC6yUg6ya9xLEKnrNt0uamM04XielQ
+
+{
+  "firstName":"Ahzam2",
+  "lastName":"Ahmed2"
+}

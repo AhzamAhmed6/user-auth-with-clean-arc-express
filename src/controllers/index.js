@@ -10,10 +10,13 @@ import issueTokenDependencies from "../controller-helper/issue-token.helper.js";
 import loginUserDependencies from "../controller-helper/login-user.helper.js";
 import patchUserPasswordDependencies from "../controller-helper/patch-user-password.heper.js";
 import postUserDependencies from "../controller-helper/post-user.helper.js";
+import patchUserNameDependencies from "../controller-helper/patch-user-name.helper.js";
 
 import userService from "../use-cases/index.js";
+import makePatchUserName from "./patch-user-name.js";
 
-const { editUserPassword, authenticateUser, removeUser } = userService;
+const { editUserPassword, authenticateUser, removeUser, editUserName } =
+  userService;
 
 const userController = Object.freeze({
   postUser: makePostUser(postUserDependencies),
@@ -24,6 +27,10 @@ const userController = Object.freeze({
   patchPassword: makePatchUserPassword({
     editUserPassword,
     ...patchUserPasswordDependencies,
+  }),
+  patchUserName: makePatchUserName({
+    editUserName,
+    ...patchUserNameDependencies,
   }),
 });
 

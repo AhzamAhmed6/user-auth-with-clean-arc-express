@@ -1,6 +1,11 @@
 import makeUser from "../user/index.js";
 
-export default function makeEditUserName({ validateInputs,findExistingUser,getPassword,updateUserName }) {
+export default function makeEditUserName({
+  validateInputs,
+  findExistingUser,
+  getPassword,
+  updateUserName,
+}) {
   return async function editUserName({
     id,
     firstName,
@@ -9,13 +14,17 @@ export default function makeEditUserName({ validateInputs,findExistingUser,getPa
   } = {}) {
     validateInputs(id, firstName, lastName);
 
-    const existing = await findExistingUser(usersDb, id);
+    const existing = await findExistingUser({ id });
 
-    const user = makeUser({ firstName, lastName, password: getPassword(rest), ...rest });
+    const user = makeUser({
+      firstName,
+      lastName,
+      password: getPassword(rest),
+      ...rest,
+    });
 
-    const updated = await updateUserName(usersDb, existing, user);
+    const updated = await updateUserName(existing, user);
 
     return { ...updated };
   };
 }
-

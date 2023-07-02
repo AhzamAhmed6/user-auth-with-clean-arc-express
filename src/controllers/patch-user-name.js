@@ -1,45 +1,22 @@
-import logger from "../logger/index.js";
-
-export default function makePatchUserName({ editUserName }) {
+export default function makePatchUserName({
+  editUserName,
+  validateUserExists,
+  createSuccessResponse,
+  handleError,
+}) {
   return async function patchUserName(httpRequest) {
     try {
-      const userInfo = httpRequest.body;
-      const toEdit = {
-        ...userInfo,
-        id: httpRequest.params.id,
-      };
-      const patched = await editUserName(toEdit);
-      return {
-        headers: {
-          "Content-Type": "application/json",
-          "Last-Modified": new Date(patched.modifiedOn).toUTCString(),
-        },
-        statusCode: 200,
-        body: { patched },
-      };
+      const { user } = httpRequest;
+
+      validateUserExists(user);
+
+      const { firstName, lastName } = httpRequest.body;
+
+      const patched = await editUserName({ ...user, firstName, lastName });
+      const response = createSuccessResponse(patched);
+      return response;
     } catch (e) {
-      // TODO: Error logging
-      logger.error(e);
-      if (e.name === "RangeError") {
-        return {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          statusCode: 404,
-          body: {
-            error: e.message,
-          },
-        };
-      }
-      return {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        statusCode: 400,
-        body: {
-          error: e.message,
-        },
-      };
+      return handleError;
     }
   };
 }
