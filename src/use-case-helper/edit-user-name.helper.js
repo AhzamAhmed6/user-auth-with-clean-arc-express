@@ -27,6 +27,7 @@ function makeUpdateUserName({ usersDb }) {
       id: existing.id,
       firstName: user.getFirstName(),
       lastName: user.getLastName(),
+      modifiedOn: user.getModifiedOn(),
     });
     return updated;
   };

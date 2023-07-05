@@ -47,6 +47,7 @@ function makeUpdateUserPassword({ usersDb, makeUser }) {
       lastName: user.getLastName(),
       email: user.getEmail(),
       hashedPassword: await user.getHashedPassword(),
+      modifiedOn: new Date(Date.now()).toUTCString(),
     });
 
     return updated;

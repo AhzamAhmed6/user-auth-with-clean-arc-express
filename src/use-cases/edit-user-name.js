@@ -1,10 +1,7 @@
-
-
 export default function makeEditUserName({
   makeUser,
   validateInputs,
   findExistingUser,
-  getPassword,
   updateUserName,
 }) {
   return async function editUserName({
@@ -16,6 +13,8 @@ export default function makeEditUserName({
     validateInputs(id, firstName, lastName);
 
     const existing = await findExistingUser({ id });
+
+    rest.modifiedOn = new Date(Date.now()).toUTCString();
 
     const user = makeUser({
       id,

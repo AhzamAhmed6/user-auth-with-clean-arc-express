@@ -17,7 +17,7 @@ content-type: application/json
 
 {
   "email":"test6@test.com",
-  "password":"Marvel-2001$"
+  "password":"Marvel-2001$new"
 }
 
 
@@ -42,7 +42,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjamxkM
 ### Change Password
 PATCH http://localhost:8000/api/changepassword
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjamxkMmNqeGgwMDA2cXpybW44MzFpN3JuIiwiZW1haWwiOiJ0ZXN0NkB0ZXN0LmNvbSIsImlhdCI6MTY4NDM0NzU5OSwiZXhwIjoxNjg2MDc1NTk5fQ.aYcHVQKNMNNGTtZZJI8YTijmGFQtproToOHF5axqIJI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjamxkMmNqeGgwMDA2cXpybW44MzFpN3JuIiwiZW1haWwiOiJ0ZXN0NkB0ZXN0LmNvbSIsImlhdCI6MTY4ODU4NDAwMSwiZXhwIjoxNjkwMzEyMDAxfQ.C3qP3bVfDinQuhgw6qy5y_hzlradINgaJLuuqR9RZMs
 
 {
   "oldPassword":"Marvel-2001$",

@@ -15,26 +15,26 @@ export default function makeUsersDb({ makeDb }) {
     return { id: _id, ...rest };
   }
 
-  async function updateName({ id, firstName, lastName, ...rest }) {
+  async function updateName({ id, firstName, lastName, modifiedOn, ...rest }) {
     const db = await makeDb();
     const result = await db
       .collection(collectionName)
-      .updateOne({ _id: id }, { $set: { firstName, lastName } });
+      .updateOne({ _id: id }, { $set: { firstName, lastName, modifiedOn } });
 
     return { id, firstName, lastName, ...rest };
   }
 
-  async function updatePassword({ id, hashedPassword, ...rest }) {
+  async function updatePassword({ id, hashedPassword, modifiedOn }) {
     const db = await makeDb();
     const result = await db
       .collection(collectionName)
-      .updateOne({ _id: id }, { $set: { hashedPassword } });
+      .updateOne({ _id: id }, { $set: { hashedPassword, modifiedOn } });
 
     if (result.modifiedCount === 0) {
       return null;
     }
 
-    return { id, hashedPassword, ...rest };
+    return { id, hashedPassword };
   }
 
   async function findAll() {

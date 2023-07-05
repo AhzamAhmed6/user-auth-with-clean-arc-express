@@ -1,7 +1,9 @@
 import editUserNameDependencies from "../../src/use-case-helper/edit-user-name.helper";
 import makeEditUserName from "../../src/use-cases/edit-user-name";
 
-const makeUser = jest.fn(()=>{null})
+const makeUser = jest.fn(() => {
+  null;
+});
 describe("edit user name", () => {
   it("requires id, firstName and lastName", async () => {
     const dependenciesCopy = { makeUser, ...editUserNameDependencies };
@@ -25,21 +27,22 @@ describe("edit user name", () => {
       editUserName({
         id: "123",
         firstName: "John",
-        lastName: "Doe"
+        lastName: "Doe",
       })
     ).rejects.toThrow("User not found.");
   });
   it("successfully update user name", async () => {
     const makeUser = jest.fn(() => {
       return Object.freeze({
-      getId: () => "123",
-      getFirstName: () => "John2",
-      getLastName: () => "Doe2",
-      getEmail: () => null,
-      getModifiedOn: () => null,
-      getCreatedOn: () => null,
-      getHashedPassword: async () => null,
-    })})
+        getId: () => "123",
+        getFirstName: () => "John2",
+        getLastName: () => "Doe2",
+        getEmail: () => null,
+        getModifiedOn: () => null,
+        getCreatedOn: () => null,
+        getHashedPassword: async () => null,
+      });
+    });
     const dependenciesCopy = { makeUser, ...editUserNameDependencies };
     const findExistingUser = jest.fn(() => ({
       id: "123",
@@ -57,9 +60,8 @@ describe("edit user name", () => {
     const result = await editUserName({
       id: "123",
       firstName: "Jane2",
-      lastName: "Doe2"
+      lastName: "Doe2",
     });
-    expect(result).toEqual({ id: '123', firstName: 'Jane2', lastName: 'Doe2' })
-  
-  })
-})
+    expect(result).toEqual({ id: "123", firstName: "Jane2", lastName: "Doe2" });
+  });
+});

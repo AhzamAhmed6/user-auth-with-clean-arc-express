@@ -11,6 +11,8 @@ export default function makeEditUserPassword({
 
       const existing = await findUserById({ id });
 
+      existing.modifiedOn = new Date(Date.now()).toUTCString();
+
       const { hashedPassword } = existing;
       await validateOldPassword({ oldPassword, hashedPassword });
 
