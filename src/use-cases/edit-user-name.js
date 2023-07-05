@@ -1,6 +1,7 @@
-import makeUser from "../user/index.js";
+
 
 export default function makeEditUserName({
+  makeUser,
   validateInputs,
   findExistingUser,
   getPassword,
@@ -17,9 +18,10 @@ export default function makeEditUserName({
     const existing = await findExistingUser({ id });
 
     const user = makeUser({
+      id,
       firstName,
       lastName,
-      password: getPassword(rest),
+      password: rest.hashedPassword,
       ...rest,
     });
 

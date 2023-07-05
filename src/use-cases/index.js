@@ -19,7 +19,7 @@ const userService = Object.freeze({
   findUser: makeFindUser(findUserDependencies),
   removeUser: makeRemoveUser(removeUserDependencies),
   editUserPassword: makeEditUserPassword(editUserPasswordDependencies),
-  editUserName: makeEditUserName(editUserNameDependencies),
+  editUserName: makeEditUserName({ makeUser, ...editUserNameDependencies }),
 });
 
 export default userService;

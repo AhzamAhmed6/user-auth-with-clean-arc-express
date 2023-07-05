@@ -33,8 +33,6 @@ function makeUpdateUserName({ usersDb }) {
       id: existing.id,
       firstName: user.getFirstName(),
       lastName: user.getLastName(),
-      email: existing.email,
-      hashedPassword: existing.hashedPassword,
     });
     return updated;
   };

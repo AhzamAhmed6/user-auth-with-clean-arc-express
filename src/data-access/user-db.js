@@ -21,10 +21,6 @@ export default function makeUsersDb({ makeDb }) {
       .collection(collectionName)
       .updateOne({ _id: id }, { $set: { firstName, lastName } });
 
-    if (result.modifiedCount === 0) {
-      return null;
-    }
-
     return { id, firstName, lastName, ...rest };
   }
 

@@ -1,7 +1,7 @@
 import editUserPasswordDependencies from "../../src/use-case-helper/edit-user-password.helper.js";
 import makeEditUserPassword from "../../src/use-cases/edit-user-password.js";
 
-describe("add user", () => {
+describe("edit user password", () => {
   it("old and new password required validation", async () => {
     const dependenciesCopy = { ...editUserPasswordDependencies }; // Create a copy of the dependencies object
     const validateInputs = jest.fn(() => {
