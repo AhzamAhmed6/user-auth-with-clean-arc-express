@@ -21,12 +21,6 @@ function makeFindExistingUser({ usersDb }) {
 
 const findExistingUser = makeFindExistingUser({ usersDb });
 
-function getPassword(rest) {
-  const password = rest.hashedPassword;
-  delete rest.hashedPassword;
-  return password;
-}
-
 function makeUpdateUserName({ usersDb }) {
   return async function updateUserName(existing, user) {
     const updated = await usersDb.updateName({
@@ -43,7 +37,6 @@ const updateUserName = makeUpdateUserName({ usersDb });
 const editUserNameDependencies = {
   validateInputs,
   findExistingUser,
-  getPassword,
   updateUserName,
 };
 

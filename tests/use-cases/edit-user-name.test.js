@@ -37,7 +37,7 @@ describe("edit user name", () => {
       getLastName: () => "Doe2",
       getEmail: () => null,
       getModifiedOn: () => null,
-      getCreatedOn: () => creanulltedOn,
+      getCreatedOn: () => null,
       getHashedPassword: async () => null,
     })})
     const dependenciesCopy = { makeUser, ...editUserNameDependencies };
@@ -45,16 +45,12 @@ describe("edit user name", () => {
       id: "123",
       firstName: "John",
       lastName: "Doe",
-      email: "john@doe.com",
-      hashedPassword: "hashed-password"
     }));
     dependenciesCopy.findExistingUser = findExistingUser;
     const updateUserName = jest.fn(() => ({
       id: "123",
-      firstName: "Jane",
-      lastName: "Doe",
-      email: "john@doe.com",
-      hashedPassword: "hashed-password"
+      firstName: "Jane2",
+      lastName: "Doe2",
     }));
     dependenciesCopy.updateUserName = updateUserName;
     const editUserName = makeEditUserName(dependenciesCopy);
@@ -63,10 +59,7 @@ describe("edit user name", () => {
       firstName: "Jane2",
       lastName: "Doe2"
     });
-    expect(result).toEqual({
-      id: "123",
-      firstName
-    })
+    expect(result).toEqual({ id: '123', firstName: 'Jane2', lastName: 'Doe2' })
   
   })
 })
