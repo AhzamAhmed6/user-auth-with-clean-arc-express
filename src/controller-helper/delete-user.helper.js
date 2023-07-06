@@ -2,8 +2,10 @@ import logger from "../logger/index.js";
 
 function authorizeUser(httpRequest) {
   const { user } = httpRequest;
-  const requestId = httpRequest.query.id;
-  return user && requestId === user.id;
+  if (user) {
+    return user;
+  }
+  throw new Error("User not found");
 }
 
 function createResponse() {

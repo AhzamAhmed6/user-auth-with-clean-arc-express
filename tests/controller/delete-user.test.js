@@ -25,27 +25,6 @@ describe("deleteUser", () => {
     };
     expect(actualResponse).toMatchObject(expectedResponse);
   });
-  it("do not have permission response", async () => {
-    const authorizeUser = jest.fn(() => false);
-    const removeUser = jest.fn(() => null);
-    const httpRequest = { query: { id: "1234" } };
-    const deleteUser = makeDeleteUser({
-      authorizeUser,
-      removeUser,
-      createResponse,
-      handleError,
-    });
-    const actualResponse = await deleteUser(httpRequest);
-    const expectedResponse = {
-      headers: { "Content-Type": "application/json" },
-      statusCode: 400,
-      body: {
-        success: false,
-        message: "User not found",
-      },
-    };
-    expect(actualResponse).toMatchObject(expectedResponse);
-  });
   it("user not found response when delete a user", async () => {
     const authorizeUser = jest.fn(() => true);
     const removeUser = jest.fn(() => {
