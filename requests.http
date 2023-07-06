@@ -17,7 +17,7 @@ content-type: application/json
 
 {
   "email":"test6@test.com",
-  "password":"Marvel-2001$new"
+  "password":"Marvel-2001$"
 }
 
 

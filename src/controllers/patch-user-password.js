@@ -10,18 +10,14 @@ export default function makePatchUserPassword({
       const user = authorizeUser(httpRequest);
       const { oldPassword, newPassword } = httpRequest.body;
 
-      const userInfo = await editUserPassword({
-        id: user.id,
-        oldPassword,
-        newPassword,
-      });
+      await editUserPassword({id: user.id, oldPassword, newPassword, });
 
       // In this section, we generate new tokens when the password is changed,
       // as part of our strategy to invalidate all previously issued access
       // and refresh tokens for the user.
-      const tokens = await generateTokens(userInfo);
+      const tokens = await generateTokens(user);
 
-      const { hashedPassword, ...userWithoutSensitiveData } = userInfo;
+      const { hashedPassword, ...userWithoutSensitiveData } = user;
       const responseBody = prepareResponseBody(
         userWithoutSensitiveData,
         tokens

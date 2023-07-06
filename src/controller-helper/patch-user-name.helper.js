@@ -1,9 +1,11 @@
 import logger from "../logger/index.js";
 
-function validateUserExists(user) {
+function authorizeUser(httpRequest) {
+  const { user } = httpRequest;
   if (user === false) {
-    throw new Error("User Not Found");
+    throw Error("User Not Found");
   }
+  return user;
 }
 
 function createSuccessResponse(patched) {
@@ -47,7 +49,7 @@ const handleServerError = makeHandleServerError({ logger });
 const handleError = makeHandleError({ handleClientError, handleServerError });
 
 const patchUserNameDependencies = {
-  validateUserExists,
+  authorizeUser,
   createSuccessResponse,
   handleError,
 };
