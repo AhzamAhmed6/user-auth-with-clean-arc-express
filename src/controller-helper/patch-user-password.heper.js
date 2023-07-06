@@ -30,6 +30,15 @@ function authorizeUser(httpRequest) {
   return user;
 }
 
+function validateInputs({ id, oldPassword, newPassword }) {
+  if (!id) {
+    throw new Error("You must supply an id.");
+  }
+  if (!oldPassword || !newPassword) {
+    throw new Error("You must supply old and new password.");
+  }
+}
+
 function makeGenerateTokens({ generateAccessToken, generateRefreshToken }) {
   return async function generateTokens(userInfo) {
     const accessToken = await generateAccessToken(userInfo);
@@ -168,6 +177,7 @@ const handleError = makeHandleError({ handleClientError, handleServerError });
 
 const patchUserPasswordDependencies = {
   authorizeUser,
+  validateInputs,
   generateTokens,
   prepareResponseBody,
   handleError,

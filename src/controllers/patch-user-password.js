@@ -1,6 +1,7 @@
 export default function makePatchUserPassword({
   editUserPassword,
   authorizeUser,
+  validateInputs,
   generateTokens,
   prepareResponseBody,
   handleError,
@@ -9,6 +10,8 @@ export default function makePatchUserPassword({
     try {
       const user = authorizeUser(httpRequest);
       const { oldPassword, newPassword } = httpRequest.body;
+
+      validateInputs({ id, oldPassword, newPassword });
 
       await editUserPassword({ id: user.id, oldPassword, newPassword });
 

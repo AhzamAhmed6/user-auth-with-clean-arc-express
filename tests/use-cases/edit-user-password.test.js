@@ -2,18 +2,6 @@ import editUserPasswordDependencies from "../../src/use-case-helper/edit-user-pa
 import makeEditUserPassword from "../../src/use-cases/edit-user-password.js";
 
 describe("edit user password", () => {
-  it("old and new password required validation", async () => {
-    const dependenciesCopy = { ...editUserPasswordDependencies }; // Create a copy of the dependencies object
-    const validateInputs = jest.fn(() => {
-      throw Error("You must supply old and new password.");
-    });
-    dependenciesCopy.validateInputs = validateInputs;
-    const editUserPassword = makeEditUserPassword(dependenciesCopy);
-    await expect(editUserPassword({ id: "123" })).rejects.toThrow(
-      "You must supply old and new password."
-    );
-  });
-
   it("User not found", async () => {
     const dependenciesCopy = { ...editUserPasswordDependencies }; // Create a copy of the dependencies object
     const findUserById = jest.fn(() => {

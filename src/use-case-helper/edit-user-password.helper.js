@@ -5,15 +5,6 @@ import makeUser from "../user/index.js";
 
 const { verifyPassword } = handlePassword;
 
-function validateInputs({ id, oldPassword, newPassword }) {
-  if (!id) {
-    throw new Error("You must supply an id.");
-  }
-  if (!oldPassword || !newPassword) {
-    throw new Error("You must supply old and new password.");
-  }
-}
-
 function makeFindUserById({ usersDb }) {
   return async function findUserById({ id }) {
     const exists = await usersDb.findById({ id: id });
@@ -85,7 +76,6 @@ const handleServerError = makeHandleServerError({ logger });
 const handleError = makeHandleError({ handleClientError, handleServerError });
 
 const editUserPasswordDependencies = {
-  validateInputs,
   findUserById,
   validateOldPassword,
   updateUserPassword,

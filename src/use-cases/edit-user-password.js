@@ -1,5 +1,4 @@
 export default function makeEditUserPassword({
-  validateInputs,
   findUserById,
   validateOldPassword,
   updateUserPassword,
@@ -7,8 +6,6 @@ export default function makeEditUserPassword({
 }) {
   return async function editUserPassword({ id, oldPassword, newPassword }) {
     try {
-      validateInputs({ id, oldPassword, newPassword });
-
       const existing = await findUserById({ id });
 
       existing.modifiedOn = new Date(Date.now()).toUTCString();
