@@ -59,3 +59,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjamxkM
   "firstName":"Ahzam2",
   "lastName":"Ahmed2"
 }
+
+
+### User Profile
+GET http://localhost:8000/api/userprofile
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjamxkMmNqeGgwMDA2cXpybW44MzFpN3JuIiwiZW1haWwiOiJ0ZXN0NkB0ZXN0LmNvbSIsImlhdCI6MTY4ODgyNjk3OSwiZXhwIjoxNjkwNTU0OTc5fQ.NBjgyfZZQjOwitTUCwKrBBjrkk1vzjC9iIOXQCqDfEc

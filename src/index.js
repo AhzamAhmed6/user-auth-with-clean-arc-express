@@ -51,6 +51,10 @@ app.patch(
   authUser,
   makeCallback(userController.patchUserName)
 );
+app.get(
+  `${apiRoot}/userprofile`,
+  authUser,
+  makeCallback(userController.userProfile))
 
 // Start the server
 const PORT = process.env.PORT || 8000;
