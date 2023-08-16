@@ -1,22 +1,59 @@
-This microservice is designed for user authentication using JSON Web Tokens (JWT) and is implemented in JavaScript using [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) principles. The aim is to provide a production-ready, open-source solution for secure user authentication.
+# User Authentication Microservice with Clean Architecture
 
-By using JWT and Clean Architecture, we are ensuring that the microservice is both secure and maintainable. JWT is a widely-used standard for token-based authentication, while Clean Architecture provides a structured approach to designing and organizing code, making it easier to understand, modify, and extend.
+This microservice provides user authentication using JSON Web Tokens (JWT) and is built in JavaScript following the principles of [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html). The objective is to offer a production-ready, open-source solution for secure user authentication.
 
-By making the microservice open-source, we are providing a valuable resource to the developer community, and enabling others to use, contribute to, and improve the microservice for their own needs.
+### Why Clean Architecture and JWT?
 
-**For contributions**:
+By leveraging Clean Architecture, we ensure maintainable code that's easy to understand and extend. JSON Web Tokens (JWT) are employed for token-based authentication, enhancing security and scalability.
 
-1. clone down the repo in to your local system.
+### Technology Stack
+
+The microservice is built using the following technologies:
+
+- **Express.js**: A fast, unopinionated, and minimalist web framework for Node.js.
+- **MongoDB**: A widely-used NoSQL database for scalable and flexible data storage.
+
+
+### Features
+
+- Secure user authentication through JWT tokens.
+- Built on the principles of Clean Architecture for maintainability.
+- Open-source, allowing the developer community to contribute and improve.
+
+### Documentation
+
+For detailed information on how to use the microservice, refer to the [Documentation](https://documenter.getpostman.com/view/21905374/2s9Xy6qVTF).
+
+
+### Installation and Usage
+
+1. Clone the repository to your local system:
    ```
    git clone https://github.com/AhzamAhmed6/user-auth-with-clean-arc-express.git
    ```
-2. install dependencies,
+2. Install dependencies:
     ```sh
     npm install
     ```
-3. run tests, run
+3. Run code:
     ```sh
-    npm run test
+    npm run start
     ```
 
-**Note:** make sure that all tests must pass before submit a PR, Thanks.
+### Contributions
+
+We welcome contributions from the community! To contribute:
+
+1. Fork the repository.
+2. Clone the forked repository to your local system.
+3. Create a new branch for your changes.
+4. Implement your changes and ensure all tests pass:
+   ```sh
+   npm run test
+   ```
+5. Submit a pull request.
+
+### License
+
+This microservice is open-source and distributed under the [MIT License](https://github.com/ahzamm/user-auth-with-clean-arc-express/blob/master/LICENSE.md). Feel free to adjust the content according to your preferences and specific project details.
+
